@@ -5,123 +5,104 @@
  * @format
  */
 
-import React, {useEffect} from 'react';
-import type {PropsWithChildren} from 'react';
+import React from 'react';
+// import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
   View,
+  Text,
   Button,
 } from 'react-native';
-import PushNotification from 'react-native-push-notification';
+// import PushNotification from 'react-native-push-notification';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {NavigationContainer} from '@react-navigation/native';
+import {MainStackNavigator} from './src/navigations';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const queryClient = new QueryClient();
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+function AppScreen(): JSX.Element {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    // <SafeAreaView>
+    <NavigationContainer>
+      <MainStackNavigator />
+    </NavigationContainer>
+    // </SafeAreaView>
   );
 }
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  useEffect(() => {
-    createChannels();
-  }, []);
-
-  const handleNotification = () => {
-    PushNotification.localNotification({
-      channelId: 'test-channel',
-      title: 'You click me',
-      message: 'You click me! fuck cuk',
-      bigText: 'This is bgitextis bgitextis bgitextis bgitext',
-    });
-    console.log('handle Notification');
-
-    PushNotification.localNotificationSchedule({
-      channelId: 'test-channel',
-      title: 'YlocalNotificationSchedulee',
-      message: 'schedule notificaitno',
-      date: new Date(Date.now() + 20 * 1000),
-      allowWhileIdle: true,
-    });
-  };
-
-  const createChannels = () => {
-    PushNotification.createChannel(
-      {
-        channelId: 'test-channel',
-        channelName: 'TESTT',
-      },
-      created => {
-        console.log(`createChannel returned '${created}'`);
-      },
-    );
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <Button title="click me" onPress={() => handleNotification()} />
-    </SafeAreaView>
+    <QueryClientProvider client={queryClient}>
+      <AppScreen />
+    </QueryClientProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+// type SectionProps = PropsWithChildren<{
+//   title: string;
+// }>;
+
+// function App(): JSX.Element {
+//   useEffect(() => {
+//     createChannels();
+//   }, []);
+
+//   const handleNotification = () => {
+//     PushNotification.localNotification({
+//       channelId: 'test-channel',
+//       title: 'You click me',
+//       message: 'You click me! fuck cuk',
+//       bigText: 'This is bgitextis bgitextis bgitextis bgitext',
+//     });
+//     console.log('handle Notification');
+
+//     PushNotification.localNotificationSchedule({
+//       channelId: 'test-channel',
+//       title: 'YlocalNotificationSchedulee',
+//       message: 'schedule notificaitno',
+//       date: new Date(Date.now() + 20 * 1000),
+//       allowWhileIdle: true,
+//     });
+//   };
+
+//   const createChannels = () => {
+//     PushNotification.createChannel(
+//       {
+//         channelId: 'test-channel',
+//         channelName: 'TESTT',
+//       },
+//       created => {
+//         console.log(`createChannel returned '${created}'`);
+//       },
+//     );
+//   };
+
+//   return (
+//     <SafeAreaView>
+//       <Button title="click me" onPress={() => handleNotification()} />
+//     </SafeAreaView>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   sectionContainer: {
+//     marginTop: 32,
+//     paddingHorizontal: 24,
+//   },
+//   sectionTitle: {
+//     fontSize: 24,
+//     fontWeight: '600',
+//   },
+//   sectionDescription: {
+//     marginTop: 8,
+//     fontSize: 18,
+//     fontWeight: '400',
+//   },
+//   highlight: {
+//     fontWeight: '700',
+//   },
+// });
 
 export default App;
