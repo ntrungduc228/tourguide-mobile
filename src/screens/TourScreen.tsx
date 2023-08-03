@@ -1,13 +1,14 @@
-import {Text, View} from 'react-native';
+import {Text, View, SafeAreaView} from 'react-native';
 import React from 'react';
+import {Travel} from '../features/tour';
 
 type Props = {};
 
 export const TourScreen = ({}: Props) => {
   return (
-    <View className="h-full aligns-center justify-center">
-      <Text className="font-bold text-2xl">Tour</Text>
-    </View>
+    // <SafeAreaView>
+    <Travel />
+    // </SafeAreaView>
   );
 };
 

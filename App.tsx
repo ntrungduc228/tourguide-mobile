@@ -26,10 +26,10 @@ const queryClient = new QueryClient();
 function AppScreen(): JSX.Element {
   return (
     // <SafeAreaView>
-    // <NavigationContainer>
-    //   <MainStackNavigator />
-    // </NavigationContainer>
-    <SocketClient />
+    <NavigationContainer>
+      <MainStackNavigator />
+      <SocketClient />
+    </NavigationContainer>
     // </SafeAreaView>
   );
 }
@@ -38,7 +38,6 @@ function App(): JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
       <AppScreen />
-      <Text className="font-bold text-red-600">oo</Text>
     </QueryClientProvider>
   );
 }

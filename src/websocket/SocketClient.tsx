@@ -1,12 +1,15 @@
 // import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import React, {useEffect} from 'react';
+import Config from 'react-native-config';
 
 var Stomp = require('stompjs/lib/stomp.js').Stomp;
 
 type Props = {};
 
-const SOCKET_URL = 'http://192.168.2.134:8085' + '/gs';
+const SOCKET_URL = Config.REACT_APP_API_URL
+  ? Config.REACT_APP_API_URL + '/ws'
+  : 'http://localhost:8085' + '/ws';
 
 export const SocketClient = ({}: Props): JSX.Element => {
   useEffect(() => {
