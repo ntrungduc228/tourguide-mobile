@@ -19,15 +19,17 @@ import {
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {NavigationContainer} from '@react-navigation/native';
 import {MainStackNavigator} from './src/navigations';
+import {SocketClient} from './src/websocket';
 
 const queryClient = new QueryClient();
 
 function AppScreen(): JSX.Element {
   return (
     // <SafeAreaView>
-    <NavigationContainer>
-      <MainStackNavigator />
-    </NavigationContainer>
+    // <NavigationContainer>
+    //   <MainStackNavigator />
+    // </NavigationContainer>
+    <SocketClient />
     // </SafeAreaView>
   );
 }
@@ -36,6 +38,7 @@ function App(): JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
       <AppScreen />
+      <Text className="font-bold text-red-600">oo</Text>
     </QueryClientProvider>
   );
 }
