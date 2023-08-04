@@ -23,21 +23,21 @@ export const Travel = (props: Props) => {
         name="Post"
         component={Post}
         options={{
-          title: 'Post',
+          title: 'Bài đăng',
         }}
       />
       <Tab.Screen
         name="Destination"
         component={Destination}
         options={{
-          title: 'Lists',
+          title: 'Lịch trình',
         }}
       />
       <Tab.Screen
         name="Member"
         component={Member}
         options={{
-          title: 'About',
+          title: 'Thành viên',
         }}
       />
     </Tab.Navigator>
