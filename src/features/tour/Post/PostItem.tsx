@@ -9,10 +9,15 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 type PostItemProps = {
   post: Post;
+  openComment: boolean;
   setOpenComment: (value: boolean) => void;
 };
 
-export const PostItem = ({post, setOpenComment}: PostItemProps) => {
+export const PostItem = ({
+  post,
+  openComment,
+  setOpenComment,
+}: PostItemProps) => {
   return (
     <View className="border-b-0.5 py-2 border-gray-300 bg-white">
       <View className="p-[15] flex flex-row items-center ">
@@ -44,7 +49,9 @@ export const PostItem = ({post, setOpenComment}: PostItemProps) => {
           />
         </TouchableOpacity>
         <Text className="ml-1 text-black">12</Text>
-        <TouchableOpacity className="ml-5" onPress={() => setOpenComment(true)}>
+        <TouchableOpacity
+          className="ml-5"
+          onPress={() => setOpenComment(!openComment)}>
           <Ionic name="chatbubble-outline" size={27} />
         </TouchableOpacity>
         <Text className="ml-1 text-black">12</Text>

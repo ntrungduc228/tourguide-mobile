@@ -5,7 +5,13 @@ export enum FileType {
   FILE,
 }
 
+export enum RootType {
+  POST,
+  COMMENT,
+}
+
 export type File = {
   link: string;
   type: FileType;
+  root: RootType;
 } & Base;

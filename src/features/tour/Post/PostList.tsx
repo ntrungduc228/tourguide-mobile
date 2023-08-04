@@ -2,7 +2,7 @@ import {View, Text, SafeAreaView, FlatList} from 'react-native';
 import React, {useState} from 'react';
 import PostItem from './PostItem';
 import {Post} from '../../../types/post';
-import {FileType} from '../../../types/file';
+import {FileType, RootType} from '../../../types/file';
 import {CommentList} from '../Comment';
 
 type PostListProps = {};
@@ -16,6 +16,7 @@ const posts: Post[] = [
       {
         link: 'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
         type: FileType.IMAGE,
+        root: RootType.POST,
       },
     ],
   },
@@ -27,19 +28,24 @@ const posts: Post[] = [
       {
         link: 'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
         type: FileType.IMAGE,
+        root: RootType.POST,
       },
     ],
   },
 ];
 
-export const PostList = (PostListprops: PostListProps) => {
+export const PostList = ({}: PostListProps) => {
   const [openComment, setOpenComment] = useState<boolean>(false);
   return (
     <View className="bg-white flex-1 h-full">
       <FlatList
         data={posts}
         renderItem={({item}) => (
-          <PostItem setOpenComment={setOpenComment} post={item} />
+          <PostItem
+            setOpenComment={setOpenComment}
+            openComment={openComment}
+            post={item}
+          />
         )}
         keyExtractor={item => `${item.id}`}
         ListEmptyComponent={

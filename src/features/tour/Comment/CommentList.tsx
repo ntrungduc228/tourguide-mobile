@@ -5,123 +5,148 @@ import {
   Animated,
   PanResponder,
   Platform,
+  FlatList,
 } from 'react-native';
-import React, {useRef} from 'react';
-import {WINDOW_HEIGHT} from '../../../utils';
+import React from 'react';
+import CommentItem from './CommentItem';
+import CommentLayout from './CommentLayout';
+import {Comment} from '../../../types/comment';
+import {generateComment} from '../../../utils/generateComments';
 
 type CommentListProps = {
   setOpenComment: (value: boolean) => void;
 };
 
-const BOTTOM_SHEET_MAX_HEIGHT = WINDOW_HEIGHT * 0.8;
-const BOTTOM_SHEET_MIN_HEIGHT = WINDOW_HEIGHT * 0.1;
-const MAX_UPWARD_TRANSLATE_Y =
-  BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT;
-const MAX_DOWNWARD_TRANSLATE_Y = 0;
+const comments: Comment[] = [
+  {
+    id: 1,
+    postId: 1,
+    content: 'comment 1',
+    isDelete: false,
+    commentParentId: null,
+  },
+  {
+    id: 2,
+    content: 'comment 2',
+    isDelete: false,
+    postId: 1,
+    commentParentId: 1,
+  },
+  {
+    id: 3,
+    content: 'comment 3',
+    isDelete: false,
+    postId: 1,
+    commentParentId: 1,
+  },
+  {
+    id: 4,
+    content: 'comment 4',
+    isDelete: false,
+    postId: 1,
+    commentParentId: 2,
+  },
+  {
+    id: 5,
+    postId: 1,
+    content: 'comment 1',
+    isDelete: false,
+    commentParentId: null,
+  },
+  {
+    id: 6,
+    content: 'comment 2',
+    isDelete: false,
+    postId: 1,
+    commentParentId: 5,
+  },
+  {
+    id: 7,
+    content: 'comment 3',
+    isDelete: false,
+    postId: 1,
+    commentParentId: 5,
+  },
+  {
+    id: 8,
+    content: 'comment 4',
+    isDelete: false,
+    postId: 1,
+    commentParentId: 6,
+  },
+  {
+    id: 9,
+    content: 'comment 4',
+    isDelete: false,
+    postId: 1,
+    commentParentId: null,
+  },
+  {
+    id: 10,
+    content: 'comment 4',
+    isDelete: false,
+    postId: 1,
+    commentParentId: null,
+  },
+  {
+    id: 11,
+    content: 'comment 4',
+    isDelete: false,
+    postId: 1,
+    commentParentId: null,
+  },
+  {
+    id: 12,
+    content: 'comment 4',
+    isDelete: false,
+    postId: 1,
+    commentParentId: null,
+  },
+  {
+    id: 13,
+    content: 'comment 4',
+    isDelete: false,
+    postId: 1,
+    commentParentId: null,
+  },
+];
 
 export const CommentList = ({setOpenComment}: CommentListProps) => {
-  const animatedValue = useRef(new Animated.Value(0)).current;
-  const lastGestureDy = useRef(0);
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderGrant: () => {
-        animatedValue.setOffset(lastGestureDy.current);
-      },
-      onPanResponderMove: (e, gesture) => {
-        animatedValue.setValue(gesture.dy);
-      },
-      onPanResponderRelease: (e, gesture) => {
-        lastGestureDy.current += gesture.dy;
-        if (lastGestureDy.current < MAX_UPWARD_TRANSLATE_Y) {
-          lastGestureDy.current = MAX_UPWARD_TRANSLATE_Y;
-        } else if (lastGestureDy.current > MAX_DOWNWARD_TRANSLATE_Y) {
-          setOpenComment(false);
-          lastGestureDy.current = MAX_DOWNWARD_TRANSLATE_Y;
-        }
-      },
-    }),
-  ).current;
-
-  const bottomSheetAnimation = {
-    transform: [
-      {
-        translateY: animatedValue.interpolate({
-          inputRange: [MAX_UPWARD_TRANSLATE_Y, MAX_DOWNWARD_TRANSLATE_Y],
-          outputRange: [MAX_UPWARD_TRANSLATE_Y, MAX_DOWNWARD_TRANSLATE_Y],
-          extrapolate: 'clamp',
-        }),
-      },
-    ],
-  };
-
+  const commentList = generateComment(comments);
+  console.log('commentList ', commentList);
   return (
-    <Animated.View style={[styles.bottomSheet, bottomSheetAnimation]}>
-      <View style={styles.draggableArea} {...panResponder.panHandlers}>
-        <View style={styles.dragHandle}></View>
-      </View>
-      <Text>
-        fsdf
-        {/* CommentList{' '} */}
-        {/* {Math.ceil(Math.abs(BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT))} */}
-      </Text>
-    </Animated.View>
+    <CommentLayout setOpenComment={setOpenComment}>
+      <FlatList
+        data={commentList}
+        renderItem={({item}) => (
+          <>
+            <CommentItem key={item.id} comment={item} />
+            {/* {item?.children?.length &&
+              item.children?.map((child: Comment) => (
+                <View className="ml-10">
+                  <CommentItem key={child.id} comment={child} />
+                </View>
+              ))} */}
+          </>
+        )}
+        keyExtractor={item => `${item.id}`}
+        ListEmptyComponent={
+          <View className="flex-1 items-center justify-center">
+            <Text className="text-gray-500">Chua co bai dang</Text>
+          </View>
+        }
+      />
+      {/* <View>
+        <CommentItem />
+        <View className="ml-10">
+          <CommentItem />
+          <View className="ml-10">
+            <CommentItem />
+          </View>
+        </View>
+      </View> */}
+    </CommentLayout>
   );
 };
 
 export default CommentList;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  bottomSheet: {
-    position: 'absolute',
-    zIndex: 1000,
-    width: '100%',
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: '#f1f1f1',
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
-    paddindBottom: 20,
-    paddingHorizontal: 10,
-    height: BOTTOM_SHEET_MAX_HEIGHT,
-    bottom: BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT,
-    shadowColor: '#a8bed2',
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-
-    // ...Platform.select({
-    //   android: {
-    //     elevation: 3,
-    //   },
-    //   ios: {
-    //     shadowColor: '#a8bed2',
-    //     shadowOpacity: 1,
-    //     shadowRadius: 6,
-    //     shadowOffset: {
-    //       width: 2,
-    //       height: 2,
-    //     },
-    //   },
-    // }),
-  },
-  draggableArea: {
-    width: 132,
-    height: 32,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dragHandle: {
-    width: 100,
-    height: 6,
-    backgroundColor: '#d3d3d3',
-    borderRadius: 10,
-  },
-});
