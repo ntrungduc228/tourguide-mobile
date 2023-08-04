@@ -3,12 +3,12 @@ import React from 'react';
 
 type Props = {};
 
-export const Post = (props: Props) => {
+export const Comment = (props: Props) => {
   return (
     <View>
-      <Text>Post</Text>
+      <Text>Comment</Text>
     </View>
   );
 };
 
-export default Post;
+export default Comment;
