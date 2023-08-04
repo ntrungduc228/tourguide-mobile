@@ -1,8 +1,9 @@
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import PostItem from './PostItem';
 import {Post} from '../../../types/post';
 import {FileType} from '../../../types/file';
+import {CommentList} from '../Comment';
 
 type PostListProps = {};
 
@@ -32,11 +33,14 @@ const posts: Post[] = [
 ];
 
 export const PostList = (PostListprops: PostListProps) => {
+  const [openComment, setOpenComment] = useState<boolean>(false);
   return (
-    <SafeAreaView className="bg-white">
+    <View className="bg-white flex-1 h-full">
       <FlatList
         data={posts}
-        renderItem={({item}) => <PostItem post={item} />}
+        renderItem={({item}) => (
+          <PostItem setOpenComment={setOpenComment} post={item} />
+        )}
         keyExtractor={item => `${item.id}`}
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center">
@@ -44,7 +48,8 @@ export const PostList = (PostListprops: PostListProps) => {
           </View>
         }
       />
-    </SafeAreaView>
+      {openComment ? <CommentList setOpenComment={setOpenComment} /> : ''}
+    </View>
   );
 };
 
