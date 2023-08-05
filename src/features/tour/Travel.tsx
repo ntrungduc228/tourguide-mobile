@@ -2,7 +2,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
-import {Destination, PostList, MemberList} from './index';
+import {Destination, PostList, MemberList, MenuOption} from './index';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -10,38 +10,43 @@ type Props = {};
 
 export const Travel = (props: Props) => {
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarLabelStyle: Styles.tabBarLabel,
-        // tabBarItemStyle: Styles.tabBarItemStyle,
-        tabBarStyle: Styles.tabBarStyle,
-        tabBarPressColor: '#d7cbcb',
-        swipeEnabled: false,
-        // tabBarIndicatorStyle: Styles.tabBarIndicatorStyle,
-        // tabBarGap: 0,
-      }}>
-      <Tab.Screen
-        name="Post"
-        component={PostList}
-        options={{
-          title: 'Bài đăng',
-        }}
-      />
-      <Tab.Screen
-        name="Destination"
-        component={Destination}
-        options={{
-          title: 'Lịch trình',
-        }}
-      />
-      <Tab.Screen
-        name="Member"
-        component={MemberList}
-        options={{
-          title: 'Thành viên',
-        }}
-      />
-    </Tab.Navigator>
+    <>
+      <View>
+        <MenuOption />
+      </View>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: Styles.tabBarLabel,
+          // tabBarItemStyle: Styles.tabBarItemStyle,
+          tabBarStyle: Styles.tabBarStyle,
+          tabBarPressColor: '#d7cbcb',
+          swipeEnabled: false,
+          // tabBarIndicatorStyle: Styles.tabBarIndicatorStyle,
+          // tabBarGap: 0,
+        }}>
+        <Tab.Screen
+          name="Post"
+          component={PostList}
+          options={{
+            title: 'Bài đăng',
+          }}
+        />
+        <Tab.Screen
+          name="Destination"
+          component={Destination}
+          options={{
+            title: 'Lịch trình',
+          }}
+        />
+        <Tab.Screen
+          name="Member"
+          component={MemberList}
+          options={{
+            title: 'Thành viên',
+          }}
+        />
+      </Tab.Navigator>
+    </>
   );
 };
 
