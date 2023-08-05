@@ -61,7 +61,6 @@ export const PostItem = ({
         <Text className="ml-1 text-black">12</Text>
       </View>
       <View className="px-[15] w-full">
-        {/* <Text>1000</Text> */}
         <Text className="font-bold text-[14px] text-black break-all">
           this is captionthis is captionthis is ca ptiont his is captionthis is
           captionthis is captionthis is caption

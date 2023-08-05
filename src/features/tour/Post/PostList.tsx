@@ -4,6 +4,7 @@ import PostItem from './PostItem';
 import {Post} from '../../../types/post';
 import {FileType, RootType} from '../../../types/file';
 import {CommentList} from '../Comment';
+import PostFab from './PostFab';
 
 type PostListProps = {};
 
@@ -65,6 +66,7 @@ export const PostList = ({}: PostListProps) => {
         }
       />
       {openComment && <CommentList setOpenComment={setOpenComment} />}
+      <PostFab />
     </View>
   );
 };

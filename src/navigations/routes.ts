@@ -1,8 +1,8 @@
 const routesScreen = {
-  Home: 'Trang chu',
-  Notification: 'Thong bao',
-  Tour: 'Hanh trinh',
-  Profile: 'Ca nhan',
+  Home: 'Home',
+  Notification: 'Notification',
+  Tour: 'Tour',
+  Profile: 'Profile',
   BottomTab: 'BottomTab',
 };
 
