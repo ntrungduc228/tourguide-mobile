@@ -10,10 +10,10 @@ type MemberProps = {
 export const Member = ({user}: MemberProps) => {
   return (
     <View className="p-4 bg-slate-100 shadow-lg border-1">
-      <View className="flex flex-row gap-x-3">
+      <View className="flex flex-row gap-x-3 items-center">
         <Avatar
           src={user.avatar}
-          className="h-[60px] ml-1 w-[60px] rounded-full"
+          className="h-[40px] ml-1 w-[40px] rounded-full"
         />
         <View className="flex-1">
           <Text className="font-bold break-all">{user.fullName}</Text>

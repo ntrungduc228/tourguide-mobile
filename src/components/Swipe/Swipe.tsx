@@ -45,7 +45,7 @@ export const Swipe = ({images}: SwipeProps) => {
         {images?.length > 1 && (
           <View className="absolute top-1 right-2 bg-black opacity-0.3 p-1 py-0.5 rounded-md">
             <Text className="text-xs text-white">
-              {imgActive + '/' + images?.length}
+              {1 + imgActive + '/' + images?.length}
             </Text>
           </View>
         )}
