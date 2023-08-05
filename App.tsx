@@ -20,6 +20,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {NavigationContainer} from '@react-navigation/native';
 import {MainStackNavigator} from './src/navigations';
 import {SocketClient} from './src/websocket';
+import {PaperProvider} from 'react-native-paper';
 
 const queryClient = new QueryClient();
 
@@ -37,7 +38,9 @@ function AppScreen(): JSX.Element {
 function App(): JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
-      <AppScreen />
+      <PaperProvider>
+        <AppScreen />
+      </PaperProvider>
     </QueryClientProvider>
   );
 }

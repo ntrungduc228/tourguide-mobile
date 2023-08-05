@@ -5,6 +5,8 @@ import {Post} from '../../../types/post';
 import {FileType, RootType} from '../../../types/file';
 import {CommentList} from '../Comment';
 import PostFab from './PostFab';
+import {ModalTrigger} from '../../../components';
+import PostCreate from './PostCreate';
 
 type PostListProps = {};
 
@@ -47,6 +49,7 @@ const posts: Post[] = [
 
 export const PostList = ({}: PostListProps) => {
   const [openComment, setOpenComment] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
   return (
     <View className="bg-white flex-1 h-full">
       <FlatList
@@ -66,7 +69,12 @@ export const PostList = ({}: PostListProps) => {
         }
       />
       {openComment && <CommentList setOpenComment={setOpenComment} />}
-      <PostFab />
+      <ModalTrigger
+        visible={openModal}
+        setVisible={setOpenModal}
+        button={<PostFab onPress={() => setOpenModal(true)} />}>
+        <PostCreate setOpenModal={setOpenModal} />
+      </ModalTrigger>
     </View>
   );
 };
