@@ -17,101 +17,100 @@ type CommentListProps = {
   setOpenComment: (value: boolean) => void;
 };
 
-const comments: Comment[] = [
-  {
-    id: 1,
-    postId: 1,
-    content: 'comment 1',
-    isDelete: false,
-    commentParentId: null,
-  },
-  {
-    id: 2,
-    content: 'comment 2',
-    isDelete: false,
-    postId: 1,
-    commentParentId: 1,
-  },
-  {
-    id: 3,
-    content: 'comment 3',
-    isDelete: false,
-    postId: 1,
-    commentParentId: 1,
-  },
-  {
-    id: 4,
-    content: 'comment 4',
-    isDelete: false,
-    postId: 1,
-    commentParentId: 2,
-  },
-  {
-    id: 5,
-    postId: 1,
-    content: 'comment 1',
-    isDelete: false,
-    commentParentId: null,
-  },
-  {
-    id: 6,
-    content: 'comment 2',
-    isDelete: false,
-    postId: 1,
-    commentParentId: 5,
-  },
-  {
-    id: 7,
-    content: 'comment 3',
-    isDelete: false,
-    postId: 1,
-    commentParentId: 5,
-  },
-  {
-    id: 8,
-    content: 'comment 4',
-    isDelete: false,
-    postId: 1,
-    commentParentId: 6,
-  },
-  {
-    id: 9,
-    content: 'comment 4',
-    isDelete: false,
-    postId: 1,
-    commentParentId: null,
-  },
-  {
-    id: 10,
-    content: 'comment 4',
-    isDelete: false,
-    postId: 1,
-    commentParentId: null,
-  },
-  {
-    id: 11,
-    content: 'comment 4',
-    isDelete: false,
-    postId: 1,
-    commentParentId: null,
-  },
-  {
-    id: 12,
-    content: 'comment 4',
-    isDelete: false,
-    postId: 1,
-    commentParentId: null,
-  },
-  {
-    id: 13,
-    content: 'comment 4',
-    isDelete: false,
-    postId: 1,
-    commentParentId: null,
-  },
-];
-
 export const CommentList = ({setOpenComment}: CommentListProps) => {
+  const comments: Comment[] = [
+    {
+      id: 1,
+      postId: 1,
+      content: 'comment 1',
+      isDelete: false,
+      commentParentId: null,
+    },
+    {
+      id: 2,
+      content: 'comment 2',
+      isDelete: false,
+      postId: 1,
+      commentParentId: 1,
+    },
+    {
+      id: 3,
+      content: 'comment 3',
+      isDelete: false,
+      postId: 1,
+      commentParentId: 1,
+    },
+    {
+      id: 4,
+      content: 'comment 4',
+      isDelete: false,
+      postId: 1,
+      commentParentId: 2,
+    },
+    {
+      id: 5,
+      postId: 1,
+      content: 'comment 1',
+      isDelete: false,
+      commentParentId: null,
+    },
+    {
+      id: 6,
+      content: 'comment 2',
+      isDelete: false,
+      postId: 1,
+      commentParentId: 5,
+    },
+    {
+      id: 7,
+      content: 'comment 3',
+      isDelete: false,
+      postId: 1,
+      commentParentId: 5,
+    },
+    {
+      id: 8,
+      content: 'comment 4',
+      isDelete: false,
+      postId: 1,
+      commentParentId: 6,
+    },
+    {
+      id: 9,
+      content: 'comment 4',
+      isDelete: false,
+      postId: 1,
+      commentParentId: null,
+    },
+    {
+      id: 10,
+      content: 'comment 4',
+      isDelete: false,
+      postId: 1,
+      commentParentId: null,
+    },
+    {
+      id: 11,
+      content: 'comment 4',
+      isDelete: false,
+      postId: 1,
+      commentParentId: null,
+    },
+    {
+      id: 12,
+      content: 'comment 4',
+      isDelete: false,
+      postId: 1,
+      commentParentId: null,
+    },
+    {
+      id: 13,
+      content: 'comment 4',
+      isDelete: false,
+      postId: 1,
+      commentParentId: null,
+    },
+  ];
   const commentList = generateComment(comments);
   console.log('commentList ', commentList);
   return (

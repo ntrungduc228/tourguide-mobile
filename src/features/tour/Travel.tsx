@@ -16,6 +16,7 @@ export const Travel = (props: Props) => {
         // tabBarItemStyle: Styles.tabBarItemStyle,
         tabBarStyle: Styles.tabBarStyle,
         tabBarPressColor: '#d7cbcb',
+        swipeEnabled: false,
         // tabBarIndicatorStyle: Styles.tabBarIndicatorStyle,
         // tabBarGap: 0,
       }}>

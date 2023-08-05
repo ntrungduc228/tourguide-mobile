@@ -14,6 +14,16 @@ const posts: Post[] = [
     id: 1,
     files: [
       {
+        link: 'https://vuongquocanh.com/wp-content/uploads/2018/05/london-eye-800x534.jpg',
+        type: FileType.IMAGE,
+        root: RootType.POST,
+      },
+      {
+        link: 'https://vcdn1-dulich.vnecdn.net/2021/07/16/1-1626437591.jpg?w=460&h=0&q=100&dpr=2&fit=crop&s=i2M2IgCcw574LT-bXFY92g',
+        type: FileType.IMAGE,
+        root: RootType.POST,
+      },
+      {
         link: 'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
         type: FileType.IMAGE,
         root: RootType.POST,
@@ -54,7 +64,7 @@ export const PostList = ({}: PostListProps) => {
           </View>
         }
       />
-      {openComment ? <CommentList setOpenComment={setOpenComment} /> : ''}
+      {openComment && <CommentList setOpenComment={setOpenComment} />}
     </View>
   );
 };
