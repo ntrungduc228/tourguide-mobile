@@ -1,7 +1,9 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, Menu, Divider, PaperProvider} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {DialogConfirm} from '../../../components';
+import {OutTour} from '../OutTour';
 
 type MenuTourProps = {
   visible: boolean;
@@ -10,6 +12,7 @@ type MenuTourProps = {
 
 export const MenuTour = ({visible, setVisible}: MenuTourProps) => {
   const closeMenu = () => setVisible(false);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
   return (
     <View
       // eslint-disable-next-line react-native/no-inline-styles
@@ -35,10 +38,21 @@ export const MenuTour = ({visible, setVisible}: MenuTourProps) => {
           </TouchableOpacity>
         }>
         <Menu.Item onPress={() => {}} title="Thêm thành viên" />
-        <Menu.Item onPress={() => {}} title="Item 2" />
+        <Menu.Item
+          onPress={() => {
+            setVisible(false);
+            setOpenDialog(true);
+          }}
+          title="Rời khỏi tour"
+        />
         {/* <Divider /> */}
         <Menu.Item onPress={() => {}} title="Item 3" />
       </Menu>
+      <View>
+        <DialogConfirm visible={openDialog} setVisible={setOpenDialog}>
+          <OutTour setVisible={setOpenDialog} />
+        </DialogConfirm>
+      </View>
     </View>
   );
 };
