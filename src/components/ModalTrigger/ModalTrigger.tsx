@@ -3,13 +3,13 @@ import React, {PropsWithChildren, useState} from 'react';
 import {Portal, Text, Button, Provider, Modal} from 'react-native-paper';
 
 type ModalTriggerProps = PropsWithChildren<{
-  button: string | JSX.Element;
+  button?: string | JSX.Element;
   visible: boolean;
   setVisible: (value: boolean) => void;
 }>;
 
 export const ModalTrigger = ({
-  button = 'press',
+  button,
   children,
   visible,
   setVisible,

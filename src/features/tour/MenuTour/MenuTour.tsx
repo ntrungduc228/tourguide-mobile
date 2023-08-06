@@ -2,8 +2,9 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {Button, Menu, Divider, PaperProvider} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {DialogConfirm} from '../../../components';
+import {DialogConfirm, ModalTrigger} from '../../../components';
 import {OutTour} from '../OutTour';
+import {MemberAdd} from '../Member';
 
 type MenuTourProps = {
   visible: boolean;
@@ -13,6 +14,7 @@ type MenuTourProps = {
 export const MenuTour = ({visible, setVisible}: MenuTourProps) => {
   const closeMenu = () => setVisible(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [openAddMember, setOpenAddMember] = useState<boolean>(false);
   return (
     <View
       // eslint-disable-next-line react-native/no-inline-styles
@@ -37,7 +39,13 @@ export const MenuTour = ({visible, setVisible}: MenuTourProps) => {
             <Ionicons name="options" size={25} />
           </TouchableOpacity>
         }>
-        <Menu.Item onPress={() => {}} title="Thêm thành viên" />
+        <Menu.Item
+          onPress={() => {
+            setVisible(false);
+            setOpenAddMember(true);
+          }}
+          title="Thêm thành viên"
+        />
         <Menu.Item
           onPress={() => {
             setVisible(false);
@@ -46,9 +54,11 @@ export const MenuTour = ({visible, setVisible}: MenuTourProps) => {
           title="Rời khỏi tour"
         />
         {/* <Divider /> */}
-        <Menu.Item onPress={() => {}} title="Item 3" />
       </Menu>
       <View>
+        <ModalTrigger visible={openAddMember} setVisible={setOpenAddMember}>
+          <MemberAdd setOpenModal={setOpenAddMember} />
+        </ModalTrigger>
         <DialogConfirm visible={openDialog} setVisible={setOpenDialog}>
           <OutTour setVisible={setOpenDialog} />
         </DialogConfirm>
