@@ -2,7 +2,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
-import {Destination, PostList, MemberList, MenuOption} from './index';
+import {DestinationList, PostList, MemberList, MenuOption} from './index';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -33,7 +33,7 @@ export const Travel = (props: Props) => {
         />
         <Tab.Screen
           name="Destination"
-          component={Destination}
+          component={DestinationList}
           options={{
             title: 'Lịch trình',
           }}

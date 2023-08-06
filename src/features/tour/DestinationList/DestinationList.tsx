@@ -3,12 +3,12 @@ import React from 'react';
 
 type Props = {};
 
-export const Destination = (props: Props) => {
+export const DestinationList = (props: Props) => {
   return (
     <View>
-      <Text>Destination</Text>
+      <Text>DestinationList</Text>
     </View>
   );
 };
 
-export default Destination;
+export default DestinationList;

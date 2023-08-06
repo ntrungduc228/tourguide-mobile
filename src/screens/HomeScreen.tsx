@@ -1,12 +1,16 @@
 import {Text, View} from 'react-native';
 import React from 'react';
+import {TourGuideHome} from '../features/home';
+import {NavigationProp, ParamListBase} from '@react-navigation/native';
 
-type Props = {};
+type HomeProps = {
+  navigation: NavigationProp<any, any>;
+};
 
-export const HomeScreen = ({}: Props): JSX.Element => {
+export const HomeScreen = ({}: HomeProps): JSX.Element => {
   return (
-    <View className="h-full aligns-center justify-center">
-      <Text className="font-bold text-2xl text-red-600">Home</Text>
+    <View className="h-full bg-slate-200 p-3">
+      <TourGuideHome />
     </View>
   );
 };
