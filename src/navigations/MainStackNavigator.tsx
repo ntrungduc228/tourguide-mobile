@@ -2,7 +2,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {BottomTabNavigator} from './index';
 import routesScreen from './routes';
-import {TourDestination, TourForm, TourInfo} from '../features/tour';
+import {
+  DestinationForm,
+  TourDestination,
+  TourForm,
+  TourInfo,
+} from '../features/tour';
 
 const MainStack = createStackNavigator();
 
@@ -33,6 +38,13 @@ export function MainStackNavigator() {
       <MainStack.Screen
         name={routesScreen.TourDestination}
         component={TourDestination}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.DestinationForm}
+        component={DestinationForm}
         options={{
           headerShown: false,
         }}

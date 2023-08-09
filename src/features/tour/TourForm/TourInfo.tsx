@@ -6,19 +6,17 @@ import {Formik, useFormik} from 'formik';
 import {Tour} from '../../../types/tour';
 import {useTour} from './TourForm';
 
-type TourInfoProps = {
-  setIsEnterDestination: (value: boolean) => void;
-};
+type TourInfoProps = {};
 
 interface TourFormValues {
   name: string;
   description: string;
 }
 
-export const TourInfo = ({setIsEnterDestination}: TourInfoProps) => {
+export const TourInfo = ({}: TourInfoProps): JSX.Element => {
   const initialValues: TourFormValues = {name: '', description: ''};
 
-  const {setTour, tour} = useTour();
+  const {setTour, tour, setIsEnterDestination} = useTour();
 
   const onSubmit = (values: any) => {
     console.log(values);

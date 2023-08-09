@@ -7,6 +7,7 @@ const routesScreen = {
   TourFormInfo: 'TourFormInfo',
   TourDestination: 'TourDestination',
   TourForm: 'TourForm',
+  DestinationForm: 'DestinationForm',
 };
 
 export default routesScreen;

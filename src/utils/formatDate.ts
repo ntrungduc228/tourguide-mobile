@@ -26,3 +26,14 @@ export const formatDateTime = (date: any) => {
   }
   return '';
 };
+
+export const formatTime = (date: any) => {
+  if (date) {
+    const dt = new Date(date);
+    const hour = dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours();
+    const minute =
+      dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes();
+    return hour + ':' + minute;
+  }
+  return '';
+};
