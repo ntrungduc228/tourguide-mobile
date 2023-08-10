@@ -16,15 +16,32 @@ import {
   Button,
 } from 'react-native';
 // import PushNotification from 'react-native-push-notification';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {NavigationContainer} from '@react-navigation/native';
 import {MainStackNavigator} from './src/navigations';
 import {SocketClient} from './src/websocket';
 import {PaperProvider} from 'react-native-paper';
-
+import {Provider, useDispatch, useSelector} from 'react-redux';
+import {store} from './src/stores';
 const queryClient = new QueryClient();
 
 function AppScreen(): JSX.Element {
+  // useEffect(() => {}, [])
+
+  const checkIsLogin = async () => {
+    const user = await AsyncStorage.getItem('user');
+    if (!user) {
+      console.log('User not found ');
+      return false;
+    }
+    const userInfo = JSON.parse(user);
+    console.log('userINfo', userInfo);
+  };
+
+  checkIsLogin();
+
   return (
     // <SafeAreaView>
     <NavigationContainer>
@@ -37,11 +54,13 @@ function AppScreen(): JSX.Element {
 
 function App(): JSX.Element {
   return (
-    <QueryClientProvider client={queryClient}>
-      <PaperProvider>
-        <AppScreen />
-      </PaperProvider>
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <PaperProvider>
+          <AppScreen />
+        </PaperProvider>
+      </QueryClientProvider>
+    </Provider>
   );
 }
 

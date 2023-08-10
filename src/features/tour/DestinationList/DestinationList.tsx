@@ -1,12 +1,13 @@
 import {View, Text} from 'react-native';
 import React from 'react';
+import DestinationItem from './DestinationItem';
 
-type Props = {};
+type DestinationListProps = {};
 
-export const DestinationList = (props: Props) => {
+export const DestinationList = ({}: DestinationListProps) => {
   return (
     <View>
-      <Text>DestinationList</Text>
+      <DestinationItem />
     </View>
   );
 };
