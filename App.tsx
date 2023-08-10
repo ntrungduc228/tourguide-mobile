@@ -11,15 +11,24 @@ import React, {useEffect} from 'react';
 // import PushNotification from 'react-native-push-notification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query';
 import {NavigationContainer} from '@react-navigation/native';
 import {MainStackNavigator, AuthStackNavigator} from './src/navigations';
 import {SocketClient} from './src/websocket';
 import {PaperProvider} from 'react-native-paper';
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import {IRootState, store} from './src/stores';
-import {logout, setAccessToken} from './src/stores/slices/userSlice';
+import {
+  logout,
+  setAccessToken,
+  updateUserInfo,
+} from './src/stores/slices/userSlice';
 import {tokenIsExpired} from './src/utils/verifyJwt';
+import authService from './src/services/authService';
 
 const queryClient = new QueryClient();
 
@@ -57,6 +66,17 @@ function AppScreen(): JSX.Element {
       dispatch(setAccessToken({accessToken: userInfo?.accessToken}));
     }
   };
+
+  useQuery({
+    queryKey: ['user'],
+    queryFn: authService.getAuthInfo,
+    enabled: isLogin,
+    onSuccess: data => {
+      console.log('user info data', data);
+      dispatch(updateUserInfo(data.data));
+    },
+    onError: (error: any) => {},
+  });
 
   return (
     // <SafeAreaView>
@@ -146,3 +166,10 @@ function App(): JSX.Element {
 // });
 
 export default App;
+function getAuthInfo(context: QueryFunctionContext<QueryKey, any>): unknown {
+  throw new Error('Function not implemented.');
+}
+
+function updateUser(arg0: any): any {
+  throw new Error('Function not implemented.');
+}
