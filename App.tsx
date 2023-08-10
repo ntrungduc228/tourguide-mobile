@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 // import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -20,15 +20,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {NavigationContainer} from '@react-navigation/native';
-import {MainStackNavigator} from './src/navigations';
+import {MainStackNavigator, AuthStackNavigator} from './src/navigations';
 import {SocketClient} from './src/websocket';
 import {PaperProvider} from 'react-native-paper';
 import {Provider, useDispatch, useSelector} from 'react-redux';
-import {store} from './src/stores';
+import {IRootState, store} from './src/stores';
+import {logout} from './src/stores/slices/userSlice';
+
 const queryClient = new QueryClient();
 
 function AppScreen(): JSX.Element {
-  // useEffect(() => {}, [])
+  const {isLogin} = useSelector((state: IRootState) => state.user.data);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!checkIsLogin) {
+      dispatch(logout());
+    }
+  }, [dispatch]);
 
   const checkIsLogin = async () => {
     const user = await AsyncStorage.getItem('user');
@@ -45,7 +54,8 @@ function AppScreen(): JSX.Element {
   return (
     // <SafeAreaView>
     <NavigationContainer>
-      <MainStackNavigator />
+      {isLogin ? <MainStackNavigator /> : <AuthStackNavigator />}
+
       <SocketClient />
     </NavigationContainer>
     // </SafeAreaView>

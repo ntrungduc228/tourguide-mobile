@@ -5,7 +5,7 @@ import React from 'react';
 
 const AuthStack = createStackNavigator();
 
-function AuthStackNavigator() {
+export function AuthStackNavigator() {
   return (
     <AuthStack.Navigator>
       <AuthStack.Screen
