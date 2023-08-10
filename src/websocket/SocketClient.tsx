@@ -7,9 +7,9 @@ var Stomp = require('stompjs/lib/stomp.js').Stomp;
 
 type Props = {};
 
-const SOCKET_URL = Config.REACT_APP_API_URL
-  ? Config.REACT_APP_API_URL + '/ws'
-  : 'http://localhost:8085' + '/ws';
+const SOCKET_URL = Config.REACT_APP_SERVER_URL
+  ? Config.REACT_APP_SERVER_URL + '/ws'
+  : 'http://localhost:8085/api' + '/ws';
 
 export const SocketClient = ({}: Props): JSX.Element => {
   useEffect(() => {

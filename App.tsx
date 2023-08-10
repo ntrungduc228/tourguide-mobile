@@ -7,14 +7,7 @@
 
 import React, {useEffect} from 'react';
 // import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  useColorScheme,
-  View,
-  Text,
-  Button,
-} from 'react-native';
+
 // import PushNotification from 'react-native-push-notification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -25,18 +18,21 @@ import {SocketClient} from './src/websocket';
 import {PaperProvider} from 'react-native-paper';
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import {IRootState, store} from './src/stores';
-import {logout} from './src/stores/slices/userSlice';
+import {logout, setAccessToken} from './src/stores/slices/userSlice';
+import {tokenIsExpired} from './src/utils/verifyJwt';
 
 const queryClient = new QueryClient();
 
 function AppScreen(): JSX.Element {
-  const {isLogin} = useSelector((state: IRootState) => state.user.data);
+  const {isLogin, accessToken} = useSelector(
+    (state: IRootState) => state.user.data,
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
     checkIsLogin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, isLogin]);
 
   const checkIsLogin = async () => {
     const user = await AsyncStorage.getItem('user');
@@ -44,10 +40,21 @@ function AppScreen(): JSX.Element {
       console.log('User not found ');
       return false;
     }
+
     const userInfo = JSON.parse(user);
     console.log('userINfo', userInfo);
     if (!userInfo?.hasOwnProperty('accessToken')) {
       dispatch(logout());
+      return;
+    }
+
+    // if (await tokenIsExpired(userInfo?.accessToken)) {
+    //   dispatch(logout());
+    //   return;
+    // }
+
+    if (!accessToken) {
+      dispatch(setAccessToken({accessToken: userInfo?.accessToken}));
     }
   };
 

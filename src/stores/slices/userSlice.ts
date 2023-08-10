@@ -44,14 +44,20 @@ const userSlice = createSlice({
       );
     },
     setAccessToken: (state, action): void => {
-      state.data.accessToken = action.payload;
+      console.log('action ', action);
+      state.data.accessToken = action.payload?.accessToken;
       state.data.isLogin = true;
-      AsyncStorage.mergeItem(
-        'user',
-        JSON.stringify({
-          accessToken: action.payload.accessToken,
-        }),
-      );
+      try {
+        AsyncStorage.setItem(
+          'user',
+          JSON.stringify({
+            accessToken: action.payload?.accessToken,
+          }),
+        );
+        console.log('sett accessToken');
+      } catch (err) {
+        console.log('sdfsd', err);
+      }
     },
     logout: (state): void => {
       state.data.isLogin = false;

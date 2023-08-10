@@ -21,7 +21,8 @@ export const SignIn = ({}: SignInProps) => {
 
   const onSubmit = async (values: any) => {
     // console.log(values);
-    signInMutation(values);
+    // signInMutation(values);
+    signInMutation({email: 'hdv@gmail.com', password: '123123'});
   };
 
   const formik = useFormik({
@@ -34,7 +35,7 @@ export const SignIn = ({}: SignInProps) => {
     onSuccess: (data: any) => {
       // console.log('data return ', data);
       if (data?.accessToken) {
-        dispatch(setAccessToken(data?.accessToken));
+        dispatch(setAccessToken({accessToken: data?.accessToken}));
       }
     },
     onError: (error: any) => {
