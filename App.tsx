@@ -34,9 +34,8 @@ function AppScreen(): JSX.Element {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!checkIsLogin) {
-      dispatch(logout());
-    }
+    checkIsLogin();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   const checkIsLogin = async () => {
@@ -47,16 +46,16 @@ function AppScreen(): JSX.Element {
     }
     const userInfo = JSON.parse(user);
     console.log('userINfo', userInfo);
+    if (!userInfo?.hasOwnProperty('accessToken')) {
+      dispatch(logout());
+    }
   };
-
-  checkIsLogin();
 
   return (
     // <SafeAreaView>
     <NavigationContainer>
       {isLogin ? <MainStackNavigator /> : <AuthStackNavigator />}
-
-      <SocketClient />
+      {isLogin && <SocketClient />}
     </NavigationContainer>
     // </SafeAreaView>
   );

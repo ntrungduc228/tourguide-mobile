@@ -2,7 +2,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Button, TextInput} from 'react-native-paper';
-import {Formik, useFormik} from 'formik';
+import {useFormik} from 'formik';
 import {Tour} from '../../../types/tour';
 import {useTour} from './TourForm';
 
