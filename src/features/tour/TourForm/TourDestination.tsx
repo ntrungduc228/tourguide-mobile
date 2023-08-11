@@ -26,7 +26,6 @@ export const TourDestination = ({}: TourDestinationProps) => {
   });
 
   const handleCreateTour = () => {
-    console.log('object');
     if (!!tour?.destinations) {
       console.log('muta');
       createTourMutation(tour!!);
@@ -67,12 +66,11 @@ export const TourDestination = ({}: TourDestinationProps) => {
             </Button>
           </View>
           <View className="mt-5 ">
-            {tour?.destinations?.length && (
+            {!!tour?.destinations?.length && (
               <FlatList
                 data={tour.destinations}
                 renderItem={({item}) => (
                   <TourDestinationItem
-                    // setIsEditing={setOpenDestinationForm}
                     destination={item}
                     onEdit={() => {
                       setItemEdit(item);
@@ -106,11 +104,23 @@ export default TourDestination;
 export const TourDestinationItem = ({
   destination,
   onEdit,
-}: {
+}: // onDelete,
+{
   // setIsEditing: (value: boolean) => void;
   destination: Destination;
   onEdit: () => void;
+  // onDelete: () => void;
 }) => {
+  const {tour, setTour} = useTour();
+  const handleDeleteDestination = (destination: Destination) => {
+    if (tour) {
+      const temp = tour.destinations.filter(item => {
+        return item !== destination;
+      });
+
+      setTour({...tour, destinations: temp});
+    }
+  };
   return (
     <View className="flex-row mb-4 mx-3 rounded-lg justify-between items-center  border-slate-400 shadow-lg bg-white  p-4">
       <View className="flex gap-1 max-w-[80%] ">
@@ -121,7 +131,11 @@ export const TourDestinationItem = ({
         <TouchableOpacity onPress={() => onEdit()}>
           <AntDesign name="edit" size={20} />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            console.log('click');
+            handleDeleteDestination(destination);
+          }}>
           <AntDesign name="delete" size={20} />
         </TouchableOpacity>
       </View>
