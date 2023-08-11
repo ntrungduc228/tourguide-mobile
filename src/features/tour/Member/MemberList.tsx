@@ -23,7 +23,9 @@ export const MemberList = (props: Props) => {
     <SafeAreaView className="bg-slate-100">
       <FlatList
         data={members}
-        renderItem={({item}) => <Member user={item} />}
+        renderItem={({item}) => (
+          <Member members={members} setMembers={setMembers} user={item} />
+        )}
         keyExtractor={item => `${item.id}`}
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center">
