@@ -11,6 +11,7 @@ const routesScreen = {
   SignIn: 'SignIn',
   SignUp: 'SignUp',
   TourList: 'TourList',
+  AppointmentItem: 'AppointmentItem',
 };
 
 export default routesScreen;

@@ -9,6 +9,7 @@ import {
   TourInfo,
   TourList,
 } from '../features/tour';
+import {AppointmentItem} from '../features/appointment';
 
 const MainStack = createStackNavigator();
 
@@ -53,6 +54,13 @@ export function MainStackNavigator() {
       <MainStack.Screen
         name={routesScreen.TourList}
         component={TourList}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.AppointmentItem}
+        component={AppointmentItem}
         options={{
           headerShown: false,
         }}
