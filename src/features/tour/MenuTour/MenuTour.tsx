@@ -1,13 +1,12 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {Button, Menu, Divider, PaperProvider} from 'react-native-paper';
+import {TouchableOpacity, View} from 'react-native';
+import {Menu} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DialogConfirm, ModalTrigger} from '../../../components';
-import {OutTour} from '../OutTour';
-import {MemberAdd} from '../Member';
-import {useNavigation, ParamListBase} from '@react-navigation/native';
 import routesScreen from '../../../navigations/routes';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {MemberAdd} from '../Member';
+import {OutTour} from '../OutTour';
 
 // type SourceScreenNavigationProp = StackNavigationProp<ParamListBase>;
 

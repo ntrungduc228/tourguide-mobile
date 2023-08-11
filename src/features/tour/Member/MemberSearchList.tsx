@@ -1,22 +1,31 @@
 import {View, Text, ScrollView} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {User} from '../../../types/user';
 import {Checkbox} from 'react-native-paper';
 import {Avatar} from '../../../components';
 
 type MemberSearchListProps = {
   users: User[];
+  setUsersAdd: (id: number[]) => void;
+  usersAdd: number[];
 };
 
-export const MemberSearchList = ({users}: MemberSearchListProps) => {
-  console.log('user', users);
-  console.log('truee', !!users?.length);
+export const MemberSearchList = ({
+  users,
+  setUsersAdd,
+  usersAdd,
+}: MemberSearchListProps) => {
   return (
     <View>
       <ScrollView>
         {!!users?.length ? (
           users?.map((user: User) => (
-            <MemberSearchItem key={user.id} user={user} />
+            <MemberSearchItem
+              key={user.id}
+              user={user}
+              setUsersAdd={setUsersAdd}
+              usersAdd={usersAdd}
+            />
           ))
         ) : (
           <View className="flex-1 items-center justify-center">
@@ -30,8 +39,22 @@ export const MemberSearchList = ({users}: MemberSearchListProps) => {
 
 export default MemberSearchList;
 
-export const MemberSearchItem = ({user}: {user: User}) => {
+export const MemberSearchItem = ({
+  user,
+  setUsersAdd,
+  usersAdd,
+}: {
+  user: User;
+  setUsersAdd: (id: number[]) => void;
+  usersAdd: number[];
+}) => {
   const [checked, setChecked] = React.useState(false);
+  useEffect(() => {
+    if (checked) {
+      setUsersAdd(!!usersAdd.length ? [user.id!!, ...usersAdd] : [user.id!!]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checked]);
   return (
     <View>
       <View className="flex-row w-full items-center">

@@ -27,7 +27,6 @@ export const TourDestination = ({}: TourDestinationProps) => {
 
   const handleCreateTour = () => {
     if (!!tour?.destinations) {
-      console.log('muta');
       createTourMutation(tour!!);
     } else {
       console.log('ban loi');
@@ -48,7 +47,6 @@ export const TourDestination = ({}: TourDestinationProps) => {
             <TouchableOpacity
               className="ml-2"
               onPress={() => {
-                console.log('click');
                 handleCreateTour();
               }}>
               <Text className=""> Tạo</Text>
@@ -133,7 +131,6 @@ export const TourDestinationItem = ({
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            console.log('click');
             handleDeleteDestination(destination);
           }}>
           <AntDesign name="delete" size={20} />

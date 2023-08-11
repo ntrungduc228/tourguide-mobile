@@ -9,7 +9,7 @@ const tourService = {
   createTour: (tour: Tour) => axiosClientPrivate.post(url, tour),
   getTourByUserId: () => axiosClientPrivate.get(`${url}/own`),
   addMembers: ({members, id}: {members: Number[]; id: Number}) =>
-    axiosClientPrivate.post(`${url}/${id}/members/add`, members),
+    axiosClientPrivate.post(`${url}/${id}/members/add`, {userIds: members}),
 };
 
 export default tourService;

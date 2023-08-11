@@ -1,8 +1,8 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 
-import {DestinationList, PostList, MemberList, MenuOption} from './index';
+import {DestinationList, MemberList, MenuOption, PostList} from './index';
 
 const Tab = createMaterialTopTabNavigator();
 
