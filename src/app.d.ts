@@ -1,6 +1,6 @@
 /// <reference types="nativewind/types" />
 
 type Nav = {
-  navigate: (value: string) => void;
+  navigate: (value: string, params?: ParamListBase) => void;
   goBack: () => void;
 };

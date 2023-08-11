@@ -5,6 +5,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {DialogConfirm, ModalTrigger} from '../../../components';
 import {OutTour} from '../OutTour';
 import {MemberAdd} from '../Member';
+import {useNavigation, ParamListBase} from '@react-navigation/native';
+import routesScreen from '../../../navigations/routes';
+import {StackNavigationProp} from '@react-navigation/stack';
+
+// type SourceScreenNavigationProp = StackNavigationProp<ParamListBase>;
 
 type MenuTourProps = {
   visible: boolean;
@@ -12,6 +17,7 @@ type MenuTourProps = {
 };
 
 export const MenuTour = ({visible, setVisible}: MenuTourProps) => {
+  const navigation = useNavigation<Nav>();
   const closeMenu = () => setVisible(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [openAddMember, setOpenAddMember] = useState<boolean>(false);
@@ -52,6 +58,16 @@ export const MenuTour = ({visible, setVisible}: MenuTourProps) => {
             setOpenDialog(true);
           }}
           title="Rời khỏi tour"
+        />
+        <Menu.Item
+          onPress={() => {
+            setVisible(false);
+            navigation.navigate(
+              routesScreen.AppointmentItem,
+              JSON.stringify({tour: 3453, abc: 23432}),
+            );
+          }}
+          title="Diem hen"
         />
         {/* <Divider /> */}
       </Menu>
