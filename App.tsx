@@ -81,7 +81,8 @@ function AppScreen(): JSX.Element {
   return (
     // <SafeAreaView>
     <NavigationContainer>
-      {isLogin ? <MainStackNavigator /> : <AuthStackNavigator />}
+      <MainStackNavigator />
+      {/* {isLogin ? <MainStackNavigator /> : <AuthStackNavigator />} */}
       {isLogin && <SocketClient />}
     </NavigationContainer>
     // </SafeAreaView>

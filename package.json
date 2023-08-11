@@ -12,12 +12,15 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.1",
     "@react-native-community/datetimepicker": "^7.4.1",
+    "@react-native-firebase/app": "^18.3.0",
+    "@react-native-firebase/storage": "^18.3.0",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/material-top-tabs": "^6.6.3",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
     "@reduxjs/toolkit": "^1.9.5",
     "@tanstack/react-query": "^4.32.0",
+    "add": "^2.0.6",
     "axios": "1.4.0",
     "date-fns": "^2.30.0",
     "formik": "^2.4.3",
@@ -28,6 +31,7 @@
     "react-native-config": "^1.5.1",
     "react-native-datepicker": "^1.7.2",
     "react-native-gesture-handler": "^2.12.1",
+    "react-native-image-picker": "5.1.0",
     "react-native-pager-view": "^6.2.0",
     "react-native-paper": "^5.9.1",
     "react-native-push-notification": "^8.1.1",
@@ -38,6 +42,7 @@
     "react-redux": "^8.1.2",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
+    "yarn": "^1.22.19",
     "yup": "^1.2.0"
   },
   "devDependencies": {
