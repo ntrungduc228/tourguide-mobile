@@ -1,14 +1,24 @@
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-
 import {DestinationList, MemberList, MenuOption, PostList} from './index';
+import {RouteProp} from '@react-navigation/native';
+import {ParamListBase} from '@react-navigation/native';
+import {getParamsNav} from '../../utils/getParamsNavigation';
+
+import {SingleResponse} from '../../types/api';
+import {Post} from '../../types/post';
+type TravelRouteProp = RouteProp<ParamListBase, string>;
 
 const Tab = createMaterialTopTabNavigator();
 
-type Props = {};
+type TravelProps = {
+  route: TravelRouteProp;
+};
 
-export const Travel = (props: Props) => {
+export const Travel = ({route}: TravelProps) => {
+  const {tourId} = getParamsNav(route);
+
   return (
     <>
       <View>
@@ -27,6 +37,7 @@ export const Travel = (props: Props) => {
         <Tab.Screen
           name="Post"
           component={PostList}
+          initialParams={{tourId: tourId}}
           options={{
             title: 'Bài đăng',
           }}

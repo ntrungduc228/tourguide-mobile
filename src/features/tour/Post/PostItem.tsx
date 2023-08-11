@@ -52,7 +52,7 @@ export const PostItem = ({
             // className="border-8 border-black"
           />
         </TouchableOpacity>
-        <Text className="ml-1 text-black">12</Text>
+        <Text className="ml-1 text-black">{post.likes}</Text>
         <TouchableOpacity
           className="ml-5"
           onPress={() => setOpenComment(!openComment)}>
@@ -62,8 +62,7 @@ export const PostItem = ({
       </View>
       <View className="px-[15] w-full">
         <Text className="font-bold text-[14px] text-black break-all">
-          this is captionthis is captionthis is ca ptiont his is captionthis is
-          captionthis is captionthis is caption
+          {post.content}
         </Text>
       </View>
     </View>

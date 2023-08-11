@@ -5,6 +5,7 @@ import {
   Animated,
   PanResponder,
   Platform,
+  TouchableOpacity,
   FlatList,
 } from 'react-native';
 import React from 'react';
@@ -12,6 +13,9 @@ import CommentItem from './CommentItem';
 import CommentLayout from './CommentLayout';
 import {Comment} from '../../../types/comment';
 import {generateComment} from '../../../utils/generateComments';
+import {FileType} from '../../../types/file';
+import CommentInput from './CommentInput';
+import Feather from 'react-native-vector-icons/Feather';
 
 type CommentListProps = {
   setOpenComment: (value: boolean) => void;
@@ -105,37 +109,38 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
     },
     {
       id: 13,
-      content: 'comment 4',
+      content: 'comment 41231',
       isDelete: false,
       postId: 1,
       commentParentId: null,
     },
   ];
   const commentList = generateComment(comments);
-  console.log('commentList ', commentList);
+  // console.log('commentList ', commentList);
   return (
     <CommentLayout setOpenComment={setOpenComment}>
-      <FlatList
-        data={commentList}
-        renderItem={({item}) => (
-          <>
-            <CommentItem key={item.id} comment={item} />
-            {/* {item?.children?.length &&
+      <View className="h-full">
+        <FlatList
+          data={commentList}
+          renderItem={({item}) => (
+            <>
+              <CommentItem key={item.id} comment={item} />
+              {/* {item?.children?.length &&
               item.children?.map((child: Comment) => (
                 <View className="ml-10">
                   <CommentItem key={child.id} comment={child} />
                 </View>
               ))} */}
-          </>
-        )}
-        keyExtractor={item => `${item.id}`}
-        ListEmptyComponent={
-          <View className="flex-1 items-center justify-center">
-            <Text className="text-gray-500">Chua co bai dang</Text>
-          </View>
-        }
-      />
-      {/* <View>
+            </>
+          )}
+          keyExtractor={item => `${item.id}`}
+          ListEmptyComponent={
+            <View className="flex-1 items-center justify-center">
+              <Text className="text-gray-500">Chua co bai dang</Text>
+            </View>
+          }
+        />
+        {/* <View>
         <CommentItem />
         <View className="ml-10">
           <CommentItem />
@@ -144,6 +149,16 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
           </View>
         </View>
       </View> */}
+        <View>
+          <View className="bg-slate-200 h-[30] px-3 flex-row items-center">
+            <Text className="flex-1">Đang trả lời</Text>
+            <TouchableOpacity className="" onPress={() => {}}>
+              <Feather name="x" size={18} color="black" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <CommentInput />
+      </View>
     </CommentLayout>
   );
 };

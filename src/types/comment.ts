@@ -1,4 +1,5 @@
 import {Base} from './base';
+import {File} from './file';
 import {User} from './user';
 
 export type Comment = {
@@ -8,4 +9,5 @@ export type Comment = {
   user?: User;
   commentParentId: number | null;
   children?: Comment[];
+  file?: File;
 } & Base;
