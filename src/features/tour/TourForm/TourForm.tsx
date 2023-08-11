@@ -8,7 +8,6 @@ import {Tour} from '../../../types/tour';
 import TourInfo from './TourInfo';
 import TourDestination from './TourDestination';
 import {Destination} from '../../../types/destination';
-import {ja} from 'date-fns/locale';
 
 export type TourContextType = {
   tour: Tour | null;
@@ -29,56 +28,7 @@ export const useTour = () => {
 type TourFormProps = PropsWithChildren<{}>;
 
 export const TourForm = ({}: TourFormProps) => {
-  const [tour, setTour] = useState<Tour | null>();
-  {
-    /*{
-    name: 'Tour',
-    description: 'sdfs',
-    id: 1,
-    destinations: [
-      {
-        name: 'Nha trangNha trangNha trangNha trang',
-        departureTime: new Date(),
-        tourId: 1,
-        content: 'vui chowi',
-        address: 'nha trang',
-        id: 1,
-      },
-      {
-        name: 'Nh123a trang',
-        departureTime: new Date(),
-        tourId: 1,
-        content: 'vui chowi',
-        address: 'nha trang',
-        id: 2,
-      },
-      {
-        name: 'Nha trang',
-        departureTime: new Date(),
-        tourId: 1,
-        content: 'vui chowi',
-        address: 'nha trang',
-        id: 3,
-      },
-      {
-        name: 'Nha trangNha trangNha trangNha trang',
-        departureTime: new Date(),
-        tourId: 1,
-        content: 'vui chowi',
-        address: 'nha trang',
-        id: 4,
-      },
-      {
-        name: 'Nh123a trang',
-        departureTime: new Date(),
-        tourId: 1,
-        content: 'vui chowi',
-        address: 'nha trang',
-        id: 5,
-      },
-    ],
-  }*/
-  }
+  const [tour, setTour] = useState<Tour | null>(null);
 
   const [destination, setDestination] = useState<Destination | null>(null);
   const [isEnterDestination, setIsEnterDestination] = useState<boolean>(false);

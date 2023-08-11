@@ -7,6 +7,7 @@ const tourService = {
   // getPost: () => axiosClientPrivate.get(url),
   //updatePost: (id: number) => axiosClientPrivate.patch(`${url}/${id}`),
   createTour: (tour: Tour) => axiosClientPrivate.post(url, tour),
+  getTourByUserId: () => axiosClientPrivate.get(`${url}/own`),
 };
 
 export default tourService;
