@@ -37,7 +37,7 @@ export const Swipe = ({images}: SwipeProps) => {
           pagingEnabled
           horizontal
           style={styles.wrap}>
-          {images?.length &&
+          {!!images?.length &&
             images?.map(e => (
               <Image key={e.link} style={styles.wrap} source={{uri: e.link}} />
             ))}

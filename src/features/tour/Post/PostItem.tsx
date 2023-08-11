@@ -33,7 +33,7 @@ export const PostItem = ({
         </View>
       </View>
       <View className="flex w-full justify-center items-center">
-        <Swipe images={post.files || []} />
+        <Swipe images={post?.files || []} />
         {/* <Image
           source={{
             uri:

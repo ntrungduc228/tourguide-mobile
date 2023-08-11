@@ -1,120 +1,111 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  PanResponder,
-  Platform,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
-import React from 'react';
-import CommentItem from './CommentItem';
-import CommentLayout from './CommentLayout';
+import React, {useState} from 'react';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 import {Comment} from '../../../types/comment';
 import {generateComment} from '../../../utils/generateComments';
-import {FileType} from '../../../types/file';
 import CommentInput from './CommentInput';
-import Feather from 'react-native-vector-icons/Feather';
+import CommentItem from './CommentItem';
+import CommentLayout from './CommentLayout';
 
 type CommentListProps = {
   setOpenComment: (value: boolean) => void;
 };
 
 export const CommentList = ({setOpenComment}: CommentListProps) => {
-  const comments: Comment[] = [
+  const commentsT: Comment[] = [
     {
       id: 1,
       postId: 1,
       content: 'comment 1',
       isDelete: false,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 2,
       content: 'comment 2',
       isDelete: false,
       postId: 1,
-      commentParentId: 1,
+      parentId: 1,
     },
     {
       id: 3,
       content: 'comment 3',
       isDelete: false,
       postId: 1,
-      commentParentId: 1,
+      parentId: 1,
     },
     {
       id: 4,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: 2,
+      parentId: 2,
     },
     {
       id: 5,
       postId: 1,
       content: 'comment 1',
       isDelete: false,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 6,
       content: 'comment 2',
       isDelete: false,
       postId: 1,
-      commentParentId: 5,
+      parentId: 5,
     },
     {
       id: 7,
       content: 'comment 3',
       isDelete: false,
       postId: 1,
-      commentParentId: 5,
+      parentId: 5,
     },
     {
       id: 8,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: 6,
+      parentId: 6,
     },
     {
       id: 9,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 10,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 11,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 12,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 13,
       content: 'comment 41231',
       isDelete: false,
       postId: 1,
-      commentParentId: null,
+      parentId: null,
     },
   ];
+  const [comments, setComments] = useState(commentsT);
   const commentList = generateComment(comments);
   // console.log('commentList ', commentList);
   return (
@@ -133,10 +124,10 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
               ))} */}
             </>
           )}
-          keyExtractor={item => `${item.id}`}
+          keyExtractor={(item, index) => `${index}`}
           ListEmptyComponent={
             <View className="flex-1 items-center justify-center">
-              <Text className="text-gray-500">Chua co bai dang</Text>
+              <Text className="text-gray-500">Không có bình luận</Text>
             </View>
           }
         />
@@ -157,7 +148,7 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
             </TouchableOpacity>
           </View>
         </View>
-        <CommentInput />
+        <CommentInput comments={comments} setComments={setComments} />
       </View>
     </CommentLayout>
   );

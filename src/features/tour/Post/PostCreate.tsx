@@ -51,7 +51,6 @@ export const PostCreate = ({setOpenModal}: PostCreateProps) => {
       //handleDeleteMembers();
     },
   });
-  const onClick = () => {};
 
   const handleCreatePost = async () => {
     if (!!valueInput || !!listImage.length) {
