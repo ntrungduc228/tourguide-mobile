@@ -2,10 +2,16 @@ import {axiosClientPrivate} from '../configs/axios';
 
 const url = '/posts';
 
-const postApi = {
+const postService = {
   getPost: () => axiosClientPrivate.get(url),
   updatePost: (id: number) => axiosClientPrivate.patch(`${url}/${id}`),
-  createPost: () => axiosClientPrivate.post(url),
+  createPost: (post: {
+    files: {
+      link: string;
+    }[];
+    content: string;
+    tourId: number;
+  }) => axiosClientPrivate.post(url, post),
 };
 
-export default postApi;
+export default postService;

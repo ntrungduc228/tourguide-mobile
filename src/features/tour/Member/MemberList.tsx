@@ -8,7 +8,7 @@ import tourService from '../../../services/tourService';
 type Props = {};
 
 export const MemberList = (props: Props) => {
-  const [members, setMembers] = useState<User[]>();
+  const [members, setMembers] = useState<User[]>([]);
   //dữ liệu giả
   const {data: membersTour} = useQuery({
     queryKey: ['userTour', 1],

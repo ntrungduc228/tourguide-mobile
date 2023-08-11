@@ -1,12 +1,14 @@
-import {View, Text, ScrollView} from 'react-native';
 import React from 'react';
+import {ScrollView, View} from 'react-native';
 import {ImagePreview} from '../ImagePreview';
 
-type Props = {};
+type Props = {
+  listImage: string[];
+  setListImage: (images: string[]) => void;
+};
 
-export const ImagePreviewList = ({}: Props) => {
-  const images = [1, 2, 3];
-
+export const ImagePreviewList = ({listImage, setListImage}: Props) => {
+  console.log('listssss', listImage);
   return (
     <View>
       <View className="">
@@ -14,8 +16,15 @@ export const ImagePreviewList = ({}: Props) => {
           showsHorizontalScrollIndicator={false}
           horizontal
           className="w-full flex-row gap-2">
-          {images?.length &&
-            images?.map(e => <ImagePreview key={e} onPress={() => {}} />)}
+          {!!listImage?.length &&
+            listImage?.map(e => (
+              <ImagePreview
+                key={e}
+                image={e}
+                setListImage={setListImage}
+                listImage={listImage}
+              />
+            ))}
         </ScrollView>
       </View>
     </View>
