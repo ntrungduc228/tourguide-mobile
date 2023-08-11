@@ -27,6 +27,9 @@ import {
   setAccessToken,
   updateUserInfo,
 } from './src/stores/slices/userSlice';
+
+import Toast from 'react-native-toast-message';
+
 import {tokenIsExpired} from './src/utils/verifyJwt';
 import authService from './src/services/authService';
 
@@ -84,6 +87,7 @@ function AppScreen(): JSX.Element {
       <MainStackNavigator />
       {/* {isLogin ? <MainStackNavigator /> : <AuthStackNavigator />} */}
       {isLogin && <SocketClient />}
+      <Toast position="top" topOffset={50} onPress={() => Toast.hide()} />
     </NavigationContainer>
     // </SafeAreaView>
   );
