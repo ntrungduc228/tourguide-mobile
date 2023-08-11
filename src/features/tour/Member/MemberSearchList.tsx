@@ -9,16 +9,18 @@ type MemberSearchListProps = {
 };
 
 export const MemberSearchList = ({users}: MemberSearchListProps) => {
+  console.log('user', users);
+  console.log('truee', !!users?.length);
   return (
     <View>
       <ScrollView>
-        {users?.length ? (
+        {!!users?.length ? (
           users?.map((user: User) => (
             <MemberSearchItem key={user.id} user={user} />
           ))
         ) : (
           <View className="flex-1 items-center justify-center">
-            <Text className="text-gray-500">Chua co thanh vien</Text>
+            <Text className="text-gray-500">Chưa có thành viên</Text>
           </View>
         )}
       </ScrollView>
@@ -29,10 +31,16 @@ export const MemberSearchList = ({users}: MemberSearchListProps) => {
 export default MemberSearchList;
 
 export const MemberSearchItem = ({user}: {user: User}) => {
+  const [checked, setChecked] = React.useState(false);
   return (
     <View>
       <View className="flex-row w-full items-center">
-        <Checkbox status={'checked'} />
+        <Checkbox
+          status={checked ? 'checked' : 'unchecked'}
+          onPress={() => {
+            setChecked(!checked);
+          }}
+        />
         <View className="p-2 flex-1 bg-slate-100 flex-row justify-between shadow-lg border-1">
           <View className="flex-row gap-x-3 w-full items-center">
             <Avatar
