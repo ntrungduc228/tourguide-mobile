@@ -19,7 +19,7 @@ export const TourListItem = ({tour}: TourListITemProps) => {
           bottomOffset: 70,
         });
       }}>
-      <View className="p-3 mx-2 my-2 bg-slate-300 rounded-md">
+      <View className="p-3 mx-2 my-2 bg-cyan-200 rounded-md">
         <Text className="font-bold text-lg text-black">{tour.name}</Text>
         <Text className="break-all">Mô tả: {tour.description}</Text>
       </View>

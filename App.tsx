@@ -54,7 +54,7 @@ function AppScreen(): JSX.Element {
     }
 
     const userInfo = JSON.parse(user);
-    console.log('userINfo', userInfo);
+    // console.log('userINfo', userInfo);
     if (!userInfo?.hasOwnProperty('accessToken')) {
       dispatch(logout());
       return;
