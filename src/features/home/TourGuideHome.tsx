@@ -26,7 +26,10 @@ export const TourGuideHome = ({}: TourGuideProps) => {
           onPress={() => navigation.navigate(routesScreen.TourList)}
           title="Tour của tôi"
         />
-        <HomeItem onPress={() => console.log('fdgd')} title="Tour hiện tại" />
+        <HomeItem
+          onPress={() => navigation.navigate(routesScreen.Tour)}
+          title="Tour hiện tại"
+        />
       </View>
     </View>
   );

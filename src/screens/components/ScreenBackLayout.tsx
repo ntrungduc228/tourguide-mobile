@@ -24,7 +24,7 @@ const Header = ({title}: {title: string}) => {
 };
 
 const Body = ({children}: PropsWithChildren<{}>) => {
-  return <View className="flex-1 mt-4">{children}</View>;
+  return <View className="">{children}</View>;
 };
 
 ScreenBackLayout.Header = Header;
