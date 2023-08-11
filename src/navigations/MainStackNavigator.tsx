@@ -7,6 +7,7 @@ import {
   TourDestination,
   TourForm,
   TourInfo,
+  TourList,
 } from '../features/tour';
 
 const MainStack = createStackNavigator();
@@ -45,6 +46,13 @@ export function MainStackNavigator() {
       <MainStack.Screen
         name={routesScreen.DestinationForm}
         component={DestinationForm}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.TourList}
+        component={TourList}
         options={{
           headerShown: false,
         }}
