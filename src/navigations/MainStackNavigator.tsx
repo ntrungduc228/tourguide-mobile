@@ -8,6 +8,7 @@ import {
   TourForm,
   TourInfo,
   TourList,
+  Travel,
 } from '../features/tour';
 import {AppointmentItem, AppointmentList} from '../features/appointment';
 
@@ -68,6 +69,13 @@ export function MainStackNavigator() {
       <MainStack.Screen
         name={routesScreen.AppointmentList}
         component={AppointmentList}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.TourDetail}
+        component={Travel}
         options={{
           headerShown: false,
         }}

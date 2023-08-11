@@ -5,10 +5,10 @@ import {RouteProp} from '@react-navigation/native';
 import {ParamListBase} from '@react-navigation/native';
 import AppointmentItem from './AppointmentItem';
 
-type AppoimentListScreenRouteProp = RouteProp<ParamListBase, 'AppoimentList'>;
+type AppoimentListScreenRouteProp = RouteProp<ParamListBase, string>;
 
 type AppoimentListScreenProps = {
-  route: ParamListBase;
+  route: AppoimentListScreenRouteProp;
 };
 
 export const AppointmentList = ({}: AppoimentListScreenProps) => {

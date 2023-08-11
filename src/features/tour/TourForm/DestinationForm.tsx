@@ -9,6 +9,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {formatDateTime} from '../../../utils/formatDate';
 import {useTour} from './TourForm';
 import {Destination} from '../../../types/destination';
+import {RouteProp} from '@react-navigation/native';
+import {ParamListBase} from '@react-navigation/native';
+type DestinationFormRouteProp = RouteProp<ParamListBase, string>;
 
 type DestinationFormProps = {
   setOpenDestinationForm: (state: boolean) => void;
