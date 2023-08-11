@@ -14,6 +14,7 @@ type TourDestinationProps = {};
 export const TourDestination = ({}: TourDestinationProps) => {
   const [openDestinationForm, setOpenDestinationForm] =
     useState<boolean>(false);
+  const [itemEdit, setItemEdit] = useState<Destination | null>(null);
 
   const {tour} = useTour();
 
@@ -58,7 +59,10 @@ export const TourDestination = ({}: TourDestinationProps) => {
             <Button
               mode="text"
               className="bg-cyan-500 max-w-[150] mr-10"
-              onPress={() => setOpenDestinationForm(true)}>
+              onPress={() => {
+                setOpenDestinationForm(true);
+                setItemEdit(null);
+              }}>
               <Text className="text-white">+</Text>
             </Button>
           </View>
@@ -71,11 +75,12 @@ export const TourDestination = ({}: TourDestinationProps) => {
                     // setIsEditing={setOpenDestinationForm}
                     destination={item}
                     onEdit={() => {
+                      setItemEdit(item);
                       setOpenDestinationForm(true);
                     }}
                   />
                 )}
-                keyExtractor={item => `${item.id}`}
+                keyExtractor={(item, index) => `${index}`}
                 ListEmptyComponent={
                   <View className="flex-1 items-center justify-center">
                     <Text className="text-gray-500">Chưa có bài đăng</Text>
@@ -87,7 +92,10 @@ export const TourDestination = ({}: TourDestinationProps) => {
         </View>
       )}
       {openDestinationForm && (
-        <DestinationForm setOpenDestinationForm={setOpenDestinationForm} />
+        <DestinationForm
+          setOpenDestinationForm={setOpenDestinationForm}
+          destination={itemEdit}
+        />
       )}
     </View>
   );

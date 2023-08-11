@@ -8,9 +8,11 @@ import {Button, TextInput} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {formatDateTime} from '../../../utils/formatDate';
 import {useTour} from './TourForm';
+import {Destination} from '../../../types/destination';
 
 type DestinationFormProps = {
   setOpenDestinationForm: (state: boolean) => void;
+  destination: Destination | null;
   // destination: Destination;
   // setDestination: (destination: Destination) => void;
   // setIsEditing: (value: boolean) => void;
@@ -25,8 +27,9 @@ interface DestinationFormValues {
 
 export const DestinationForm = ({
   setOpenDestinationForm,
+  destination,
 }: DestinationFormProps) => {
-  const {destination, tour, setTour} = useTour();
+  const {tour, setTour} = useTour();
   const initialValues: DestinationFormValues = {
     name: destination?.name || '',
     content: destination?.content || '',
@@ -35,13 +38,19 @@ export const DestinationForm = ({
   };
 
   const onSubmit = (values: any) => {
-    if (tour) {
+    if (tour && !destination) {
       setTour({
         ...tour,
         destinations: !!tour?.destinations
           ? [values, ...tour.destinations]
           : [values],
       });
+    } else if (tour && destination) {
+      const temp = tour?.destinations.map(item => {
+        if (item === destination) return values;
+        else return item;
+      });
+      setTour({...tour, destinations: temp});
     }
 
     setOpenDestinationForm(false);
