@@ -6,9 +6,17 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 type CommentItemProps = {
   comment: Comment;
+  comments: Comment[];
+  setComments: (comments: Comment[]) => void;
+  setCommentParent: (comment: Comment) => void;
 };
 
-export const CommentItem = ({comment}: CommentItemProps) => {
+export const CommentItem = ({
+  comment,
+  comments,
+  setComments,
+  setCommentParent,
+}: CommentItemProps) => {
   const [openChild, setOpenChild] = useState<boolean>(false);
   return (
     <ScrollView>
@@ -16,12 +24,20 @@ export const CommentItem = ({comment}: CommentItemProps) => {
         openChild={openChild}
         setOpenChild={setOpenChild}
         comment={comment}
+        comments={comments}
+        setComments={setComments}
+        setCommentParent={setCommentParent}
       />
       {openChild &&
         comment?.children?.length &&
         comment.children?.map((child: Comment) => (
           <View className="ml-10" key={child.id}>
-            <CommentItem comment={child} />
+            <CommentItem
+              comment={child}
+              comments={comments}
+              setComments={setComments}
+              setCommentParent={setCommentParent}
+            />
           </View>
         ))}
     </ScrollView>
@@ -34,10 +50,16 @@ export const CommentContent = ({
   comment,
   openChild,
   setOpenChild,
+  comments,
+  setComments,
+  setCommentParent,
 }: {
   comment: Comment;
   openChild: boolean;
   setOpenChild: (value: boolean) => void;
+  comments: Comment[];
+  setComments: (comments: Comment[]) => void;
+  setCommentParent: (comment: Comment) => void;
 }) => {
   return (
     <View className="flex flex-row my-1">
@@ -53,16 +75,22 @@ export const CommentContent = ({
         </Text>
         <Text className="break-all">{comment?.content}</Text>
         <View className="flex flex-row items-center">
-          <TouchableOpacity className="mt-1.5" onPress={() => {}}>
+          <TouchableOpacity
+            className="mt-1.5"
+            onPress={() => {
+              setCommentParent(comment);
+            }}>
             <Text className=" text-slate-500">Trả lời</Text>
           </TouchableOpacity>
-          {comment?.children?.length && (
+          {!!comment?.children?.length && (
             <TouchableOpacity
               className="mt-1.5 ml-3"
               onPress={() => setOpenChild(!openChild)}>
               <View className="flex flex-row items-center">
                 <AntDesign name={openChild ? 'up' : 'down'} size={20} />
-                <Text className=" text-slate-500">2 Phản hồi</Text>
+                <Text className=" text-slate-500">
+                  {comment?.children?.length} Phản hồi
+                </Text>
               </View>
             </TouchableOpacity>
           )}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {Comment} from '../../../types/comment';
@@ -106,8 +106,12 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
     },
   ];
   const [comments, setComments] = useState(commentsT);
-  const commentList = generateComment(comments);
-  // console.log('commentList ', commentList);
+  //const commentList = generateComment(comments);
+  const [commentParent, setCommentParent] = useState<Comment | null>(null);
+  const commentList = useMemo(() => {
+    return generateComment(comments);
+  }, [comments]);
+  console.log('commentList ', commentList);
   return (
     <CommentLayout setOpenComment={setOpenComment}>
       <View className="h-full">
@@ -115,7 +119,13 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
           data={commentList}
           renderItem={({item}) => (
             <>
-              <CommentItem key={item.id} comment={item} />
+              <CommentItem
+                key={item.id}
+                comment={item}
+                comments={comments}
+                setComments={setComments}
+                setCommentParent={setCommentParent}
+              />
               {/* {item?.children?.length &&
               item.children?.map((child: Comment) => (
                 <View className="ml-10">
@@ -140,15 +150,32 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
           </View>
         </View>
       </View> */}
-        <View>
-          <View className="bg-slate-200 h-[30] px-3 flex-row items-center">
-            <Text className="flex-1">Đang trả lời</Text>
-            <TouchableOpacity className="" onPress={() => {}}>
-              <Feather name="x" size={18} color="black" />
-            </TouchableOpacity>
+        {!!commentParent && (
+          <View>
+            <View className="bg-slate-200 h-[30] px-3 flex-row items-center">
+              <Text className="flex-1">
+                Đang trả lời{' '}
+                <Text className="font-bold">
+                  {commentParent.user?.fullName}
+                </Text>
+              </Text>
+              <TouchableOpacity
+                className=""
+                onPress={() => {
+                  setCommentParent(null);
+                }}>
+                <Feather name="x" size={18} color="black" />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <CommentInput comments={comments} setComments={setComments} />
+        )}
+
+        <CommentInput
+          comments={comments}
+          setComments={setComments}
+          commentParent={commentParent}
+          setCommentParent={setCommentParent}
+        />
       </View>
     </CommentLayout>
   );

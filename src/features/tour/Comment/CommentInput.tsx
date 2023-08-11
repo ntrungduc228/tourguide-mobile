@@ -9,9 +9,16 @@ import {Comment} from '../../../types/comment';
 type CommentInputProps = {
   comments: Comment[];
   setComments: (comments: Comment[]) => void;
+  setCommentParent: (comments: Comment) => void;
+  commentParent: Comment | null;
 };
 
-export const CommentInput = ({comments, setComments}: CommentInputProps) => {
+export const CommentInput = ({
+  comments,
+  setComments,
+  commentParent,
+  setCommentParent,
+}: CommentInputProps) => {
   const [textValue, setTextValue] = useState('');
 
   const {mutate: createComment} = useMutation({
@@ -27,7 +34,17 @@ export const CommentInput = ({comments, setComments}: CommentInputProps) => {
   const handleCreateComment = () => {
     if (!!textValue) {
       //dữ liệu giả
-      createComment({content: textValue, postId: 1});
+      if (!!commentParent) {
+        createComment({
+          content: textValue,
+          postId: 1,
+          parentId: commentParent.id,
+        });
+      } else {
+        createComment({content: textValue, postId: 1});
+      }
+      setTextValue('');
+      setCommentParent(null);
     }
   };
   return (
