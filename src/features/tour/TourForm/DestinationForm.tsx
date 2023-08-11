@@ -1,16 +1,16 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
-import {Destination} from '../../../types/destination';
-import {useFormik} from 'formik';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {TextInput, Button} from 'react-native-paper';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
+import {useFormik} from 'formik';
+import React from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {Button, TextInput} from 'react-native-paper';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {formatDateTime} from '../../../utils/formatDate';
 import {useTour} from './TourForm';
 
 type DestinationFormProps = {
+  setOpenDestinationForm: (state: boolean) => void;
   // destination: Destination;
   // setDestination: (destination: Destination) => void;
   // setIsEditing: (value: boolean) => void;
@@ -23,11 +23,10 @@ interface DestinationFormValues {
   content: string;
 }
 
-export const DestinationForm = ({}: // destination,
-// setDestination,
-// setIsEditing,
-DestinationFormProps) => {
-  const {destination} = useTour();
+export const DestinationForm = ({
+  setOpenDestinationForm,
+}: DestinationFormProps) => {
+  const {destination, tour, setTour} = useTour();
   const initialValues: DestinationFormValues = {
     name: destination?.name || '',
     content: destination?.content || '',
@@ -36,8 +35,16 @@ DestinationFormProps) => {
   };
 
   const onSubmit = (values: any) => {
-    console.log('values ', values);
-    console.log('values after ', formatDateTime(formik.values.departureTime));
+    if (tour) {
+      setTour({
+        ...tour,
+        destinations: !!tour?.destinations
+          ? [values, ...tour.destinations]
+          : [values],
+      });
+    }
+
+    setOpenDestinationForm(false);
   };
 
   const formik = useFormik({
@@ -64,7 +71,11 @@ DestinationFormProps) => {
   return (
     <View className="bg-white">
       <View className="flex-row justify-between items-center border-b-0.5 border-[#DEDEDE]">
-        <TouchableOpacity className="ml-2" onPress={() => {}}>
+        <TouchableOpacity
+          className="ml-2"
+          onPress={() => {
+            setOpenDestinationForm(false);
+          }}>
           <AntDesign name="close" size={20} color={'#000'} />
         </TouchableOpacity>
         <Text className="font-bold  p-3 text-md text-black">
@@ -124,7 +135,7 @@ DestinationFormProps) => {
         </View>
 
         <View>
-          <Text className="text-gray font-medium text-md">Tên tour</Text>
+          <Text className="text-gray font-medium text-md">Địa chỉ</Text>
           <TextInput
             autoFocus={true}
             className="bg-slate-200 shadow  rounded-md mt-2 "
@@ -134,7 +145,7 @@ DestinationFormProps) => {
           />
         </View>
         <View>
-          <Text className="text-gray font-medium text-md">Tên tour</Text>
+          <Text className="text-gray font-medium text-md">Nội dung</Text>
           <TextInput
             autoFocus={true}
             className="bg-slate-200 shadow  rounded-md mt-2 "

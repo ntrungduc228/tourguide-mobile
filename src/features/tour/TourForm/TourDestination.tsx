@@ -1,83 +1,94 @@
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useTour} from './TourForm';
 import {Destination} from '../../../types/destination';
 import {formatDateTime} from '../../../utils/formatDate';
-import {ModalTrigger} from '../../../components';
 import DestinationForm from './DestinationForm';
-import {useNavigation} from '@react-navigation/native';
-import routesScreen from '../../../navigations/routes';
+import {useTour} from './TourForm';
+import {useMutation} from '@tanstack/react-query';
+import tourService from '../../../services/tourService';
 
 type TourDestinationProps = {};
 
 export const TourDestination = ({}: TourDestinationProps) => {
   const [openDestinationForm, setOpenDestinationForm] =
     useState<boolean>(false);
-  // const [destination, setDestination] = useState<Destination>(
-  //   {} as Destination,
-  // );
 
-  const navigation = useNavigation<Nav>();
+  const {tour} = useTour();
 
-  // useEffect(() => {
-  //   if(openDestinationForm){
-  //     navigation.navigate(routesScreen.DestinationForm))
-  //   }
-  // }, [openDestinationForm]);
+  const {mutate: createTourMutation} = useMutation({
+    mutationFn: tourService.createTour,
+    onError: (error: any) => {
+      console.log('erorr ', JSON.stringify(error));
+    },
+  });
 
-  const {tour, setDestination} = useTour();
+  const handleCreateTour = () => {
+    console.log('object');
+    if (!!tour?.destinations) {
+      console.log('muta');
+      createTourMutation(tour!!);
+    } else {
+      console.log('ban loi');
+    }
+  };
+
   return (
-    <View className="py-4">
-      <View className="flex-row justify-between px-3 mb-2 items-center pr-4">
-        <TouchableOpacity>
-          <AntDesign name="arrowleft" size={20} />
-        </TouchableOpacity>
-        <Button mode="text" className="bg-red-500 w-[80] mr-10">
-          <Text className="text-white">Hủy</Text>
-        </Button>
-        <TouchableOpacity className="ml-2" onPress={() => {}}>
-          <Text className=""> Tạo</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <Button mode="text" className="bg-cyan-500 max-w-[150] mr-10">
-          <Text className="text-white">+</Text>
-        </Button>
-      </View>
-      <View className="mt-5 ">
-        {tour?.destinations?.length && (
-          <FlatList
-            data={tour.destinations}
-            renderItem={({item}) => (
-              <TourDestinationItem
-                // setIsEditing={setOpenDestinationForm}
-                destination={item}
-                onEdit={() => {
-                  setDestination(item);
-                  navigation.navigate(routesScreen.DestinationForm);
-                }}
+    <View>
+      {!openDestinationForm && (
+        <View className="py-4">
+          <View className="flex-row justify-between px-3 mb-2 items-center pr-4">
+            <TouchableOpacity>
+              <AntDesign name="arrowleft" size={20} />
+            </TouchableOpacity>
+            <Button mode="text" className="bg-red-500 w-[80] mr-10">
+              <Text className="text-white">Hủy</Text>
+            </Button>
+            <TouchableOpacity
+              className="ml-2"
+              onPress={() => {
+                console.log('click');
+                handleCreateTour();
+              }}>
+              <Text className=""> Tạo</Text>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Button
+              mode="text"
+              className="bg-cyan-500 max-w-[150] mr-10"
+              onPress={() => setOpenDestinationForm(true)}>
+              <Text className="text-white">+</Text>
+            </Button>
+          </View>
+          <View className="mt-5 ">
+            {tour?.destinations?.length && (
+              <FlatList
+                data={tour.destinations}
+                renderItem={({item}) => (
+                  <TourDestinationItem
+                    // setIsEditing={setOpenDestinationForm}
+                    destination={item}
+                    onEdit={() => {
+                      setOpenDestinationForm(true);
+                    }}
+                  />
+                )}
+                keyExtractor={item => `${item.id}`}
+                ListEmptyComponent={
+                  <View className="flex-1 items-center justify-center">
+                    <Text className="text-gray-500">Chưa có bài đăng</Text>
+                  </View>
+                }
               />
             )}
-            keyExtractor={item => `${item.id}`}
-            ListEmptyComponent={
-              <View className="flex-1 items-center justify-center">
-                <Text className="text-gray-500">Chua co bai dang</Text>
-              </View>
-            }
-          />
-        )}
-      </View>
-      {/* <ModalTrigger
-        visible={openDestinationForm}
-        setVisible={setOpenDestinationForm}>
-        <DestinationForm
-          setIsEditing={setOpenDestinationForm}
-          destination={destination}
-          setDestination={setDestination}
-        />
-      </ModalTrigger> */}
+          </View>
+        </View>
+      )}
+      {openDestinationForm && (
+        <DestinationForm setOpenDestinationForm={setOpenDestinationForm} />
+      )}
     </View>
   );
 };

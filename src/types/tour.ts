@@ -4,5 +4,5 @@ import {Destination} from './destination';
 export type Tour = {
   name: string;
   description: string;
-  destinations?: Destination[];
+  destinations: Destination[];
 } & Base;
