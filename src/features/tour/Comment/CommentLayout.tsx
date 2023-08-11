@@ -8,16 +8,21 @@ import {
 } from 'react-native';
 import React, {PropsWithChildren, useEffect, useRef} from 'react';
 import {WINDOW_HEIGHT} from '../../../utils';
+import CommentInput from './CommentInput';
 
 type CommentLayoutProps = PropsWithChildren<{
   setOpenComment: (value: boolean) => void;
 }>;
 
-const BOTTOM_SHEET_MAX_HEIGHT = WINDOW_HEIGHT * 0.8;
+const BOTTOM_SHEET_MAX_HEIGHT = WINDOW_HEIGHT * 0.73;
 const BOTTOM_SHEET_MIN_HEIGHT = WINDOW_HEIGHT * 0.1;
-const MAX_UPWARD_TRANSLATE_Y =
-  BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT;
-const MAX_DOWNWARD_TRANSLATE_Y = 0;
+// const MAX_UPWARD_TRANSLATE_Y =
+//   BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT;
+// const MAX_DOWNWARD_TRANSLATE_Y = 0;
+
+const FIRST_SHEET_HEIGHT = BOTTOM_SHEET_MAX_HEIGHT; // WINDOW_HEIGHT * 0.3;
+const MAX_UPWARD_TRANSLATE_Y = FIRST_SHEET_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT;
+const MAX_DOWNWARD_TRANSLATE_Y = FIRST_SHEET_HEIGHT - BOTTOM_SHEET_MIN_HEIGHT;
 
 export const CommentLayout = ({
   setOpenComment,
@@ -70,7 +75,9 @@ export const CommentLayout = ({
       <View style={styles.draggableArea} {...panResponder.panHandlers}>
         <View style={styles.dragHandle} />
       </View>
-      <View className="my-2 pb-9">{children}</View>
+
+      <View className="my-2 pb-7">{children}</View>
+      {/* <CommentInput /> */}
     </Animated.View>
   );
 };
@@ -93,7 +100,8 @@ const styles = StyleSheet.create({
     paddindBottom: 20,
     paddingHorizontal: 10,
     height: BOTTOM_SHEET_MAX_HEIGHT,
-    bottom: BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT,
+    // bottom: BOTTOM_SHEET_MIN_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT,
+    bottom: FIRST_SHEET_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT,
     shadowColor: '#a8bed2',
     shadowOpacity: 1,
     shadowRadius: 6,
