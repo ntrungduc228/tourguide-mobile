@@ -12,6 +12,7 @@ import CommentItem from './CommentItem';
 import CommentLayout from './CommentLayout';
 import {Comment} from '../../../types/comment';
 import {generateComment} from '../../../utils/generateComments';
+import {FileType} from '../../../types/file';
 
 type CommentListProps = {
   setOpenComment: (value: boolean) => void;

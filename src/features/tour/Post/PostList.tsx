@@ -18,18 +18,15 @@ const posts: Post[] = [
     files: [
       {
         link: 'https://vuongquocanh.com/wp-content/uploads/2018/05/london-eye-800x534.jpg',
-        type: FileType.IMAGE,
-        root: RootType.POST,
+        postId: 1,
       },
       {
         link: 'https://vcdn1-dulich.vnecdn.net/2021/07/16/1-1626437591.jpg?w=460&h=0&q=100&dpr=2&fit=crop&s=i2M2IgCcw574LT-bXFY92g',
-        type: FileType.IMAGE,
-        root: RootType.POST,
+        postId: 1,
       },
       {
         link: 'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
-        type: FileType.IMAGE,
-        root: RootType.POST,
+        postId: 1,
       },
     ],
   },
@@ -40,8 +37,7 @@ const posts: Post[] = [
     files: [
       {
         link: 'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
-        type: FileType.IMAGE,
-        root: RootType.POST,
+        type: FileType.POST,
       },
     ],
   },
