@@ -1,55 +1,21 @@
-import {View, Text, SafeAreaView, FlatList} from 'react-native';
-import React, {useState} from 'react';
-import PostItem from './PostItem';
-import {Post} from '../../../types/post';
-import {CommentList} from '../Comment';
-import PostFab from './PostFab';
-import {ModalTrigger} from '../../../components';
-import PostCreate from './PostCreate';
 import {ParamListBase, RouteProp} from '@react-navigation/native';
-type PostListRouteProp = RouteProp<ParamListBase, string>;
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import postApi from '../../../services/postService';
-import postService from '../../../services/postService';
-import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import React, {useState} from 'react';
+import {FlatList, Text, View} from 'react-native';
+import {ModalTrigger} from '../../../components';
+import {
+  default as postApi,
+  default as postService,
+} from '../../../services/postService';
+import {CommentList} from '../Comment';
+import PostCreate from './PostCreate';
+import PostFab from './PostFab';
+import PostItem from './PostItem';
+type PostListRouteProp = RouteProp<ParamListBase, string>;
 
 type PostListProps = {
   route: PostListRouteProp;
 };
-
-// const posts: Post[] = [
-//   {
-//     content: 'Hom nay troi dep qua',
-//     likes: 123,
-//     id: 1,
-//     files: [
-//       {
-//         link: 'https://vuongquocanh.com/wp-content/uploads/2018/05/london-eye-800x534.jpg',
-//         postId: 1,
-//       },
-//       {
-//         link: 'https://vcdn1-dulich.vnecdn.net/2021/07/16/1-1626437591.jpg?w=460&h=0&q=100&dpr=2&fit=crop&s=i2M2IgCcw574LT-bXFY92g',
-//         postId: 1,
-//       },
-//       {
-//         link: 'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
-//         postId: 1,
-//       },
-//     ],
-//   },
-//   {
-//     content: 'Hom nay troi dep qua',
-//     likes: 123,
-//     id: 3,
-//     files: [
-//       {
-//         link: 'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
-//         postId: 3,
-//         // type: FileType.POST,
-//       },
-//     ],
-//   },
-// ];
 
 export const PostList = ({route}: PostListProps) => {
   const {tourId} = route.params as any;
