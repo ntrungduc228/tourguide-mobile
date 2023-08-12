@@ -1,18 +1,16 @@
 import {axiosClientPrivate} from '../configs/axios';
 
-const url = '/posts';
+const url = '/comments';
 
-const postService = {
+const commentService = {
   getPost: () => axiosClientPrivate.get(url),
   getPostByTour: (id: number) => axiosClientPrivate.get(`${url}?tour=${id}`),
   updatePost: (id: number) => axiosClientPrivate.patch(`${url}/${id}`),
-  createPost: (post: {
-    files: {
-      link: string;
-    }[];
+  createComment: (comment: {
+    postId: number;
     content: string;
-    tourId: number;
-  }) => axiosClientPrivate.post(url, post),
+    parentId?: number;
+  }) => axiosClientPrivate.post(url, comment),
 };
 
-export default postService;
+export default commentService;

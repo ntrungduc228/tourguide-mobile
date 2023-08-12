@@ -3,13 +3,13 @@ import {Comment} from '../types/comment';
 export const generateComment = (comments: Comment[]) => {
   const newComments: Comment[] = [];
   comments.forEach((comment: Comment) => {
-    if (comment.commentParentId == null) {
+    if (comment.parentId == null) {
       newComments.push(comment);
     }
   });
 
   comments.forEach((comment: Comment) => {
-    if (comment.commentParentId != null) {
+    if (comment.parentId != null) {
       newComments.forEach((commentChild: Comment) => {
         addChild(commentChild, comment);
       });
@@ -17,7 +17,7 @@ export const generateComment = (comments: Comment[]) => {
   });
 
   function addChild(comment: Comment, child: Comment) {
-    if (comment.id === child.commentParentId) {
+    if (comment.id === child.parentId) {
       if (!comment.children) {
         comment.children = [];
       }

@@ -7,7 +7,7 @@ export type Comment = {
   content: string;
   isDelete: boolean;
   user?: User;
-  commentParentId: number | null;
+  parentId: number | null;
   children?: Comment[];
   file?: File;
 } & Base;

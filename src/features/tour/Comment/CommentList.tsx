@@ -1,122 +1,117 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  PanResponder,
-  Platform,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
-import React from 'react';
-import CommentItem from './CommentItem';
-import CommentLayout from './CommentLayout';
+import React, {useState, useMemo} from 'react';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 import {Comment} from '../../../types/comment';
 import {generateComment} from '../../../utils/generateComments';
-import {FileType} from '../../../types/file';
 import CommentInput from './CommentInput';
-import Feather from 'react-native-vector-icons/Feather';
+import CommentItem from './CommentItem';
+import CommentLayout from './CommentLayout';
 
 type CommentListProps = {
   setOpenComment: (value: boolean) => void;
 };
 
 export const CommentList = ({setOpenComment}: CommentListProps) => {
-  const comments: Comment[] = [
+  const commentsT: Comment[] = [
     {
       id: 1,
       postId: 1,
       content: 'comment 1',
       isDelete: false,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 2,
       content: 'comment 2',
       isDelete: false,
       postId: 1,
-      commentParentId: 1,
+      parentId: 1,
     },
     {
       id: 3,
       content: 'comment 3',
       isDelete: false,
       postId: 1,
-      commentParentId: 1,
+      parentId: 1,
     },
     {
       id: 4,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: 2,
+      parentId: 2,
     },
     {
       id: 5,
       postId: 1,
       content: 'comment 1',
       isDelete: false,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 6,
       content: 'comment 2',
       isDelete: false,
       postId: 1,
-      commentParentId: 5,
+      parentId: 5,
     },
     {
       id: 7,
       content: 'comment 3',
       isDelete: false,
       postId: 1,
-      commentParentId: 5,
+      parentId: 5,
     },
     {
       id: 8,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: 6,
+      parentId: 6,
     },
     {
       id: 9,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 10,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 11,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 12,
       content: 'comment 4',
       isDelete: false,
       postId: 1,
-      commentParentId: null,
+      parentId: null,
     },
     {
       id: 13,
       content: 'comment 41231',
       isDelete: false,
       postId: 1,
-      commentParentId: null,
+      parentId: null,
     },
   ];
-  const commentList = generateComment(comments);
-  // console.log('commentList ', commentList);
+  const [comments, setComments] = useState(commentsT);
+  //const commentList = generateComment(comments);
+  const [commentParent, setCommentParent] = useState<Comment | null>(null);
+  const commentList = useMemo(() => {
+    return generateComment(comments);
+  }, [comments]);
+  console.log('commentList ', commentList);
   return (
     <CommentLayout setOpenComment={setOpenComment}>
       <View className="h-full">
@@ -124,7 +119,13 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
           data={commentList}
           renderItem={({item}) => (
             <>
-              <CommentItem key={item.id} comment={item} />
+              <CommentItem
+                key={item.id}
+                comment={item}
+                comments={comments}
+                setComments={setComments}
+                setCommentParent={setCommentParent}
+              />
               {/* {item?.children?.length &&
               item.children?.map((child: Comment) => (
                 <View className="ml-10">
@@ -133,10 +134,10 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
               ))} */}
             </>
           )}
-          keyExtractor={item => `${item.id}`}
+          keyExtractor={(item, index) => `${index}`}
           ListEmptyComponent={
             <View className="flex-1 items-center justify-center">
-              <Text className="text-gray-500">Chua co bai dang</Text>
+              <Text className="text-gray-500">Không có bình luận</Text>
             </View>
           }
         />
@@ -149,15 +150,32 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
           </View>
         </View>
       </View> */}
-        <View>
-          <View className="bg-slate-200 h-[30] px-3 flex-row items-center">
-            <Text className="flex-1">Đang trả lời</Text>
-            <TouchableOpacity className="" onPress={() => {}}>
-              <Feather name="x" size={18} color="black" />
-            </TouchableOpacity>
+        {!!commentParent && (
+          <View>
+            <View className="bg-slate-200 h-[30] px-3 flex-row items-center">
+              <Text className="flex-1">
+                Đang trả lời{' '}
+                <Text className="font-bold">
+                  {commentParent.user?.fullName}
+                </Text>
+              </Text>
+              <TouchableOpacity
+                className=""
+                onPress={() => {
+                  setCommentParent(null);
+                }}>
+                <Feather name="x" size={18} color="black" />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <CommentInput />
+        )}
+
+        <CommentInput
+          comments={comments}
+          setComments={setComments}
+          commentParent={commentParent}
+          setCommentParent={setCommentParent}
+        />
       </View>
     </CommentLayout>
   );
