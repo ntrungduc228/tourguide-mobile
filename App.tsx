@@ -84,8 +84,8 @@ function AppScreen(): JSX.Element {
   return (
     // <SafeAreaView>
     <NavigationContainer>
-      <MainStackNavigator />
-      {/* {isLogin ? <MainStackNavigator /> : <AuthStackNavigator />} */}
+      {/* <MainStackNavigator /> */}
+      {isLogin ? <MainStackNavigator /> : <AuthStackNavigator />}
       {isLogin && <SocketClient />}
       <Toast position="top" topOffset={50} onPress={() => Toast.hide()} />
     </NavigationContainer>

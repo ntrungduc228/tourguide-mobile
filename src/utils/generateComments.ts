@@ -2,13 +2,13 @@ import {Comment} from '../types/comment';
 
 export const generateComment = (comments: Comment[]) => {
   const newComments: Comment[] = [];
-  comments.forEach((comment: Comment) => {
+  comments?.forEach((comment: Comment) => {
     if (comment.parentId == null) {
       newComments.push(comment);
     }
   });
 
-  comments.forEach((comment: Comment) => {
+  comments?.forEach((comment: Comment) => {
     if (comment.parentId != null) {
       newComments.forEach((commentChild: Comment) => {
         addChild(commentChild, comment);
@@ -25,8 +25,8 @@ export const generateComment = (comments: Comment[]) => {
       comment.children?.push(child);
 
       return comment;
-    } else if (comment.children?.length) {
-      comment.children?.forEach((commentChild: Comment) => {
+    } else if (!!comment.children?.length) {
+      comment?.children?.forEach((commentChild: Comment) => {
         addChild(commentChild, child);
       });
     }

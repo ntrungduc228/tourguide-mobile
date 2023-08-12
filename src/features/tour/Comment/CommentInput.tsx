@@ -9,7 +9,7 @@ import {Comment} from '../../../types/comment';
 type CommentInputProps = {
   comments: Comment[];
   setComments: (comments: Comment[]) => void;
-  setCommentParent: (comments: Comment) => void;
+  setCommentParent: (comments: Comment | null) => void;
   commentParent: Comment | null;
 };
 

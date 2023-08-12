@@ -6,6 +6,8 @@ import {generateComment} from '../../../utils/generateComments';
 import CommentInput from './CommentInput';
 import CommentItem from './CommentItem';
 import CommentLayout from './CommentLayout';
+import {useQuery} from '@tanstack/react-query';
+import commentService from '../../../services/commentService';
 
 type CommentListProps = {
   setOpenComment: (value: boolean) => void;
@@ -102,16 +104,30 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
       content: 'comment 41231',
       isDelete: false,
       postId: 1,
-      parentId: null,
+      parentId: 2,
     },
   ];
-  const [comments, setComments] = useState(commentsT);
+
+  const [comments, setComments] = useState<Comment[]>([]);
   //const commentList = generateComment(comments);
   const [commentParent, setCommentParent] = useState<Comment | null>(null);
   const commentList = useMemo(() => {
     return generateComment(comments);
   }, [comments]);
-  console.log('commentList ', commentList);
+
+  //dữ liệu giả
+  const {data: commentL} = useQuery({
+    queryKey: ['comments', 1],
+    queryFn: () => commentService.getComments(1),
+    //enabled: !!tourId,
+    onSuccess: data => {
+      console.log('dataa', data);
+      setComments(data?.data);
+    },
+    onError(err) {
+      console.log('eee', err);
+    },
+  });
   return (
     <CommentLayout setOpenComment={setOpenComment}>
       <View className="h-full">
@@ -151,8 +167,8 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
         </View>
       </View> */}
         {!!commentParent && (
-          <View>
-            <View className="bg-slate-200 h-[30] px-3 flex-row items-center">
+          <View className="w-full p-0 m-0">
+            <View className="bg-slate-200 h-[30] px-3 flex-row items-center w-full">
               <Text className="flex-1">
                 Đang trả lời{' '}
                 <Text className="font-bold">
