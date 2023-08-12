@@ -99,7 +99,7 @@ export const DestinationList = ({}: DestinationListProps) => {
     },
     // enabled: !!valueInput,
   });
-  console.log(destinations);
+  // console.log(destinations);
   return (
     <View>
       <FlatList

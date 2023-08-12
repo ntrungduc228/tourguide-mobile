@@ -50,6 +50,13 @@ export const MenuTourGuide = ({
         <Menu.Item
           onPress={() => {
             setVisible(false);
+            navigation.navigate(routesScreen.TourView);
+          }}
+          title="Thông tin tour"
+        />
+        <Menu.Item
+          onPress={() => {
+            setVisible(false);
             setOpenAddMember(true);
           }}
           title="Thêm thành viên"

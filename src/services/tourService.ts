@@ -4,7 +4,7 @@ import {Tour} from '../types/tour';
 const url = '/tours';
 
 const tourService = {
-  // getPost: () => axiosClientPrivate.get(url),
+  getTourById: (id: number) => axiosClientPrivate.get(`${url}/${id}`),
   //updatePost: (id: number) => axiosClientPrivate.patch(`${url}/${id}`),
   createTour: (tour: Tour) => axiosClientPrivate.post(url, tour),
   getTourByUserId: () => axiosClientPrivate.get(`${url}/own`),

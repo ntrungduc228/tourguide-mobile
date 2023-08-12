@@ -39,7 +39,7 @@ export const useTravel = () => {
 
 export const Travel = ({route}: TravelProps) => {
   const {tourId} = getParamsNav(route);
-  const [tour, setTour] = useState<Tour | null>(null);
+  // const [tour, setTour] = useState<Tour | null>(null);
   // console.log('tourId travel ', tourId);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -48,7 +48,8 @@ export const Travel = ({route}: TravelProps) => {
   }, [tourId]);
 
   return (
-    <TravelContext.Provider value={{tourId, tour, setTour}}>
+    // <TravelContext.Provider value={{tourId, tour, setTour}}>
+    <>
       <View>
         <MenuOption />
       </View>
@@ -85,7 +86,8 @@ export const Travel = ({route}: TravelProps) => {
           }}
         />
       </Tab.Navigator>
-    </TravelContext.Provider>
+    </>
+    // </TravelContext.Provider>
   );
 };
 
