@@ -7,6 +7,11 @@ import {DialogConfirm, ModalTrigger} from '../../../components';
 import routesScreen from '../../../navigations/routes';
 import {MemberAdd} from '../Member';
 import {OutTour} from '../OutTour';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
+import MenuTourGuide from './MenuTourGuide';
+import MenuTourist from './MenuTourist';
+import {verifyTourist} from '../../../utils/verifyRole';
 
 // type SourceScreenNavigationProp = StackNavigationProp<ParamListBase>;
 
@@ -16,69 +21,29 @@ type MenuTourProps = {
 };
 
 export const MenuTour = ({visible, setVisible}: MenuTourProps) => {
+  const user = useSelector((state: IRootState) => state.user.data.info);
   const navigation = useNavigation<Nav>();
   const closeMenu = () => setVisible(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [openAddMember, setOpenAddMember] = useState<boolean>(false);
-  return (
-    <View
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'center',
-      }}>
-      <Menu
-        visible={visible}
-        // eslint-disable-next-line react-native/no-inline-styles
-        contentStyle={{
-          backgroundColor: '#fff',
-        }}
-        style={
-          {
-            //   marginRight: 0,
-          }
-        }
-        onDismiss={closeMenu}
-        anchor={
-          <TouchableOpacity onPress={() => setVisible(true)}>
-            <Ionicons name="options" size={25} />
-          </TouchableOpacity>
-        }>
-        <Menu.Item
-          onPress={() => {
-            setVisible(false);
-            setOpenAddMember(true);
-          }}
-          title="Thêm thành viên"
+  if (user && verifyTourist(user?.role)) {
+    return (
+      <View className="h-full bg-slate-200 p-3">
+        <MenuTourist
+          visible={visible}
+          closeMenu={closeMenu}
+          setVisible={setVisible}
         />
-        <Menu.Item
-          onPress={() => {
-            setVisible(false);
-            setOpenDialog(true);
-          }}
-          title="Rời khỏi tour"
-        />
-        <Menu.Item
-          onPress={() => {
-            setVisible(false);
-            navigation.navigate(
-              routesScreen.AppointmentItem,
-              JSON.stringify({tour: 3453, abc: 23432}),
-            );
-          }}
-          title="Diem hen"
-        />
-        {/* <Divider /> */}
-      </Menu>
-      <View>
-        <ModalTrigger visible={openAddMember} setVisible={setOpenAddMember}>
-          <MemberAdd setOpenModal={setOpenAddMember} />
-        </ModalTrigger>
-        <DialogConfirm visible={openDialog} setVisible={setOpenDialog}>
-          <OutTour setVisible={setOpenDialog} />
-        </DialogConfirm>
       </View>
-    </View>
+    );
+  }
+
+  return (
+    <MenuTourGuide
+      visible={visible}
+      closeMenu={closeMenu}
+      setVisible={setVisible}
+    />
   );
 };
 
