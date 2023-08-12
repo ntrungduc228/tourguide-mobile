@@ -8,6 +8,9 @@ import {ImagePreviewList} from '../../../components';
 import {useMutation} from '@tanstack/react-query';
 import postService from '../../../services/postService';
 import {uploadImage} from '../../../utils/uploadImage';
+import {useTravel} from '../Travel';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
 
 type PostCreateProps = {
   setOpenModal: (value: boolean) => void;
@@ -28,6 +31,11 @@ const options: Action = {
 };
 
 export const PostCreate = ({setOpenModal}: PostCreateProps) => {
+  // const {tourId} = useTravel();
+
+  const tourId = useSelector((state: IRootState) => state.tour.tourId);
+  console.log('tourID ', tourId);
+
   const [valueInput, setValueInput] = useState<string>('');
   const [listImage, setListImage] = useState<string[]>([]);
   const handlePickImage = async () => {
@@ -63,8 +71,8 @@ export const PostCreate = ({setOpenModal}: PostCreateProps) => {
         link: image,
       }));
       //dữ liệu giả
-      createPost({files: temp, content: valueInput, tourId: 1});
-      console.log('chayy', {file: temp, content: valueInput, tourId: 1});
+      createPost({files: temp, content: valueInput, tourId: tourId});
+      console.log('chayy', {file: temp, content: valueInput, tourId: tourId});
     } else {
       console.log('ban loi');
     }
