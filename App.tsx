@@ -75,7 +75,7 @@ function AppScreen(): JSX.Element {
     queryFn: authService.getAuthInfo,
     enabled: isLogin,
     onSuccess: data => {
-      console.log('user info data', data);
+      // console.log('user info data', data);
       dispatch(updateUserInfo(data.data));
     },
     onError: (error: any) => {},

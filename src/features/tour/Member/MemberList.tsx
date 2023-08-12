@@ -4,15 +4,19 @@ import {User} from '../../../types/user';
 import Member from './Member';
 import {useQuery} from '@tanstack/react-query';
 import tourService from '../../../services/tourService';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
 
 type Props = {};
 
-export const MemberList = (props: Props) => {
+export const MemberList = ({}: Props) => {
+  const tourId = useSelector((state: IRootState) => state.tour.tourId);
   const [members, setMembers] = useState<User[]>([]);
   //dữ liệu giả
-  const {data: membersTour} = useQuery({
-    queryKey: ['userTour', 1],
-    queryFn: () => tourService.getMembersTour(1),
+  useQuery({
+    queryKey: ['userTour', tourId],
+    queryFn: () => tourService.getMembersTour(tourId!),
+    enabled: !!tourId,
     onSuccess(data: User[]) {
       setMembers(data);
     },
