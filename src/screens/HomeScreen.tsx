@@ -14,17 +14,17 @@ type HomeProps = {
 export const HomeScreen = ({}: HomeProps): JSX.Element => {
   const user = useSelector((state: IRootState) => state.user.data.info);
 
+  let children: JSX.Element = <></>;
   if (user && verifyTourist(user?.role)) {
-    return (
-      <View className="h-full bg-slate-200 p-3">
-        <TouristHome />
-      </View>
-    );
+    children = <TouristHome />;
+  } else {
+    children = <TouristHome />;
   }
 
   return (
-    <View className="h-full bg-slate-200 p-3">
-      <TourGuideHome />
+    <View className="h-full bg-slate-200">
+      <View className="absolute bg-cyan-500 -top-8 h-[300] rounded-3xl w-full" />
+      {children}
     </View>
   );
 };

@@ -8,3 +8,4 @@ export * from './MenuTour';
 export * from './OutTour';
 export * from './TourForm';
 export * from './TourList';
+export * from './JoinTour';
