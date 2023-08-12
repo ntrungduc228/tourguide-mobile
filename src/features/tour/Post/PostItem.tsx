@@ -33,7 +33,8 @@ export const PostItem = ({
         </View>
       </View>
       <View className="flex w-full justify-center items-center">
-        <Swipe images={post?.files || []} />
+        {!!post?.files?.length && <Swipe images={post?.files || []} />}
+
         {/* <Image
           source={{
             uri:
@@ -43,7 +44,12 @@ export const PostItem = ({
           className={`w-full h-[300] object-contain`}
         /> */}
       </View>
-      <View className="flex flex-row items-center px-[12] py-[12] ">
+      <View className="px-[15] w-full py-[12] ">
+        <Text className="font-bold text-[14px] text-black break-all">
+          {post.content}
+        </Text>
+      </View>
+      <View className="flex flex-row items-center px-[12] ">
         <TouchableOpacity onPress={() => {}}>
           <AntDesign
             name="heart"
@@ -59,11 +65,6 @@ export const PostItem = ({
           <Ionic name="chatbubble-outline" size={27} />
         </TouchableOpacity>
         <Text className="ml-1 text-black">12</Text>
-      </View>
-      <View className="px-[15] w-full">
-        <Text className="font-bold text-[14px] text-black break-all">
-          {post.content}
-        </Text>
       </View>
     </View>
   );

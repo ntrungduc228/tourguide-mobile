@@ -8,8 +8,10 @@ import {ModalTrigger} from '../../../components';
 import PostCreate from './PostCreate';
 import {ParamListBase, RouteProp} from '@react-navigation/native';
 type PostListRouteProp = RouteProp<ParamListBase, string>;
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import postApi from '../../../services/postService';
+import postService from '../../../services/postService';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
 type PostListProps = {
   route: PostListRouteProp;
@@ -52,12 +54,27 @@ type PostListProps = {
 export const PostList = ({route}: PostListProps) => {
   const {tourId} = route.params as any;
 
+  const queryClient = useQueryClient();
+
   const {data: posts} = useQuery({
     queryKey: ['posts', tourId],
     queryFn: () => postApi.getPostByTour(tourId),
     enabled: !!tourId,
     onSuccess: data => {
       // console.log('data post', data);
+    },
+  });
+
+  const {mutate: createPost} = useMutation({
+    mutationFn: postService.createPost,
+    onError: (error: any) => {
+      console.log('erorr ', JSON.stringify(error));
+    },
+    onSuccess: data => {
+      // Toast.show({})
+      queryClient.invalidateQueries(['posts', tourId]);
+      console.log(data);
+      //handleDeleteMembers();
     },
   });
 
@@ -86,7 +103,7 @@ export const PostList = ({route}: PostListProps) => {
         visible={openModal}
         setVisible={setOpenModal}
         button={<PostFab onPress={() => setOpenModal(true)} />}>
-        <PostCreate setOpenModal={setOpenModal} />
+        <PostCreate createPost={createPost} setOpenModal={setOpenModal} />
       </ModalTrigger>
     </View>
   );

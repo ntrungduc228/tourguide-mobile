@@ -14,6 +14,7 @@ import {IRootState} from '../../../stores';
 
 type PostCreateProps = {
   setOpenModal: (value: boolean) => void;
+  createPost: any;
 };
 interface Action {
   title: string;
@@ -30,7 +31,7 @@ const options: Action = {
   },
 };
 
-export const PostCreate = ({setOpenModal}: PostCreateProps) => {
+export const PostCreate = ({setOpenModal, createPost}: PostCreateProps) => {
   // const {tourId} = useTravel();
 
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
@@ -49,17 +50,6 @@ export const PostCreate = ({setOpenModal}: PostCreateProps) => {
     setListImage([...temp]);
   };
 
-  const {mutate: createPost} = useMutation({
-    mutationFn: postService.createPost,
-    onError: (error: any) => {
-      console.log('erorr ', JSON.stringify(error));
-    },
-    onSuccess: data => {
-      console.log(data);
-      //handleDeleteMembers();
-    },
-  });
-
   const handleCreatePost = async () => {
     if (!!valueInput || !!listImage.length) {
       const uploadPromises: any = [];
@@ -71,8 +61,8 @@ export const PostCreate = ({setOpenModal}: PostCreateProps) => {
         link: image,
       }));
       //dữ liệu giả
-      createPost({files: temp, content: valueInput, tourId: tourId});
-      console.log('chayy', {file: temp, content: valueInput, tourId: tourId});
+      createPost({files: temp, content: valueInput, tourId: tourId!});
+      console.log('chayy', {files: temp, content: valueInput, tourId: tourId});
     } else {
       console.log('ban loi');
     }
