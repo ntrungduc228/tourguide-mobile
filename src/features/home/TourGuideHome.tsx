@@ -15,7 +15,7 @@ export const TourGuideHome = ({}: TourGuideProps) => {
   const navigation = useNavigation<Nav>();
   return (
     <View className="h-full">
-      <View className="flex-row justify-center ">
+      <View className="flex-row mt-5 justify-center ">
         <Button
           mode="elevated"
           className="w-[200] text-black bg-white"

@@ -18,7 +18,7 @@ export const HomeScreen = ({}: HomeProps): JSX.Element => {
   if (user && verifyTourist(user?.role)) {
     children = <TouristHome />;
   } else {
-    children = <TouristHome />;
+    children = <TourGuideHome />;
   }
 
   return (

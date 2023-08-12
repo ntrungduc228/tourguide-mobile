@@ -18,6 +18,7 @@ import React, {
 } from 'react';
 import {useDispatch} from 'react-redux';
 import {setTourId} from '../../stores/slices/tourSlice';
+import {AppointmentList} from '../appointment';
 const Tab = createMaterialTopTabNavigator();
 
 type TravelProps = PropsWithChildren<{route: TravelRouteProp}>;
@@ -72,10 +73,10 @@ export const Travel = ({route}: TravelProps) => {
           }}
         />
         <Tab.Screen
-          name="Destination"
-          component={DestinationList}
+          name="Appointment"
+          component={AppointmentList}
           options={{
-            title: 'Lịch trình',
+            title: 'Điểm hẹn',
           }}
         />
         <Tab.Screen

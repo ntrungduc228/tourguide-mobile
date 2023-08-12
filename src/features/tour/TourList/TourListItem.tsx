@@ -20,9 +20,11 @@ export const TourListItem = ({tour}: TourListITemProps) => {
           JSON.stringify({tourId: tour.id}),
         );
       }}>
-      <View className="p-3 mx-2 my-2 bg-cyan-200 rounded-md">
-        <Text className="font-bold text-lg text-black">{tour.name}</Text>
-        <Text className="break-all">Mô tả: {tour.description}</Text>
+      <View className="p-3 mx-2 my-2 bg-cyan-500 rounded-md">
+        <Text className="font-bold text-lg text-white">{tour.name}</Text>
+        <Text className="break-all text-slate-100">
+          Mô tả: {tour.description}
+        </Text>
       </View>
     </TouchableOpacity>
   );
