@@ -1,9 +1,8 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {Tour} from '../../../types/tour';
-import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 import routesScreen from '../../../navigations/routes';
+import {Tour} from '../../../types/tour';
 import TourItemMenu from './TourItemMenu';
 
 type TourListITemProps = {

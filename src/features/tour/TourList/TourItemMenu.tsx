@@ -1,13 +1,14 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import React from 'react';
+import {TouchableOpacity, View} from 'react-native';
 import {Menu} from 'react-native-paper';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import {useNavigation} from '@react-navigation/native';
-import routesScreen from '../../../navigations/routes';
-import {useMutation} from '@tanstack/react-query';
+import useToast from '../../../hooks/useToast';
 import tourService from '../../../services/tourService';
 import {Tour} from '../../../types/tour';
-import useToast from '../../../hooks/useToast';
+import {useDispatch} from 'react-redux';
+import {setTour, setTourId} from '../../../stores/slices/tourSlice';
 
 type Props = {
   visible: boolean;
@@ -16,20 +17,44 @@ type Props = {
 };
 
 export const TourItemMenu = ({visible, setVisible, tour}: Props) => {
+  const queryClient = useQueryClient();
   const navigation = useNavigation<Nav>();
   const closeMenu = () => setVisible(false);
+  const dispatch = useDispatch();
   const {showToast} = useToast();
 
   const {mutate: beginTour} = useMutation({
     mutationFn: tourService.beginTourById,
     onSuccess: () => {
       showToast('success', 'Bắt đầu tour thành công');
+      queryClient.invalidateQueries(['toursOwn']);
     },
     onError: (error: any) => {
       showToast('error', 'Bắt đầu tour thất bại');
+
       console.log('erorr ', JSON.stringify(error));
     },
   });
+  const {mutate: endTour} = useMutation({
+    mutationFn: tourService.endTourById,
+    onSuccess: () => {
+      showToast('success', 'Kết thúc tour thành công');
+      queryClient.invalidateQueries(['toursOwn']);
+    },
+    onError: (error: any) => {
+      showToast('error', 'Kết thúc tour thất bại');
+      console.log('erorr ', JSON.stringify(error));
+    },
+  });
+  const handleClick = () => {
+    if (!!tour.isProgress) {
+      endTour(tour.id!!);
+    } else {
+      beginTour(tour.id!!);
+    }
+  };
+  console.log('í', tour.isProgress);
+
   return (
     <View
       // eslint-disable-next-line react-native/no-inline-styles
@@ -53,9 +78,9 @@ export const TourItemMenu = ({visible, setVisible, tour}: Props) => {
         <Menu.Item
           onPress={() => {
             setVisible(false);
-            beginTour(tour.id!!);
+            handleClick();
           }}
-          title="Bắt đầu tour"
+          title={!tour.isProgress ? 'Bắt đầu tour' : 'Kết thúc tour'}
         />
       </Menu>
     </View>
