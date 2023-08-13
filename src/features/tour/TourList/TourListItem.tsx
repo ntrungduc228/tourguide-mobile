@@ -32,7 +32,7 @@ export const TourListItem = ({tour}: TourListITemProps) => {
         </View>
       </TouchableOpacity>
       <View>
-        <TourItemMenu visible={visible} setVisible={setVisible} />
+        <TourItemMenu visible={visible} setVisible={setVisible} tour={tour} />
       </View>
     </View>
   );

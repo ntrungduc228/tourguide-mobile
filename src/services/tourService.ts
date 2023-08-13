@@ -18,6 +18,8 @@ const tourService = {
   removeMembers: ({members, id}: {members: Number[]; id: Number}) =>
     axiosClientPrivate.patch(`${url}/${id}/members/remove`, {userIds: members}),
   getOwnTour: () => axiosClientPrivate.get(`${url}/own`),
+  beginTourById: (id: number) => axiosClientPrivate.patch(`${url}/${id}/begin`),
+  endTourById: (id: number) => axiosClientPrivate.patch(`${url}/${id}/end`),
 };
 
 export default tourService;
