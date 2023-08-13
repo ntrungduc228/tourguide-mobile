@@ -9,6 +9,7 @@ import {IRootState} from '../../../stores';
 import {Button} from 'react-native-paper';
 import {ModalTrigger} from '../../../components';
 import MemberAdd from './MemberAdd';
+import MemberApprove from './MemberApprove';
 
 type Props = {};
 
@@ -16,6 +17,7 @@ export const MemberList = ({}: Props) => {
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
   const [members, setMembers] = useState<User[]>([]);
   const [openAddMember, setOpenAddMember] = useState<boolean>(false);
+  const [openApproveMember, setOpenApproveMember] = useState<boolean>(false);
   //dữ liệu giả
   useQuery({
     queryKey: ['userTour', tourId],
@@ -36,7 +38,10 @@ export const MemberList = ({}: Props) => {
           className="bg-cyan-500 w-[200] mt-5 ml-2">
           <Text className="text-white">Thêm thành viên</Text>
         </Button>
-        <Button mode="elevated" className="bg-cyan-500 w-[180] mt-2 ml-2">
+        <Button
+          mode="elevated"
+          className="bg-cyan-500 w-[180] mt-2 ml-2"
+          onPress={() => setOpenApproveMember(true)}>
           <Text className="text-white">Duyệt thành viên</Text>
         </Button>
       </View>
@@ -56,6 +61,11 @@ export const MemberList = ({}: Props) => {
       </View>
       <ModalTrigger visible={openAddMember} setVisible={setOpenAddMember}>
         <MemberAdd setOpenModal={setOpenAddMember} />
+      </ModalTrigger>
+      <ModalTrigger
+        visible={openApproveMember}
+        setVisible={setOpenApproveMember}>
+        <MemberApprove setOpenModal={setOpenApproveMember} />
       </ModalTrigger>
     </SafeAreaView>
   );
