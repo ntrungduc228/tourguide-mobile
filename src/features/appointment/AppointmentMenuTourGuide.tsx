@@ -40,7 +40,7 @@ export const AppointmentMenuTourGuide = ({visible, setVisible}: Props) => {
         />
       </Menu>
       <ModalTrigger visible={openModal} setVisible={setOpenModal}>
-        <AttendanceList />
+        <AttendanceList setOpenModal={setOpenModal}/>
       </ModalTrigger>
     </View>
   );
