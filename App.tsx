@@ -30,7 +30,6 @@ import {
 
 import Toast from 'react-native-toast-message';
 
-import {tokenIsExpired} from './src/utils/verifyJwt';
 import authService from './src/services/authService';
 
 const queryClient = new QueryClient();

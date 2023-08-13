@@ -5,6 +5,7 @@ import routesScreen from './routes';
 import {
   DestinationForm,
   TourDestination,
+  TourEdit,
   TourForm,
   TourInfo,
   TourList,
@@ -84,6 +85,13 @@ export function MainStackNavigator() {
       <MainStack.Screen
         name={routesScreen.TourView}
         component={TourView}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.TourEdit}
+        component={TourEdit}
         options={{
           headerShown: false,
         }}

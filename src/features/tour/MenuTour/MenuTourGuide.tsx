@@ -59,7 +59,7 @@ export const MenuTourGuide = ({
             setVisible(false);
             setOpenDialog(true);
           }}
-          title="Rời khỏi tour"
+          title="Đổi trạng thái"
         />
 
         {/* <Divider /> */}

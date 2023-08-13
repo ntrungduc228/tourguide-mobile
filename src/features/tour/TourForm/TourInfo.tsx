@@ -1,22 +1,49 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Button, TextInput} from 'react-native-paper';
 import {useFormik} from 'formik';
 import {Tour} from '../../../types/tour';
 import {useTour} from './TourForm';
+import {useDispatch, useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
+import {setIsEnterDestination, setTour} from '../../../stores/slices/tourSlice';
+import {RouteProp, useNavigation} from '@react-navigation/native';
+import {ParamListBase} from '@react-navigation/native';
+type TourInfoRouteProp = RouteProp<ParamListBase, string>;
 
-type TourInfoProps = {};
+type TourInfoProps = {
+  route?: TourInfoRouteProp;
+};
 
 interface TourFormValues {
   name: string;
   description: string;
 }
 
-export const TourInfo = ({}: TourInfoProps): JSX.Element => {
-  const initialValues: TourFormValues = {name: '', description: ''};
+export const TourInfo = ({route}: TourInfoProps): JSX.Element => {
+  const {tour, isEdit} = useSelector((state: IRootState) => state.tour);
 
-  const {setTour, tour, setIsEnterDestination} = useTour();
+  // const {isEdit} =
+  //   typeof route?.params === 'string' ? JSON.parse(route?.params) : false;
+  // console.log('route ', isEdit);
+
+  useEffect(() => {
+    if (!isEdit) {
+      dispatch(setTour(null));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEdit]);
+
+  const dispatch = useDispatch();
+  const navigation = useNavigation<Nav>();
+
+  const initialValues: TourFormValues = {
+    name: isEdit ? tour?.name || '' : '',
+    description: isEdit ? tour?.description || '' : '',
+  };
+
+  // const {setTour, tour, setIsEnterDestination} = useTour();
 
   const onSubmit = (values: any) => {
     console.log(values);
@@ -24,19 +51,27 @@ export const TourInfo = ({}: TourInfoProps): JSX.Element => {
       name: values.name,
       description: values.description,
     };
-    setTour({...tour, ...tourNew});
-    setIsEnterDestination(true);
+
+    dispatch(setTour({...tour, ...tourNew}));
+    dispatch(setIsEnterDestination(true));
   };
 
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: onSubmit,
+    enableReinitialize: true,
   });
 
   return (
     <View className="p-4">
       <View className="flex-row justify-end pr-4">
-        <Button mode="text" className="bg-red-500 w-[80] mr-10">
+        <Button
+          mode="text"
+          className="bg-red-500 w-[80] mr-10"
+          onPress={() => {
+            dispatch(setTour(null));
+            navigation.goBack();
+          }}>
           <Text className="text-white">Hủy</Text>
         </Button>
         <TouchableOpacity

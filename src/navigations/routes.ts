@@ -15,6 +15,7 @@ const routesScreen = {
   AppointmentList: 'AppointmentList',
   TourDetail: 'TourDetail',
   TourView: 'TourView',
+  TourEdit: 'TourEdit',
 };
 
 export default routesScreen;

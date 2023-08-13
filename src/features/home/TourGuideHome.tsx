@@ -8,18 +8,24 @@ import HomeItem from './HomeItem';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {useDispatch} from 'react-redux';
+import {setIsEnterDestination} from '../../stores/slices/tourSlice';
 
 type TourGuideProps = {};
 
 export const TourGuideHome = ({}: TourGuideProps) => {
   const navigation = useNavigation<Nav>();
+  const dispatch = useDispatch();
   return (
     <View className="h-full">
       <View className="flex-row mt-5 justify-center ">
         <Button
           mode="elevated"
           className="w-[200] text-black bg-white"
-          onPress={() => navigation.navigate(routesScreen.TourForm)}>
+          onPress={() => {
+            dispatch(setIsEnterDestination(false));
+            navigation.navigate(routesScreen.TourForm);
+          }}>
           <AntDesign name="plus" size={14} color="#000" />
           <Text className="ml-2 text-black">Tạo tour</Text>
         </Button>
