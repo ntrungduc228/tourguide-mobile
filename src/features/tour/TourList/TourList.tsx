@@ -1,13 +1,14 @@
 import {View, Text, FlatList, SafeAreaView} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ScreenBackLayout} from '../../../screens/components';
 import TourListItem from './TourListItem';
 import {Tour} from '../../../types/tour';
-import {useQuery} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {useSelector} from 'react-redux';
 import tourService from '../../../services/tourService';
 import {RefreshControl} from 'react-native-gesture-handler';
 import {Spinner} from '../../../components/Spinner';
+import {IRootState} from '../../../stores';
 
 type TourListProps = {};
 
@@ -95,6 +96,10 @@ type TourListProps = {};
 // ];
 
 export const TourList = ({}: TourListProps) => {
+  const queryClient = useQueryClient();
+  const socket = useSelector((state: IRootState) => state.socket.data);
+  const user = useSelector((state: IRootState) => state.user.data.info);
+
   const {
     data: tours,
     isLoading,
@@ -103,9 +108,26 @@ export const TourList = ({}: TourListProps) => {
     queryKey: ['toursOwn'],
     queryFn: tourService.getOwnTour,
     onSuccess: data => {
-      console.log('data  tour ', data);
+      // console.log('data  tour ', data);
     },
   });
+
+  useEffect(() => {
+    console.log('use r', user);
+    const topic = `/topic/tours/${user?.id}/update`;
+    if (socket) {
+      socket.subscribe(topic, (payload: any) => {
+        console.log('real time ', payload.body);
+        queryClient.invalidateQueries(['toursOwn']);
+      });
+    }
+    return () => {
+      if (socket) {
+        socket.unsubscribe(topic);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, user]);
 
   return (
     <SafeAreaView>

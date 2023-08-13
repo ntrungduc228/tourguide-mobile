@@ -9,22 +9,41 @@ import {useTour} from './TourForm';
 import {useMutation} from '@tanstack/react-query';
 import tourService from '../../../services/tourService';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {IRootState} from '../../../stores';
+import {setTour} from '../../../stores/slices/tourSlice';
+import routesScreen from '../../../navigations/routes';
+import useToast from '../../../hooks/useToast';
 
 type TourDestinationProps = {};
 
 export const TourDestination = ({}: TourDestinationProps) => {
   const navigation = useNavigation<Nav>();
-  const {tour} = useSelector((state: IRootState) => state.tour);
+  const {tour, isEdit} = useSelector((state: IRootState) => state.tour);
   const [openDestinationForm, setOpenDestinationForm] =
     useState<boolean>(false);
   const [itemEdit, setItemEdit] = useState<Destination | null>(null);
+  const {showToast} = useToast();
 
   // const {tour} = useTour();
 
   const {mutate: createTourMutation} = useMutation({
     mutationFn: tourService.createTour,
+    onSuccess: () => {
+      navigation.navigate(routesScreen.TourList);
+    },
+    onError: (error: any) => {
+      console.log('erorr ', JSON.stringify(error));
+    },
+  });
+
+  const {mutate: updateTourMutation} = useMutation({
+    mutationFn: tourService.updateTour,
+    onSuccess: data => {
+      showToast('success', 'Cập nhật tour thành công');
+      // navigation.navigate(routesScreen.TourList);
+      console.log('data return', data);
+    },
     onError: (error: any) => {
       console.log('erorr ', JSON.stringify(error));
     },
@@ -38,13 +57,18 @@ export const TourDestination = ({}: TourDestinationProps) => {
     }
   };
 
+  const handleUpdateTour = () => {
+    console.log('tour', tour);
+    updateTourMutation(tour!!);
+  };
+
   return (
     <View>
       {!openDestinationForm && (
         <View className="py-4">
-          <View className="flex-row justify-between px-3 mb-2 items-center pr-4">
+          <View className="flex-row mb-15 justify-between px-3 mb-2 items-center pr-4">
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <AntDesign name="arrowleft" size={20} />
+              <AntDesign name="arrowleft" size={30} />
             </TouchableOpacity>
             {/* <Button
               mode="text"
@@ -55,9 +79,13 @@ export const TourDestination = ({}: TourDestinationProps) => {
             <TouchableOpacity
               className="ml-2"
               onPress={() => {
-                handleCreateTour();
+                if (!isEdit) {
+                  handleCreateTour();
+                } else {
+                  handleUpdateTour();
+                }
               }}>
-              <Text className=""> Tạo</Text>
+              <Text className=""> {!isEdit ? 'Tạo' : 'Sửa'}</Text>
             </TouchableOpacity>
           </View>
           <View>
@@ -117,14 +145,16 @@ export const TourDestinationItem = ({
   onEdit: () => void;
   // onDelete: () => void;
 }) => {
-  const {tour, setTour} = useTour();
+  // const {tour, setTour} = useTour();
+  const {tour} = useSelector((state: IRootState) => state.tour);
+  const dispatch = useDispatch();
   const handleDeleteDestination = (destination: Destination) => {
     if (tour) {
       const temp = tour.destinations.filter(item => {
         return item !== destination;
       });
-
-      setTour({...tour, destinations: temp});
+      console.log('teom ', temp);
+      dispatch(setTour({...tour, destinations: temp}));
     }
   };
   return (

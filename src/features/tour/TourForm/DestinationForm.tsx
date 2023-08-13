@@ -6,14 +6,18 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {formatDateTime} from '../../../utils/formatDate';
+import {
+  formatDate,
+  formatDateTime,
+  formatTime,
+} from '../../../utils/formatDate';
 import {useTour} from './TourForm';
 import {Destination} from '../../../types/destination';
 import {RouteProp} from '@react-navigation/native';
 import {ParamListBase} from '@react-navigation/native';
 import {IRootState} from '../../../stores';
 import {useDispatch, useSelector} from 'react-redux';
-import {setIsEnterDestination} from '../../../stores/slices/tourSlice';
+import {setIsEnterDestination, setTour} from '../../../stores/slices/tourSlice';
 type DestinationFormRouteProp = RouteProp<ParamListBase, string>;
 
 type DestinationFormProps = {
@@ -37,21 +41,21 @@ export const DestinationForm = ({
 }: DestinationFormProps) => {
   // const {tour, setTour} = useTour();
   const dispatch = useDispatch();
-  const {tour, setTour} = useSelector((state: IRootState) => state.tour);
+  const {tour} = useSelector((state: IRootState) => state.tour);
   const initialValues: DestinationFormValues = {
     name: destination?.name || '',
     content: destination?.content || '',
     address: destination?.address || '',
     departureTime: destination?.departureTime || new Date(),
   };
-  console.log('time', destination?.departureTime);
+
   const onSubmit = (values: any) => {
     if (tour && !destination) {
       dispatch(
         setTour({
           ...tour,
           destinations: !!tour?.destinations
-            ? [values, ...tour.destinations]
+            ? [...tour.destinations, values]
             : [values],
         }),
       );
@@ -63,12 +67,13 @@ export const DestinationForm = ({
       dispatch(setTour({...tour, destinations: temp}));
     }
 
-    dispatch(setIsEnterDestination(false));
+    setOpenDestinationForm(false);
+    // dispatch(setIsEnterDestination(false));
   };
 
   const formik = useFormik({
     initialValues: initialValues,
-    enableReinitialize: true,
+    // enableReinitialize: true,
     onSubmit: onSubmit,
   });
 
@@ -76,7 +81,7 @@ export const DestinationForm = ({
     event: DateTimePickerEvent,
     selectedDate: Date | undefined,
   ) => {
-    console.log('ny ', event);
+    // console.log('ny ', event);
     setOpenDate(false);
     const curDate = selectedDate || date;
     console.log(formatDateTime(new Date(curDate)));
@@ -111,7 +116,6 @@ export const DestinationForm = ({
         <View>
           <Text className="text-gray font-medium text-md">Tên tour</Text>
           <TextInput
-            autoFocus={true}
             className="bg-slate-200 shadow rounded-md mt-2 "
             onChangeText={formik.handleChange('name')}
             onBlur={formik.handleBlur('name')}
@@ -129,7 +133,8 @@ export const DestinationForm = ({
             mode="outlined">
             Chọn ngày
           </Button>
-          <Text>{formik.values.departureTime.toLocaleDateString('vn')}</Text>
+          {/* <Text>{formik.values?.departureTime?.toLocaleDateString('vn')}</Text> */}
+          <Text>{formatDate(formik.values?.departureTime)}</Text>
 
           {openDate && (
             <DateTimePicker
@@ -151,13 +156,13 @@ export const DestinationForm = ({
             mode="outlined">
             Chọn giờ
           </Button>
-          <Text>{formik.values.departureTime.toLocaleTimeString('vn')}</Text>
+          {/* <Text>{formik.values?.departureTime?.toLocaleTimeString('vn')}</Text> */}
+          <Text>{formatTime(formik.values?.departureTime)}</Text>
         </View>
 
         <View>
           <Text className="text-gray font-medium text-md">Địa chỉ</Text>
           <TextInput
-            autoFocus={true}
             className="bg-slate-200 shadow  rounded-md mt-2 "
             onChangeText={formik.handleChange('address')}
             onBlur={formik.handleBlur('address')}
@@ -167,7 +172,6 @@ export const DestinationForm = ({
         <View>
           <Text className="text-gray font-medium text-md">Nội dung</Text>
           <TextInput
-            autoFocus={true}
             className="bg-slate-200 shadow  rounded-md mt-2 "
             onChangeText={formik.handleChange('content')}
             onBlur={formik.handleBlur('content')}

@@ -25,7 +25,7 @@ const tourSlice = createSlice({
       state.tourId = action.payload;
     },
     setIsEnterDestination: (state, action): void => {
-      console.log('checkcc', action.payload);
+      // console.log('checkcc', action.payload);
       state.isEnterDestination = action.payload;
     },
     setIsEdit: (state, action): void => {
