@@ -1,10 +1,13 @@
 import {View, Text, FlatList} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {ScreenBackLayout} from '../../screens/components';
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, useNavigation} from '@react-navigation/native';
 import {ParamListBase} from '@react-navigation/native';
 import AppointmentItem from './AppointmentItem';
 import {Button} from 'react-native-paper';
+import {ModalTrigger} from '../../components';
+import AppointmentForm from './AppointmentForm';
+import routesScreen from '../../navigations/routes';
 
 type AppoimentListScreenRouteProp = RouteProp<ParamListBase, string>;
 
@@ -66,10 +69,16 @@ const appointments = {
 };
 
 export const AppointmentList = ({}: AppoimentListScreenProps) => {
+  const [openForm, setOpenForm] = useState<boolean>(false);
+  const navigation = useNavigation<Nav>();
+
   return (
     <View className="bg-emerald-100 h-full">
       <View>
-        <Button mode="elevated" className="bg-cyan-500 w-[150] mt-5 ml-2">
+        <Button
+          mode="elevated"
+          className="bg-cyan-500 w-[150] mt-5 ml-2"
+          onPress={() => navigation.navigate(routesScreen.AppointmentForm)}>
           <Text className="text-white">Tạo điểm hẹn</Text>
         </Button>
       </View>
@@ -85,6 +94,9 @@ export const AppointmentList = ({}: AppoimentListScreenProps) => {
           }
         />
       </View>
+      {/* <ModalTrigger visible={openForm} setVisible={setOpenForm}>
+        <AppointmentForm />
+      </ModalTrigger> */}
     </View>
   );
 };
