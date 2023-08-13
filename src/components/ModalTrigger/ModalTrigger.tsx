@@ -1,6 +1,7 @@
 import {View, TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
 import React, {PropsWithChildren, useState} from 'react';
 import {Portal, Text, Button, Provider, Modal} from 'react-native-paper';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 type ModalTriggerProps = PropsWithChildren<{
   button?: string | JSX.Element;
@@ -35,6 +36,18 @@ export const ModalTrigger = ({
     </>
   );
 };
+
+// const Header = ({}) => {
+//   <View className="flex-row justify-between items-center border-b-0.5 border-[#DEDEDE]">
+//     <TouchableOpacity className="ml-2" onPress={() => setOpenModal(false)}>
+//       <AntDesign name="close" size={20} color={'#000'} />
+//     </TouchableOpacity>
+//     <Text className="font-bold  p-3 text-md text-black">Viết bài</Text>
+//     <TouchableOpacity className="p-3 " onPress={() => {}}>
+//       <Text className="text-md text-black">Đăng</Text>
+//     </TouchableOpacity>
+//   </View>;
+// };
 
 const styles = StyleSheet.create({
   modal: {},
