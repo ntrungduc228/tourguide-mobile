@@ -1,20 +1,19 @@
-import {default as React, useState} from 'react';
+import {default as React, useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 import {TextInput} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {ImagePreviewList} from '../../../components';
-import {useMutation} from '@tanstack/react-query';
-import postService from '../../../services/postService';
-import {uploadImage} from '../../../utils/uploadImage';
-import {useTravel} from '../Travel';
 import {useSelector} from 'react-redux';
+import {ImagePreviewList} from '../../../components';
 import {IRootState} from '../../../stores';
+import {Post} from '../../../types/post';
+import {uploadImage} from '../../../utils/uploadImage';
 
 type PostCreateProps = {
   setOpenModal: (value: boolean) => void;
   createPost: any;
+  postInit?: Post;
 };
 interface Action {
   title: string;
@@ -31,14 +30,26 @@ const options: Action = {
   },
 };
 
-export const PostCreate = ({setOpenModal, createPost}: PostCreateProps) => {
+export const PostCreate = ({
+  setOpenModal,
+  createPost,
+  postInit,
+}: PostCreateProps) => {
   // const {tourId} = useTravel();
 
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
-  console.log('tourID ', tourId);
-
-  const [valueInput, setValueInput] = useState<string>('');
+  const [valueInput, setValueInput] = useState<string>(
+    !!postInit ? postInit?.content : '',
+  );
   const [listImage, setListImage] = useState<string[]>([]);
+  useEffect(() => {
+    if (!!postInit?.files?.length) {
+      const temp = postInit?.files.map(item => {
+        return item.link;
+      });
+      setListImage(temp);
+    }
+  }, [postInit]);
   const handlePickImage = async () => {
     const res: ImagePicker.ImagePickerResponse =
       await ImagePicker.launchImageLibrary(options.options);
@@ -47,21 +58,34 @@ export const PostCreate = ({setOpenModal, createPost}: PostCreateProps) => {
     }
     let temp = listImage;
     res.assets?.forEach(item => temp.unshift(item.uri!!));
+
     setListImage([...temp]);
   };
 
   const handleCreatePost = async () => {
     if (!!valueInput || !!listImage.length) {
       const uploadPromises: any = [];
+      const alreadyUploaded: any = [];
       listImage.forEach(image => {
-        uploadPromises.push(uploadImage(image));
+        if (image.startsWith('https://')) {
+          console.log('daaa');
+          alreadyUploaded.push(image);
+        } else {
+          console.log('chuaa');
+          uploadPromises.push(uploadImage(image));
+        }
       });
       const result = await Promise.all(uploadPromises);
-      const temp = result.map(image => ({
+      const temp = result.concat(alreadyUploaded).map(image => ({
         link: image,
       }));
-      //dữ liệu giả
-      createPost({files: temp, content: valueInput, tourId: tourId!});
+      if (!!postInit) {
+        //update
+        createPost({...postInit, files: temp, content: valueInput});
+      } else {
+        createPost({files: temp, content: valueInput, tourId: tourId!});
+      }
+
       console.log('chayy', {files: temp, content: valueInput, tourId: tourId});
     } else {
       console.log('ban loi');

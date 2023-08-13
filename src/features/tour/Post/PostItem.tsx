@@ -31,7 +31,7 @@ export const PostItem = ({
           </Text>
         </View>
         <View>
-          <PostItemMenu visible={visible} setVisible={setVisible} />
+          <PostItemMenu visible={visible} setVisible={setVisible} post={post} />
         </View>
       </View>
 

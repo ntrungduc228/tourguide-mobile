@@ -1,28 +1,37 @@
 import {useNavigation} from '@react-navigation/native';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import React from 'react';
+import React, {useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {Menu} from 'react-native-paper';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import useToast from '../../../hooks/useToast';
 import tourService from '../../../services/tourService';
 import {Tour} from '../../../types/tour';
+import postService from '../../../services/postService';
+import {Post} from '../../../types/post';
+import {IRootState} from '../../../stores';
+import {useSelector} from 'react-redux';
+import {ModalTrigger} from '../../../components';
+import PostCreate from './PostCreate';
 
 type Props = {
   visible: boolean;
   setVisible: (value: boolean) => void;
+  post: Post;
 };
 
-export const PostItemMenu = ({visible, setVisible}: Props) => {
+export const PostItemMenu = ({visible, setVisible, post}: Props) => {
   const queryClient = useQueryClient();
   const closeMenu = () => setVisible(false);
   const {showToast} = useToast();
+  const tourId = useSelector((state: IRootState) => state.tour.tourId);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const {mutate: beginTour} = useMutation({
     mutationFn: tourService.beginTourById,
     onSuccess: () => {
       showToast('success', 'Bắt đầu tour thành công');
-      queryClient.invalidateQueries(['toursOwn']);
+      queryClient.invalidateQueries(['posts', tourId]);
     },
     onError: (error: any) => {
       showToast('error', 'Bắt đầu tour thất bại');
@@ -30,14 +39,14 @@ export const PostItemMenu = ({visible, setVisible}: Props) => {
       console.log('erorr ', JSON.stringify(error));
     },
   });
-  const {mutate: endTour} = useMutation({
-    mutationFn: tourService.endTourById,
+  const {mutate: updatePost} = useMutation({
+    mutationFn: postService.updatePost,
     onSuccess: () => {
-      showToast('success', 'Kết thúc tour thành công');
-      queryClient.invalidateQueries(['toursOwn']);
+      showToast('success', 'Chỉnh sửa bài viết thành công');
+      queryClient.invalidateQueries(['posts', tourId]);
     },
     onError: (error: any) => {
-      showToast('error', 'Kết thúc tour thất bại');
+      showToast('error', 'Chỉnh sửa bài viết thất bại');
       console.log('erorr ', JSON.stringify(error));
     },
   });
@@ -73,7 +82,8 @@ export const PostItemMenu = ({visible, setVisible}: Props) => {
         <Menu.Item
           onPress={() => {
             setVisible(false);
-            //  handleClick();
+            setOpenModal(true);
+            //updatePost(post.id!!);
           }}
           title="Chỉnh sửa"
         />
@@ -85,6 +95,17 @@ export const PostItemMenu = ({visible, setVisible}: Props) => {
           title="Xóa"
         />
       </Menu>
+      <ModalTrigger
+        visible={openModal}
+        setVisible={setOpenModal}
+        //</View>button={<PostFab onPress={() => setOpenModal(true)} />}>
+      >
+        <PostCreate
+          createPost={updatePost}
+          postInit={post}
+          setOpenModal={setOpenModal}
+        />
+      </ModalTrigger>
     </View>
   );
 };
