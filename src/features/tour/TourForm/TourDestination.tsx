@@ -8,15 +8,20 @@ import DestinationForm from './DestinationForm';
 import {useTour} from './TourForm';
 import {useMutation} from '@tanstack/react-query';
 import tourService from '../../../services/tourService';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
 
 type TourDestinationProps = {};
 
 export const TourDestination = ({}: TourDestinationProps) => {
+  const navigation = useNavigation<Nav>();
+  const {tour} = useSelector((state: IRootState) => state.tour);
   const [openDestinationForm, setOpenDestinationForm] =
     useState<boolean>(false);
   const [itemEdit, setItemEdit] = useState<Destination | null>(null);
 
-  const {tour} = useTour();
+  // const {tour} = useTour();
 
   const {mutate: createTourMutation} = useMutation({
     mutationFn: tourService.createTour,
@@ -38,12 +43,15 @@ export const TourDestination = ({}: TourDestinationProps) => {
       {!openDestinationForm && (
         <View className="py-4">
           <View className="flex-row justify-between px-3 mb-2 items-center pr-4">
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <AntDesign name="arrowleft" size={20} />
             </TouchableOpacity>
-            <Button mode="text" className="bg-red-500 w-[80] mr-10">
+            {/* <Button
+              mode="text"
+              className="bg-red-500 w-[80] mr-10"
+              onPress={() => navigation.goBack()}>
               <Text className="text-white">Hủy</Text>
-            </Button>
+            </Button> */}
             <TouchableOpacity
               className="ml-2"
               onPress={() => {

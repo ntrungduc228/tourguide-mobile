@@ -10,9 +10,10 @@ export type JwtSubject = {
 export const tokenIsExpired = async (accessToken: string) => {
   try {
     const decodeToken: JwtSubject = await jwt_decode(accessToken);
-    console.log('deoce ', decodeToken);
+    // console.log('deoce ', decodeToken);
     const today = new Date();
     if (decodeToken?.exp < today.getTime() / 1000) {
+      console.log('token is expired');
       return true;
     }
     return false;

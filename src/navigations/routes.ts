@@ -13,7 +13,10 @@ const routesScreen = {
   TourList: 'TourList',
   AppointmentItem: 'AppointmentItem',
   AppointmentList: 'AppointmentList',
+  AppointmentForm: 'AppointmentForm',
   TourDetail: 'TourDetail',
+  TourView: 'TourView',
+  TourEdit: 'TourEdit',
 };
 
 export default routesScreen;

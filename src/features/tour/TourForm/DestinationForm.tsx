@@ -11,6 +11,9 @@ import {useTour} from './TourForm';
 import {Destination} from '../../../types/destination';
 import {RouteProp} from '@react-navigation/native';
 import {ParamListBase} from '@react-navigation/native';
+import {IRootState} from '../../../stores';
+import {useDispatch, useSelector} from 'react-redux';
+import {setIsEnterDestination} from '../../../stores/slices/tourSlice';
 type DestinationFormRouteProp = RouteProp<ParamListBase, string>;
 
 type DestinationFormProps = {
@@ -32,7 +35,9 @@ export const DestinationForm = ({
   setOpenDestinationForm,
   destination,
 }: DestinationFormProps) => {
-  const {tour, setTour} = useTour();
+  // const {tour, setTour} = useTour();
+  const dispatch = useDispatch();
+  const {tour, setTour} = useSelector((state: IRootState) => state.tour);
   const initialValues: DestinationFormValues = {
     name: destination?.name || '',
     content: destination?.content || '',
@@ -42,25 +47,28 @@ export const DestinationForm = ({
   console.log('time', destination?.departureTime);
   const onSubmit = (values: any) => {
     if (tour && !destination) {
-      setTour({
-        ...tour,
-        destinations: !!tour?.destinations
-          ? [values, ...tour.destinations]
-          : [values],
-      });
+      dispatch(
+        setTour({
+          ...tour,
+          destinations: !!tour?.destinations
+            ? [values, ...tour.destinations]
+            : [values],
+        }),
+      );
     } else if (tour && destination) {
       const temp = tour?.destinations.map(item => {
         if (item === destination) return values;
         else return item;
       });
-      setTour({...tour, destinations: temp});
+      dispatch(setTour({...tour, destinations: temp}));
     }
 
-    setOpenDestinationForm(false);
+    dispatch(setIsEnterDestination(false));
   };
 
   const formik = useFormik({
     initialValues: initialValues,
+    enableReinitialize: true,
     onSubmit: onSubmit,
   });
 

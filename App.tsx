@@ -30,7 +30,6 @@ import {
 
 import Toast from 'react-native-toast-message';
 
-import {tokenIsExpired} from './src/utils/verifyJwt';
 import authService from './src/services/authService';
 
 const queryClient = new QueryClient();
@@ -75,7 +74,7 @@ function AppScreen(): JSX.Element {
     queryFn: authService.getAuthInfo,
     enabled: isLogin,
     onSuccess: data => {
-      console.log('user info data', data);
+      // console.log('user info data', data);
       dispatch(updateUserInfo(data.data));
     },
     onError: (error: any) => {},

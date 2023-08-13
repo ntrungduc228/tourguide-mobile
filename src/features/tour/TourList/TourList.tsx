@@ -103,7 +103,7 @@ export const TourList = ({}: TourListProps) => {
     queryKey: ['toursOwn'],
     queryFn: tourService.getOwnTour,
     onSuccess: data => {
-      // console.log('data  tour ', data);
+      console.log('data  tour ', data);
     },
   });
 

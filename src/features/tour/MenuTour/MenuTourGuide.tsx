@@ -19,7 +19,6 @@ export const MenuTourGuide = ({
   setVisible,
   closeMenu,
 }: MenuTourGuideProps) => {
-  const [openAddMember, setOpenAddMember] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const navigation = useNavigation<Nav>();
 
@@ -50,33 +49,22 @@ export const MenuTourGuide = ({
         <Menu.Item
           onPress={() => {
             setVisible(false);
-            setOpenAddMember(true);
+            navigation.navigate(routesScreen.TourView);
           }}
-          title="Thêm thành viên"
+          title="Thông tin tour"
         />
+
         <Menu.Item
           onPress={() => {
             setVisible(false);
             setOpenDialog(true);
           }}
-          title="Rời khỏi tour"
+          title="Đổi trạng thái"
         />
-        <Menu.Item
-          onPress={() => {
-            setVisible(false);
-            navigation.navigate(
-              routesScreen.AppointmentItem,
-              JSON.stringify({tour: 3453, abc: 23432}),
-            );
-          }}
-          title="Diem hen"
-        />
+
         {/* <Divider /> */}
       </Menu>
       <View>
-        <ModalTrigger visible={openAddMember} setVisible={setOpenAddMember}>
-          <MemberAdd setOpenModal={setOpenAddMember} />
-        </ModalTrigger>
         <DialogConfirm visible={openDialog} setVisible={setOpenDialog}>
           <OutTour setVisible={setOpenDialog} />
         </DialogConfirm>

@@ -5,12 +5,18 @@ import routesScreen from './routes';
 import {
   DestinationForm,
   TourDestination,
+  TourEdit,
   TourForm,
   TourInfo,
   TourList,
+  TourView,
   Travel,
 } from '../features/tour';
-import {AppointmentItem, AppointmentList} from '../features/appointment';
+import {
+  AppointmentForm,
+  AppointmentItem,
+  AppointmentList,
+} from '../features/appointment';
 
 const MainStack = createStackNavigator();
 
@@ -76,6 +82,27 @@ export function MainStackNavigator() {
       <MainStack.Screen
         name={routesScreen.TourDetail}
         component={Travel}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.TourView}
+        component={TourView}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.TourEdit}
+        component={TourEdit}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.AppointmentForm}
+        component={AppointmentForm}
         options={{
           headerShown: false,
         }}

@@ -3,6 +3,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import {store} from '../stores/';
 import {logout} from '../stores/slices/userSlice';
+import {tokenIsExpired} from '../utils/verifyJwt';
 
 const baseURL = Config.REACT_APP_SERVER_URL;
 
@@ -44,11 +45,15 @@ axiosClient.interceptors.response.use(
 axiosClientPrivate.interceptors.request.use(
   async config => {
     const accessToken = store.getState().user.data.accessToken;
-    config.headers['Authorization'] = `Bearer ${accessToken}`;
+    config.headers.Authorization = `Bearer ${accessToken}`;
     if (accessToken) {
-      const decodeToken = await jwt_decode(accessToken);
+      const check = await tokenIsExpired(accessToken);
+      if (check) {
+        store.dispatch(logout());
+      }
+      // const decodeToken = await jwt_decode(accessToken);
 
-      const today = new Date();
+      // const today = new Date();
       //   if (decodeToken.exp < today.getTime() / 1000) {
       //     store.dispatch(logout());
       //   }

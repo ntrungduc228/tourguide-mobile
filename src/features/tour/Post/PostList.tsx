@@ -27,7 +27,7 @@ export const PostList = ({route}: PostListProps) => {
     queryFn: () => postApi.getPostByTour(tourId),
     enabled: !!tourId,
     onSuccess: data => {
-      // console.log('data post', data);
+      console.log('data post', data);
     },
   });
 
@@ -39,7 +39,7 @@ export const PostList = ({route}: PostListProps) => {
     onSuccess: data => {
       // Toast.show({})
       queryClient.invalidateQueries(['posts', tourId]);
-      console.log(data);
+      // console.log(data);
       //handleDeleteMembers();
     },
   });

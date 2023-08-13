@@ -45,7 +45,7 @@ export const Member = ({user, members, setMembers}: MemberProps) => {
         </View>
       </View>
       <View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           className="ml-2"
           onPress={() => {
             if (user) {
@@ -53,7 +53,7 @@ export const Member = ({user, members, setMembers}: MemberProps) => {
             }
           }}>
           <AntDesign name="delete" size={20} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

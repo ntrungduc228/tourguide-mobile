@@ -4,6 +4,8 @@ import DestinationItem from './DestinationItem';
 import {Destination} from '../../../types/destination';
 import {useQuery} from '@tanstack/react-query';
 import tourService from '../../../services/tourService';
+import {IRootState} from '../../../stores';
+import {useSelector} from 'react-redux';
 
 type DestinationListProps = {};
 
@@ -83,18 +85,21 @@ type DestinationListProps = {};
 // ];
 
 export const DestinationList = ({}: DestinationListProps) => {
+  const tourId = useSelector((state: IRootState) => state.tour.tourId);
+
   const [destinations, setDestination] = useState<Destination[]>([]);
   //dữ liệu giả
-  const {data: destinationTour} = useQuery({
-    queryKey: ['destination', 1],
-    queryFn: () => tourService.getDestinationsTour(1),
+  useQuery({
+    queryKey: ['destination', tourId],
+    queryFn: () => tourService.getDestinationsTour(tourId!),
+    enabled: !!tourId,
     onSuccess(data) {
       setDestination(data?.data);
       // setMembers(data);
     },
     // enabled: !!valueInput,
   });
-  console.log(destinations);
+  // console.log(destinations);
   return (
     <View>
       <FlatList

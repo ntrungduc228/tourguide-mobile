@@ -17,7 +17,7 @@ export const MemberAdd = ({setOpenModal}: MemberAddProps) => {
   const [usersFind, setUsersFind] = useState<User[]>([]);
   const [usersAdd, setUsersAdd] = useState<number[]>([]);
 
-  const {data: searchResult} = useQuery({
+   useQuery({
     queryKey: ['userPhone', valueInput],
     queryFn: () => userService.getUserByPhone(valueInput),
     onSuccess(data: User[]) {

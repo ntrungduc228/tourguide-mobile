@@ -20,7 +20,7 @@ export const MemberSearchList = ({
       <ScrollView>
         {!!users?.length ? (
           users?.map((user: User) => (
-            <MemberSearchItem
+            <MemberCheckItem
               key={user.id}
               user={user}
               setUsersAdd={setUsersAdd}
@@ -39,7 +39,7 @@ export const MemberSearchList = ({
 
 export default MemberSearchList;
 
-export const MemberSearchItem = ({
+export const MemberCheckItem = ({
   user,
   setUsersAdd,
   usersAdd,
