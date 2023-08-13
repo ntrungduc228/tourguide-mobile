@@ -5,7 +5,8 @@ const url = '/tours';
 
 const tourService = {
   getTourById: (id: number) => axiosClientPrivate.get(`${url}/${id}`),
-  //updatePost: (id: number) => axiosClientPrivate.patch(`${url}/${id}`),
+  updateTour: (data: any) =>
+    axiosClientPrivate.patch(`${url}/${data?.id}`, data),
   createTour: (tour: Tour) => axiosClientPrivate.post(url, tour),
   getTourByUserId: () => axiosClientPrivate.get(`${url}/own`),
   addMembers: ({members, id}: {members: Number[]; id: Number}) =>

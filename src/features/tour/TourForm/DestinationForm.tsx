@@ -6,7 +6,11 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {formatDateTime} from '../../../utils/formatDate';
+import {
+  formatDate,
+  formatDateTime,
+  formatTime,
+} from '../../../utils/formatDate';
 import {useTour} from './TourForm';
 import {Destination} from '../../../types/destination';
 import {RouteProp} from '@react-navigation/native';
@@ -44,6 +48,8 @@ export const DestinationForm = ({
     address: destination?.address || '',
     departureTime: destination?.departureTime || new Date(),
   };
+
+  // console.log('destination123 ', initialValues);
 
   const onSubmit = (values: any) => {
     if (tour && !destination) {
@@ -129,7 +135,8 @@ export const DestinationForm = ({
             mode="outlined">
             Chọn ngày
           </Button>
-          <Text>{formik.values.departureTime.toLocaleDateString('vn')}</Text>
+          {/* <Text>{formik.values?.departureTime?.toLocaleDateString('vn')}</Text> */}
+          <Text>{formatDate(formik.values?.departureTime)}</Text>
 
           {openDate && (
             <DateTimePicker
@@ -151,7 +158,8 @@ export const DestinationForm = ({
             mode="outlined">
             Chọn giờ
           </Button>
-          <Text>{formik.values.departureTime.toLocaleTimeString('vn')}</Text>
+          {/* <Text>{formik.values?.departureTime?.toLocaleTimeString('vn')}</Text> */}
+          <Text>{formatTime(formik.values?.departureTime)}</Text>
         </View>
 
         <View>

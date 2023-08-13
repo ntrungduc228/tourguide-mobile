@@ -23,7 +23,6 @@ interface TourFormValues {
 
 export const TourInfo = ({route}: TourInfoProps): JSX.Element => {
   const {tour, isEdit} = useSelector((state: IRootState) => state.tour);
-
   // const {isEdit} =
   //   typeof route?.params === 'string' ? JSON.parse(route?.params) : false;
   // console.log('route ', isEdit);

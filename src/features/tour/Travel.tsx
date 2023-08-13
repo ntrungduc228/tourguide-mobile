@@ -16,9 +16,12 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setTourId} from '../../stores/slices/tourSlice';
 import {AppointmentList} from '../appointment';
+// import PushNotification from 'react-native-push-notification';
+import {IRootState} from '../../stores';
+
 const Tab = createMaterialTopTabNavigator();
 
 type TravelProps = PropsWithChildren<{route: TravelRouteProp}>;
@@ -40,6 +43,7 @@ export const useTravel = () => {
 
 export const Travel = ({route}: TravelProps) => {
   const {tourId} = getParamsNav(route);
+  const user = useSelector((state: IRootState) => state.user.data.info);
   // const [tour, setTour] = useState<Tour | null>(null);
   // console.log('tourId travel ', tourId);
   const dispatch = useDispatch();
@@ -47,6 +51,23 @@ export const Travel = ({route}: TravelProps) => {
     dispatch(setTourId(tourId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tourId]);
+
+  // useEffect(() => {
+  //   // createChannels();
+  //   return () => {};
+  // }, []);
+
+  // const createChannels = () => {
+  //   PushNotification.createChannel(
+  //     {
+  //       channelId: `pushNoti/tours/${user?.id}/update`,
+  //       channelName: 'TESTT',
+  //     },
+  //     created => {
+  //       console.log(`createChannel returned '${created}'`);
+  //     },
+  //   );
+  // };
 
   return (
     // <TravelContext.Provider value={{tourId, tour, setTour}}>

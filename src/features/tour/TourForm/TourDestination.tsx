@@ -13,15 +13,17 @@ import {useDispatch, useSelector} from 'react-redux';
 import {IRootState} from '../../../stores';
 import {setTour} from '../../../stores/slices/tourSlice';
 import routesScreen from '../../../navigations/routes';
+import useToast from '../../../hooks/useToast';
 
 type TourDestinationProps = {};
 
 export const TourDestination = ({}: TourDestinationProps) => {
   const navigation = useNavigation<Nav>();
-  const {tour} = useSelector((state: IRootState) => state.tour);
+  const {tour, isEdit} = useSelector((state: IRootState) => state.tour);
   const [openDestinationForm, setOpenDestinationForm] =
     useState<boolean>(false);
   const [itemEdit, setItemEdit] = useState<Destination | null>(null);
+  const {showToast} = useToast();
 
   // const {tour} = useTour();
 
@@ -35,12 +37,29 @@ export const TourDestination = ({}: TourDestinationProps) => {
     },
   });
 
+  const {mutate: updateTourMutation} = useMutation({
+    mutationFn: tourService.updateTour,
+    onSuccess: data => {
+      showToast('success', 'Cập nhật tour thành công');
+      // navigation.navigate(routesScreen.TourList);
+      console.log('data return', data);
+    },
+    onError: (error: any) => {
+      console.log('erorr ', JSON.stringify(error));
+    },
+  });
+
   const handleCreateTour = () => {
     if (!!tour?.destinations) {
       createTourMutation(tour!!);
     } else {
       console.log('ban loi');
     }
+  };
+
+  const handleUpdateTour = () => {
+    console.log('tour', tour);
+    updateTourMutation(tour!!);
   };
 
   return (
@@ -60,9 +79,13 @@ export const TourDestination = ({}: TourDestinationProps) => {
             <TouchableOpacity
               className="ml-2"
               onPress={() => {
-                handleCreateTour();
+                if (!isEdit) {
+                  handleCreateTour();
+                } else {
+                  handleUpdateTour();
+                }
               }}>
-              <Text className=""> Tạo</Text>
+              <Text className=""> {!isEdit ? 'Tạo' : 'Sửa'}</Text>
             </TouchableOpacity>
           </View>
           <View>
