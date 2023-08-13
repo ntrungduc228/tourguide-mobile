@@ -1,19 +1,18 @@
+import {useNavigation} from '@react-navigation/native';
+import {useMutation} from '@tanstack/react-query';
 import React, {useState} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useDispatch, useSelector} from 'react-redux';
+import useToast from '../../../hooks/useToast';
+import routesScreen from '../../../navigations/routes';
+import tourService from '../../../services/tourService';
+import {IRootState} from '../../../stores';
+import {setTour} from '../../../stores/slices/tourSlice';
 import {Destination} from '../../../types/destination';
 import {formatDateTime} from '../../../utils/formatDate';
 import DestinationForm from './DestinationForm';
-import {useTour} from './TourForm';
-import {useMutation} from '@tanstack/react-query';
-import tourService from '../../../services/tourService';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import {IRootState} from '../../../stores';
-import {setTour} from '../../../stores/slices/tourSlice';
-import routesScreen from '../../../navigations/routes';
-import useToast from '../../../hooks/useToast';
 
 type TourDestinationProps = {};
 

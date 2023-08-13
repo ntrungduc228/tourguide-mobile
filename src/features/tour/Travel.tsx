@@ -43,11 +43,13 @@ export const useTravel = () => {
 
 export const Travel = ({route}: TravelProps) => {
   const {tourId} = getParamsNav(route);
+
   const user = useSelector((state: IRootState) => state.user.data.info);
   // const [tour, setTour] = useState<Tour | null>(null);
   // console.log('tourId travel ', tourId);
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log('v t', tourId);
     dispatch(setTourId(tourId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tourId]);

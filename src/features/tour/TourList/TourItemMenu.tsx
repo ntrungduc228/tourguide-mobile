@@ -4,11 +4,10 @@ import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {Menu} from 'react-native-paper';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {useDispatch} from 'react-redux';
 import useToast from '../../../hooks/useToast';
 import tourService from '../../../services/tourService';
 import {Tour} from '../../../types/tour';
-import {useDispatch} from 'react-redux';
-import {setTour, setTourId} from '../../../stores/slices/tourSlice';
 
 type Props = {
   visible: boolean;
