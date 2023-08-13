@@ -68,7 +68,7 @@ export const DestinationForm = ({
 
   const formik = useFormik({
     initialValues: initialValues,
-    enableReinitialize: true,
+    // enableReinitialize: true,
     onSubmit: onSubmit,
   });
 

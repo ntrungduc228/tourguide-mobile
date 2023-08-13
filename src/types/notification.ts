@@ -2,9 +2,11 @@ import {Base} from './base';
 import {User} from './user';
 
 export type Notification = {
-  createrId: number;
+  creatorId: number;
+  receiverId: number;
   content: string;
-  creater?: User;
+  creator?: User;
+  receiver?: User;
   member: NotificationMember[];
 } & Base;
 

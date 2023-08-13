@@ -46,7 +46,7 @@ export const AppointmentForm = (props: Props) => {
 
   const formik = useFormik({
     initialValues: initialValues,
-    enableReinitialize: true,
+    // enableReinitialize: true,
     onSubmit: onSubmit,
   });
   return (

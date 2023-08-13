@@ -1,8 +1,12 @@
 import {View, Text, FlatList} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import NotificationItem from './NotificationItem';
 import {Notification} from '../../types/notification';
 import {User} from '../../types/user';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../stores';
+import {useQuery} from '@tanstack/react-query';
+import notificationService from '../../services/notificationService';
 
 type NotiListProps = {};
 
@@ -95,6 +99,28 @@ const notifications: Notification[] = [
 ];
 
 export const NotificationList = ({}: NotiListProps) => {
+  const user = useSelector((state: IRootState) => state.user.data.info);
+  const socket = useSelector((state: IRootState) => state.socket.data);
+
+  const {data} = useQuery({
+    queryKey: ['notifications', user?.id],
+    queryFn: () => notificationService.getNotificationsByUserId(),
+  });
+
+  useEffect(() => {
+    const topic = `/topic/messagess123`;
+    if (socket) {
+      socket.subscribe(topic, (payload: any) => {
+        // console.log('recei data', payload);
+      });
+    }
+    return () => {
+      if (socket) {
+        socket.unsubscribe(topic);
+      }
+    };
+  }, [socket]);
+
   return (
     <View className="">
       <FlatList
