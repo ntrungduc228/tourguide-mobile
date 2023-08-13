@@ -1,12 +1,10 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
-import {Post} from '../../../types/post';
-import {Avatar, Swipe} from '../../../components';
-import Feather from 'react-native-vector-icons/Feather';
+import React, {useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionic from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import {WINDOW_WIDTH} from '../../../utils';
+import {Avatar, Swipe} from '../../../components';
+import {Post} from '../../../types/post';
+import {PostItemMenu} from './PostMenuItem';
 
 type PostItemProps = {
   post: Post;
@@ -19,6 +17,7 @@ export const PostItem = ({
   openComment,
   setOpenComment,
 }: PostItemProps) => {
+  const [visible, setVisible] = useState<boolean>(false);
   return (
     <View className="border-b-0.5 py-2 border-gray-300 bg-white">
       <View className="p-[15] flex flex-row items-center ">
@@ -31,7 +30,11 @@ export const PostItem = ({
             Nguyen Trung duc
           </Text>
         </View>
+        <View>
+          <PostItemMenu visible={visible} setVisible={setVisible} />
+        </View>
       </View>
+
       <View className="flex w-full justify-center items-center">
         {!!post?.files?.length && <Swipe images={post?.files || []} />}
 

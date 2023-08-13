@@ -60,7 +60,7 @@ export const PostList = ({route}: PostListProps) => {
         keyExtractor={item => `${item.id}`}
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center">
-            <Text className="text-gray-500">Chua co bai dang</Text>
+            <Text className="text-gray-500">Chưa có bài đăng</Text>
           </View>
         }
       />

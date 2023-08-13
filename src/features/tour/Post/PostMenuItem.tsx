@@ -11,10 +11,9 @@ import {Tour} from '../../../types/tour';
 type Props = {
   visible: boolean;
   setVisible: (value: boolean) => void;
-  tour: Tour;
 };
 
-export const TourItemMenu = ({visible, setVisible, tour}: Props) => {
+export const PostItemMenu = ({visible, setVisible}: Props) => {
   const queryClient = useQueryClient();
   const closeMenu = () => setVisible(false);
   const {showToast} = useToast();
@@ -42,14 +41,14 @@ export const TourItemMenu = ({visible, setVisible, tour}: Props) => {
       console.log('erorr ', JSON.stringify(error));
     },
   });
-  const handleClick = () => {
-    if (!!tour.isProgress) {
-      endTour(tour.id!!);
-    } else {
-      beginTour(tour.id!!);
-    }
-  };
-  console.log('í', tour.isProgress);
+  //   const handleClick = () => {
+  //     if (!!tour.isProgress) {
+  //       endTour(tour.id!!);
+  //     } else {
+  //       beginTour(tour.id!!);
+  //     }
+  //   };
+  //   console.log('í', tour.isProgress);
 
   return (
     <View
@@ -74,13 +73,20 @@ export const TourItemMenu = ({visible, setVisible, tour}: Props) => {
         <Menu.Item
           onPress={() => {
             setVisible(false);
-            handleClick();
+            //  handleClick();
           }}
-          title={!tour.isProgress ? 'Bắt đầu tour' : 'Kết thúc tour'}
+          title="Chỉnh sửa"
+        />
+        <Menu.Item
+          onPress={() => {
+            setVisible(false);
+            //  handleClick();
+          }}
+          title="Xóa"
         />
       </Menu>
     </View>
   );
 };
 
-export default TourItemMenu;
+export default PostItemMenu;
