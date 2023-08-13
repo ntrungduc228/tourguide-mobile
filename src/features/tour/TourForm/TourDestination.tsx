@@ -9,8 +9,10 @@ import {useTour} from './TourForm';
 import {useMutation} from '@tanstack/react-query';
 import tourService from '../../../services/tourService';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {IRootState} from '../../../stores';
+import {setTour} from '../../../stores/slices/tourSlice';
+import routesScreen from '../../../navigations/routes';
 
 type TourDestinationProps = {};
 
@@ -25,6 +27,9 @@ export const TourDestination = ({}: TourDestinationProps) => {
 
   const {mutate: createTourMutation} = useMutation({
     mutationFn: tourService.createTour,
+    onSuccess: () => {
+      navigation.navigate(routesScreen.TourList);
+    },
     onError: (error: any) => {
       console.log('erorr ', JSON.stringify(error));
     },
@@ -42,9 +47,9 @@ export const TourDestination = ({}: TourDestinationProps) => {
     <View>
       {!openDestinationForm && (
         <View className="py-4">
-          <View className="flex-row justify-between px-3 mb-2 items-center pr-4">
+          <View className="flex-row mb-15 justify-between px-3 mb-2 items-center pr-4">
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <AntDesign name="arrowleft" size={20} />
+              <AntDesign name="arrowleft" size={30} />
             </TouchableOpacity>
             {/* <Button
               mode="text"
@@ -117,14 +122,16 @@ export const TourDestinationItem = ({
   onEdit: () => void;
   // onDelete: () => void;
 }) => {
-  const {tour, setTour} = useTour();
+  // const {tour, setTour} = useTour();
+  const {tour} = useSelector((state: IRootState) => state.tour);
+  const dispatch = useDispatch();
   const handleDeleteDestination = (destination: Destination) => {
     if (tour) {
       const temp = tour.destinations.filter(item => {
         return item !== destination;
       });
-
-      setTour({...tour, destinations: temp});
+      console.log('teom ', temp);
+      dispatch(setTour({...tour, destinations: temp}));
     }
   };
   return (

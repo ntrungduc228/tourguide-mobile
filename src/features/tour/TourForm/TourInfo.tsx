@@ -86,7 +86,6 @@ export const TourInfo = ({route}: TourInfoProps): JSX.Element => {
             <View>
               <Text className="text-gray font-medium text-md">Tên tour</Text>
               <TextInput
-                autoFocus={true}
                 className="bg-white rounded-md mt-2 "
                 onChangeText={formik.handleChange('name')}
                 onBlur={formik.handleBlur('name')}
@@ -103,7 +102,6 @@ export const TourInfo = ({route}: TourInfoProps): JSX.Element => {
                   onBlur={formik.handleBlur('description')}
                   value={formik.values.description}
                   mode={'flat'}
-                  autoFocus={true}
                   cursorColor={'#000'}
                   activeUnderlineColor={'#fff'}
                   underlineColor={'#fff'}

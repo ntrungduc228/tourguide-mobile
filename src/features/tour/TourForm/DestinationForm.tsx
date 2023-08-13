@@ -13,7 +13,7 @@ import {RouteProp} from '@react-navigation/native';
 import {ParamListBase} from '@react-navigation/native';
 import {IRootState} from '../../../stores';
 import {useDispatch, useSelector} from 'react-redux';
-import {setIsEnterDestination} from '../../../stores/slices/tourSlice';
+import {setIsEnterDestination, setTour} from '../../../stores/slices/tourSlice';
 type DestinationFormRouteProp = RouteProp<ParamListBase, string>;
 
 type DestinationFormProps = {
@@ -37,7 +37,7 @@ export const DestinationForm = ({
 }: DestinationFormProps) => {
   // const {tour, setTour} = useTour();
   const dispatch = useDispatch();
-  const {tour, setTour} = useSelector((state: IRootState) => state.tour);
+  const {tour} = useSelector((state: IRootState) => state.tour);
   const initialValues: DestinationFormValues = {
     name: destination?.name || '',
     content: destination?.content || '',
@@ -51,7 +51,7 @@ export const DestinationForm = ({
         setTour({
           ...tour,
           destinations: !!tour?.destinations
-            ? [values, ...tour.destinations]
+            ? [...tour.destinations, values]
             : [values],
         }),
       );
@@ -63,7 +63,8 @@ export const DestinationForm = ({
       dispatch(setTour({...tour, destinations: temp}));
     }
 
-    dispatch(setIsEnterDestination(false));
+    setOpenDestinationForm(false);
+    // dispatch(setIsEnterDestination(false));
   };
 
   const formik = useFormik({
@@ -76,7 +77,7 @@ export const DestinationForm = ({
     event: DateTimePickerEvent,
     selectedDate: Date | undefined,
   ) => {
-    console.log('ny ', event);
+    // console.log('ny ', event);
     setOpenDate(false);
     const curDate = selectedDate || date;
     console.log(formatDateTime(new Date(curDate)));
@@ -111,7 +112,6 @@ export const DestinationForm = ({
         <View>
           <Text className="text-gray font-medium text-md">Tên tour</Text>
           <TextInput
-            autoFocus={true}
             className="bg-slate-200 shadow rounded-md mt-2 "
             onChangeText={formik.handleChange('name')}
             onBlur={formik.handleBlur('name')}
@@ -157,7 +157,6 @@ export const DestinationForm = ({
         <View>
           <Text className="text-gray font-medium text-md">Địa chỉ</Text>
           <TextInput
-            autoFocus={true}
             className="bg-slate-200 shadow  rounded-md mt-2 "
             onChangeText={formik.handleChange('address')}
             onBlur={formik.handleBlur('address')}
@@ -167,7 +166,6 @@ export const DestinationForm = ({
         <View>
           <Text className="text-gray font-medium text-md">Nội dung</Text>
           <TextInput
-            autoFocus={true}
             className="bg-slate-200 shadow  rounded-md mt-2 "
             onChangeText={formik.handleChange('content')}
             onBlur={formik.handleBlur('content')}
