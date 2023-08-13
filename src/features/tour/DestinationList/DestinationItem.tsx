@@ -1,6 +1,5 @@
-import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import {List} from 'react-native-paper';
+import {Text, View} from 'react-native';
 import {Destination} from '../../../types/destination';
 import {formatDate, formatTime} from '../../../utils/formatDate';
 import MenuDestinationItem from './MenuDestinationItem';
@@ -29,7 +28,11 @@ export const DestinationItem = ({destination}: DestinationitemProps) => {
             {/* <TouchableOpacity onPress={() => setVisible(true)}>
               <SimpleLineIcons name="options-vertical" size={20} />
             </TouchableOpacity> */}
-            <MenuDestinationItem visible={visible} setVisible={setVisible} />
+            <MenuDestinationItem
+              visible={visible}
+              setVisible={setVisible}
+              destination={destination}
+            />
           </View>
         </View>
 

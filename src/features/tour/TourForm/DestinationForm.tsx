@@ -39,7 +39,7 @@ export const DestinationForm = ({
     address: destination?.address || '',
     departureTime: destination?.departureTime || new Date(),
   };
-
+  console.log('time', destination?.departureTime);
   const onSubmit = (values: any) => {
     if (tour && !destination) {
       setTour({
