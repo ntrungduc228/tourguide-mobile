@@ -4,97 +4,51 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TextInput, Button} from 'react-native-paper';
 import {User} from '../../../types/user';
 import {MemberCheckItem} from './MemberSearchList';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import userService from '../../../services/userService';
 import tourService from '../../../services/tourService';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
+import useToast from '../../../hooks/useToast';
 
 type MemberApproveProps = {
   setOpenModal: (value: boolean) => void;
 };
 
-const users: User[] = [
-  {
-    id: 1,
-    fullName: 'Nguyen Trung Duc',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 2,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 8,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 3,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 4,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-
-  {
-    id: 5,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 67,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 48,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-
-  {
-    id: 57,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-];
-
 export const MemberApprove = ({setOpenModal}: MemberApproveProps) => {
-  const [valueInput, setValueInput] = useState<string>('');
   const [usersAdd, setUsersAdd] = useState<number[]>([]);
-
-  const {mutate: addMembersTourMutation} = useMutation({
-    mutationFn: tourService.addMembers,
+  const tourId = useSelector((state: IRootState) => state.tour.tourId);
+  const queryClient = useQueryClient();
+  const {showToast} = useToast();
+  const {mutate: ApproveMember} = useMutation({
+    mutationFn: tourService.approveMembers,
     onError: (error: any) => {
       console.log('erorr ', JSON.stringify(error));
+      showToast('error', 'Duyệt thất bại');
+    },
+    onSuccess: () => {
+      showToast('success', 'Duyệt thành công');
+      queryClient.invalidateQueries(['memberRequest', tourId]);
     },
   });
+
+  const {data: userRequests} = useQuery({
+    queryKey: ['memberRequest', tourId],
+    queryFn: () => tourService.getListMembersRequest(tourId!),
+    enabled: !!tourId,
+    onSuccess(data) {
+      //  setDestination(data?.data);
+      // setMembers(data);
+    },
+    // enabled: !!valueInput,
+  });
+
   const handleApproveMember = () => {
     //dữ liệu giả
     console.log('testusser', usersAdd);
-    if (!!usersAdd.length) addMembersTourMutation({members: usersAdd, id: 1});
-    else console.log('ban loi');
+    if (!!usersAdd.length) {
+      ApproveMember({data: {userIds: usersAdd}, id: tourId!!});
+    } else console.log('ban loi');
 
     setOpenModal(false);
   };
@@ -131,8 +85,8 @@ export const MemberApprove = ({setOpenModal}: MemberApproveProps) => {
           }
         /> */}
         <ScrollView>
-          {!!users?.length ? (
-            users?.map((user: User) => (
+          {!!userRequests?.data?.length ? (
+            userRequests?.data?.map((user: User) => (
               <MemberCheckItem
                 key={user.id}
                 user={user}
@@ -142,7 +96,7 @@ export const MemberApprove = ({setOpenModal}: MemberApproveProps) => {
             ))
           ) : (
             <View className="flex-1 items-center justify-center">
-              <Text className="text-gray-500">Chưa có thành viên</Text>
+              <Text className="text-gray-500">Không có thành viên</Text>
             </View>
           )}
         </ScrollView>
@@ -150,8 +104,11 @@ export const MemberApprove = ({setOpenModal}: MemberApproveProps) => {
       <View className="my-4 justify-end flex-row">
         <Button
           mode="contained"
+          disabled={!userRequests?.data.length}
           style={{borderRadius: 10}}
-          className="w-[170] h-10 bg-blue-400"
+          className={`w-[170] h-10 ${
+            !userRequests?.data.length ? `bg-slate-400` : `bg-blue-400`
+          }`}
           onPress={handleApproveMember}>
           Xác nhận
         </Button>

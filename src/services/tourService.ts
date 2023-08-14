@@ -22,8 +22,8 @@ const tourService = {
   endTourById: (id: number) => axiosClientPrivate.patch(`${url}/${id}/end`),
   joinRoom: (id: number) =>
     axiosClientPrivate.post(`${url}/${id}/members/join`),
-  approveMembers: (id: number) =>
-    axiosClientPrivate.patch(`${url}/${id}/members/approve`),
+  approveMembers: ({id, data}: {id: number; data: {userIds: number[]}}) =>
+    axiosClientPrivate.patch(`${url}/${id}/members/approve`, data),
   getListMembersRequest: (id: number) =>
     axiosClientPrivate.get(`${url}/${id}/members/request`),
 };

@@ -88,7 +88,7 @@ export const DestinationList = ({}: DestinationListProps) => {
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
 
   const [destinations, setDestination] = useState<Destination[]>([]);
-  //dữ liệu giả
+
   useQuery({
     queryKey: ['destination', tourId],
     queryFn: () => tourService.getDestinationsTour(tourId!),
