@@ -20,6 +20,8 @@ const tourService = {
   getOwnTour: () => axiosClientPrivate.get(`${url}/own`),
   beginTourById: (id: number) => axiosClientPrivate.patch(`${url}/${id}/begin`),
   endTourById: (id: number) => axiosClientPrivate.patch(`${url}/${id}/end`),
+  joinRoom: (id: number) =>
+    axiosClientPrivate.post(`${url}/${id}/members/join`),
 };
 
 export default tourService;
