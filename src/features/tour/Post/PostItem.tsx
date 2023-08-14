@@ -5,6 +5,10 @@ import Ionic from 'react-native-vector-icons/Ionicons';
 import {Avatar, Swipe} from '../../../components';
 import {Post} from '../../../types/post';
 import {PostItemMenu} from './PostMenuItem';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import postService from '../../../services/postService';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
 
 type PostItemProps = {
   post: Post;
@@ -17,7 +21,22 @@ export const PostItem = ({
   openComment,
   setOpenComment,
 }: PostItemProps) => {
+  const tourId = useSelector((state: IRootState) => state.tour.tourId);
   const [visible, setVisible] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+  const {mutate: likePost} = useMutation({
+    mutationFn: postService.likePost,
+    onError: (error: any) => {
+      console.log('erorr ', JSON.stringify(error));
+    },
+    onSuccess: data => {
+      // Toast.show({})
+      queryClient.invalidateQueries(['posts', tourId]);
+      // console.log(data);
+      //handleDeleteMembers();
+    },
+  });
+
   return (
     <View className="border-b-0.5 py-2 border-gray-300 bg-white">
       <View className="p-[15] flex flex-row items-center ">
@@ -53,7 +72,10 @@ export const PostItem = ({
         </Text>
       </View>
       <View className="flex flex-row items-center px-[12] ">
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            likePost({id: post.id!!, likes: 1});
+          }}>
           <AntDesign
             name="heart"
             color="red"

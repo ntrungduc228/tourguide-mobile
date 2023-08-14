@@ -19,6 +19,10 @@ const postService = {
     const link = `${url}/${id}`;
     return axiosClientPrivate.delete(link);
   },
+  likePost: ({id, likes}: {id: number; likes: number}) => {
+    const link = `${url}/${id}/like`;
+    return axiosClientPrivate.patch(link, {likes});
+  },
 };
 
 export default postService;
