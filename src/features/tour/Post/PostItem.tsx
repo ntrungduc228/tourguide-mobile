@@ -24,6 +24,7 @@ export const PostItem = ({
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
   const [visible, setVisible] = useState<boolean>(false);
   const queryClient = useQueryClient();
+  const [isLike, setIsLike] = useState(false);
   const {mutate: likePost} = useMutation({
     mutationFn: postService.likePost,
     onError: (error: any) => {
@@ -36,6 +37,9 @@ export const PostItem = ({
       //handleDeleteMembers();
     },
   });
+  // useEffect(() => {
+  //   post.
+  // }, [post]);
 
   return (
     <View className="border-b-0.5 py-2 border-gray-300 bg-white">
@@ -79,6 +83,12 @@ export const PostItem = ({
           <AntDesign
             name="heart"
             color="red"
+            size={27}
+            // className="border-8 border-black"
+          />
+          <AntDesign
+            name="hearto"
+            color="gray"
             size={27}
             // className="border-8 border-black"
           />

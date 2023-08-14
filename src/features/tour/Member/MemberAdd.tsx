@@ -4,9 +4,12 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TextInput, Button} from 'react-native-paper';
 import {User} from '../../../types/user';
 import MemberSearchList from './MemberSearchList';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import userService from '../../../services/userService';
 import tourService from '../../../services/tourService';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
+import useToast from '../../../hooks/useToast';
 
 type MemberAddProps = {
   setOpenModal: (value: boolean) => void;
@@ -16,8 +19,9 @@ export const MemberAdd = ({setOpenModal}: MemberAddProps) => {
   const [valueInput, setValueInput] = useState<string>('');
   const [usersFind, setUsersFind] = useState<User[]>([]);
   const [usersAdd, setUsersAdd] = useState<number[]>([]);
-
-   useQuery({
+  const tourId = useSelector((state: IRootState) => state.tour.tourId);
+  const {showToast} = useToast();
+  useQuery({
     queryKey: ['userPhone', valueInput],
     queryFn: () => userService.getUserByPhone(valueInput),
     onSuccess(data: User[]) {
@@ -25,17 +29,24 @@ export const MemberAdd = ({setOpenModal}: MemberAddProps) => {
     },
     enabled: !!valueInput,
   });
+  const queryClient = useQueryClient();
 
   const {mutate: addMembersTourMutation} = useMutation({
     mutationFn: tourService.addMembers,
+    onSuccess: () => {
+      showToast('success', 'Thêm thành công');
+      queryClient.invalidateQueries(['userTour', tourId]);
+    },
     onError: (error: any) => {
+      showToast('error', 'Thêm thất bại');
       console.log('erorr ', JSON.stringify(error));
     },
   });
   const handleAddMember = () => {
     //dữ liệu giả
     console.log('testusser', usersAdd);
-    if (!!usersAdd.length) addMembersTourMutation({members: usersAdd, id: 1});
+    if (!!usersAdd.length)
+      addMembersTourMutation({members: usersAdd, id: tourId});
     else console.log('ban loi');
 
     setOpenModal(false);
