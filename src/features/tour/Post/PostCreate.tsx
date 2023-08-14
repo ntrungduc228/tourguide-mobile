@@ -68,10 +68,8 @@ export const PostCreate = ({
       const alreadyUploaded: any = [];
       listImage.forEach(image => {
         if (image.startsWith('https://')) {
-          console.log('daaa');
           alreadyUploaded.push(image);
         } else {
-          console.log('chuaa');
           uploadPromises.push(uploadImage(image));
         }
       });

@@ -15,6 +15,10 @@ const postService = {
     content: string;
     tourId: number;
   }) => axiosClientPrivate.post(url, post),
+  deletePost: (id: number) => {
+    const link = `${url}/${id}`;
+    return axiosClientPrivate.delete(link);
+  },
 };
 
 export default postService;
