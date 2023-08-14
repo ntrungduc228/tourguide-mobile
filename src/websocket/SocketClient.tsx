@@ -19,31 +19,35 @@ export const SocketClient = ({}: Props): JSX.Element => {
   const id = useSelector((state: IRootState) => state.user.data?.info?.id);
 
   useEffect(() => {
-    const socket = new SockJS(SOCKET_URL);
-    const client = Stomp.over(socket);
-    // client.debug = false;
-    client.connect(
-      {},
-      () => {
-        dispatch(setSocket(client));
-        // client.subscribe('/topic/messages', (message: any) => {
-        //   const receivedMessage = message;
-        //   console.log('received message: ', receivedMessage.body);
-        // });
-        // client.send(
-        //   '/app/message',
-        //   {},
-        //   JSON.stringify('Connect websocket with server'),
-        // );
-      },
-      (err: any) => {
-        console.log(JSON.stringify(err));
-      },
-    );
+    try {
+      const socket = new SockJS(SOCKET_URL);
+      const client = Stomp.over(socket);
+      // client.debug = false;
+      client.connect(
+        {},
+        () => {
+          dispatch(setSocket(client));
+          // client.subscribe('/topic/messages', (message: any) => {
+          //   const receivedMessage = message;
+          //   console.log('received message: ', receivedMessage.body);
+          // });
+          // client.send(
+          //   '/app/message',
+          //   {},
+          //   JSON.stringify('Connect websocket with server'),
+          // );
+        },
+        (err: any) => {
+          console.log(JSON.stringify(err));
+        },
+      );
 
-    return () => {
-      client.disconnect(() => {});
-    };
+      return () => {
+        client.disconnect(() => {});
+      };
+    } catch (err) {
+      console.log('connect_socket: ', err);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
