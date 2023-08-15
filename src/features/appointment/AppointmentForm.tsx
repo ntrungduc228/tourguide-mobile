@@ -11,6 +11,11 @@ import DateTimePicker, {
 import {formatDateTime} from '../../utils/formatDate';
 import AppointmentMember from './AppointmentMember';
 import {ScrollView} from 'react-native-gesture-handler';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import appointmentService from '../../services/appointmentService';
+import useToast from '../../hooks/useToast';
+import {useNavigation} from '@react-navigation/native';
+import routesScreen from '../../navigations/routes';
 
 type Props = {};
 
@@ -25,14 +30,34 @@ export const AppointmentForm = (props: Props) => {
   const [date, setDate] = React.useState(new Date());
   const [mode, setMode] = React.useState<'date' | 'time'>('date');
   const [openDate, setOpenDate] = React.useState(false);
-
+  const tourId = useSelector((state: IRootState) => state.tour.tourId);
+  const {showToast} = useToast();
+  const navigation = useNavigation<Nav>();
+  const queryClient = useQueryClient();
   const initialValues: AppointmentFormValues = {
     content: appointment?.content || '',
     address: appointment?.content || '',
     time: appointment?.time || new Date(),
   };
+  console.log('id', tourId);
+  const {mutate: createAppointment} = useMutation({
+    mutationFn: appointmentService.createAppointment,
+    onSuccess: () => {
+      showToast('success', 'Thêm thành công');
+      navigation.goBack();
+      //  queryClient.invalidateQueries(['userTour', tourId]);
+    },
+    onError: (error: any) => {
+      showToast('error', 'Thêm thất bại');
+      console.log('erorr ', JSON.stringify(error));
+    },
+  });
 
-  const onSubmit = (values: any) => {};
+  const onSubmit = (values: any) => {
+    console.log(values);
+    const {address, content, userIds, time} = values;
+    createAppointment({tourId: tourId!!, address, content, userIds, time});
+  };
 
   const onChangeDate = (
     event: DateTimePickerEvent,
@@ -60,7 +85,11 @@ export const AppointmentForm = (props: Props) => {
             <AntDesign name="close" size={20} color={'#000'} />
           </TouchableOpacity>
           <Text className="font-bold  p-3 text-md text-black">Điểm hẹn</Text>
-          <TouchableOpacity className="p-3 " onPress={() => {}}>
+          <TouchableOpacity
+            className="p-3 "
+            onPress={() => {
+              formik.handleSubmit();
+            }}>
             <Text className="text-md text-black">Tạo</Text>
           </TouchableOpacity>
         </View>

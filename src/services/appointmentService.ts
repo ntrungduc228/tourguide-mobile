@@ -3,7 +3,7 @@ import {axiosClientPrivate} from '../configs/axios';
 const url = '/appointments';
 
 const appointmentService = {
-  getComments: (postId: number) => {
+  getAppointments: (postId: number) => {
     const link = `${url}?post=${postId}`;
     return axiosClientPrivate.get(link);
   },
@@ -14,6 +14,7 @@ const appointmentService = {
     address: string;
     content: string;
     userIds: number[];
+    time: Date;
   }) => axiosClientPrivate.post(url, appointment),
 };
 
