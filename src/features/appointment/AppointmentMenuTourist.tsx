@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {ModalTrigger} from '../../components';
 import {AttendanceList} from '../attendance';
+import {Appointment} from '../../types/appointment';
 
 type Props = {
   visible: boolean;
@@ -40,7 +41,7 @@ export const AppointmentMenuTourist = ({visible, setVisible}: Props) => {
         />
       </Menu>
       <ModalTrigger visible={openModal} setVisible={setOpenModal}>
-        <AttendanceList />
+        <AttendanceList appointment={appointment} />
       </ModalTrigger>
     </View>
   );

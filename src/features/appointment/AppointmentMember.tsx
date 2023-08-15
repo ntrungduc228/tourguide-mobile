@@ -9,12 +9,15 @@ import {TextInput} from 'react-native-paper';
 import {useQuery} from '@tanstack/react-query';
 import userService from '../../services/userService';
 
-type Props = {};
+type Props = {
+  usersAdd: number[];
+  setUsersAdd: (value: number[]) => void;
+};
 
-export const AppointmentMember = (props: Props) => {
+export const AppointmentMember = ({usersAdd, setUsersAdd}: Props) => {
   const [valueInput, setValueInput] = useState<string>('');
   const [usersFind, setUsersFind] = useState<User[]>([]);
-  const [usersAdd, setUsersAdd] = useState<number[]>([]);
+  // const [usersAdd, setUsersAdd] = useState<number[]>([]);
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
 
   useQuery({

@@ -7,8 +7,8 @@ const appointmentService = {
     const link = `${url}/${id}`;
     return axiosClientPrivate.get(link);
   },
-  getPostByTour: (id: number) => axiosClientPrivate.get(`${url}?tour=${id}`),
-  updatePost: (id: number) => axiosClientPrivate.patch(`${url}/${id}`),
+  getMembers: (id: number) => axiosClientPrivate.get(`${id}/members`),
+  // updatePost: (id: number) => axiosClientPrivate.patch(`${url}/${id}`),
   createAppointment: (appointment: {
     tourId: number;
     address: string;

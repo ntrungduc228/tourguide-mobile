@@ -1,21 +1,20 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useFormik} from 'formik';
-import {useSelector} from 'react-redux';
-import {IRootState} from '../../stores';
-import {TextInput, Button} from 'react-native-paper';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
+import {useNavigation} from '@react-navigation/native';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {useFormik} from 'formik';
+import React from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
+import {Button, TextInput} from 'react-native-paper';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useSelector} from 'react-redux';
+import useToast from '../../hooks/useToast';
+import appointmentService from '../../services/appointmentService';
+import {IRootState} from '../../stores';
 import {formatDateTime} from '../../utils/formatDate';
 import AppointmentMember from './AppointmentMember';
-import {ScrollView} from 'react-native-gesture-handler';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import appointmentService from '../../services/appointmentService';
-import useToast from '../../hooks/useToast';
-import {useNavigation} from '@react-navigation/native';
-import routesScreen from '../../navigations/routes';
 
 type Props = {};
 
@@ -27,6 +26,8 @@ interface AppointmentFormValues {
 
 export const AppointmentForm = (props: Props) => {
   const {appointment} = useSelector((state: IRootState) => state.appointment);
+  const [usersIds, setUsersIds] = React.useState<number[]>([]);
+
   const [date, setDate] = React.useState(new Date());
   const [mode, setMode] = React.useState<'date' | 'time'>('date');
   const [openDate, setOpenDate] = React.useState(false);
@@ -54,8 +55,14 @@ export const AppointmentForm = (props: Props) => {
 
   const onSubmit = (values: any) => {
     console.log(values);
-    const {address, content, userIds, time} = values;
-    createAppointment({tourId: tourId!!, address, content, userIds, time});
+    const {address, content, time} = values;
+    createAppointment({
+      tourId: tourId!!,
+      address,
+      content,
+      userIds: usersIds,
+      time,
+    });
   };
 
   const onChangeDate = (
@@ -148,7 +155,7 @@ export const AppointmentForm = (props: Props) => {
           </View>
         </View>
         <View>
-          <AppointmentMember />
+          <AppointmentMember setUsersAdd={setUsersIds} usersAdd={usersIds} />
         </View>
       </View>
     </ScrollView>

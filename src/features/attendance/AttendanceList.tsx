@@ -4,83 +4,34 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {User} from '../../types/user';
 import {MemberCheckItem} from '../tour';
 import {Button} from 'react-native-paper';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../stores';
+import {useQuery} from '@tanstack/react-query';
+import appointmentService from '../../services/appointmentService';
+import {Appointment} from '../../types/appointment';
 
 type Props = {
   setOpenModal: (value: boolean) => void;
+  appointment: Appointment;
 };
 
-const users: User[] = [
-  {
-    id: 1,
-    fullName: 'Nguyen Trung Duc',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 2,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 8,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 3,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 4,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-
-  {
-    id: 5,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 67,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-  {
-    id: 48,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-
-  {
-    id: 57,
-    fullName: 'Nguyen Thi Khanh Vi',
-    avatar:
-      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-    phone: '555-555-5555',
-  },
-];
-
-export const AttendanceList = ({setOpenModal}: Props) => {
+export const AttendanceList = ({setOpenModal, appointment}: Props) => {
   const handleAttendanceMembers = () => {};
 
   const [usersAdd, setUsersAdd] = useState<number[]>([]);
+  console.log('t', appointment);
+  const {data: appointmentMembers} = useQuery({
+    queryKey: ['appointmentMembers', appointment?.id],
+    queryFn: () => appointmentService.getMembers(appointment.id!!),
+    enabled: !!appointment?.id,
+    onSuccess: data => {
+      // console.log('dataa', data);
+      //  setComments(data?.data);
+    },
+    onError(err) {
+      console.log('eee', err);
+    },
+  });
   return (
     <View className="bg-white px-2 w-full rounded-md mx-auto">
       <View className="flex-row justify-between items-center border-b-0.5 border-[#DEDEDE]">
@@ -94,8 +45,8 @@ export const AttendanceList = ({setOpenModal}: Props) => {
       </View>
       <View className="max-h-[200] bg-slate-100 ">
         <ScrollView>
-          {!!users?.length ? (
-            users?.map((user: User) => (
+          {!!appointmentMembers?.data?.length ? (
+            appointmentMembers?.data?.map((user: User) => (
               <MemberCheckItem
                 key={user.id}
                 user={user}

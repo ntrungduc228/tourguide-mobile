@@ -1,17 +1,14 @@
-import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 
-import {RouteProp} from '@react-navigation/native';
-import {ParamListBase} from '@react-navigation/native';
-import {formatDateTime} from '../../utils/formatDate';
-import {Appointment} from '../../types/appointment';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import AppointmentMenuTourGuide from './AppointmentMenuTourGuide';
 import {useSelector} from 'react-redux';
 import {IRootState} from '../../stores';
-import AppointmentMenuTourist from './AppointmentMenuTourist';
+import {Appointment} from '../../types/appointment';
+import {formatDateTime} from '../../utils/formatDate';
 import {verifyTourist} from '../../utils/verifyRole';
+import AppointmentMenuTourGuide from './AppointmentMenuTourGuide';
+import AppointmentMenuTourist from './AppointmentMenuTourist';
 
 type AppoimentItemScreenProps = {
   appointment: Appointment;
@@ -35,6 +32,7 @@ export const AppointmentItem = ({appointment}: AppoimentItemScreenProps) => {
       <AppointmentMenuTourGuide
         setVisible={setVisibleOptions}
         visible={visibleOptions}
+        appointment={appointment}
       />
     );
   }
