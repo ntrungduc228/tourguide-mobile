@@ -49,6 +49,16 @@ export const AttendanceList = ({setOpenModal, appointment}: Props) => {
     updateAttendance({id: appointment.id!!, userIds: usersAdd});
     setOpenModal(false);
   };
+
+  const handleAddAll = () => {
+    const temp: number[] = [];
+    appointmentMembers?.data?.map((attendances: Attendance) =>
+      temp.push(attendances.user?.id!!),
+    );
+    setUsersAdd(temp);
+    console.log(temp);
+  };
+
   return (
     <View className="bg-white px-2 w-full rounded-md mx-auto">
       <View className="flex-row justify-between items-center border-b-0.5 border-[#DEDEDE]">
@@ -56,7 +66,11 @@ export const AttendanceList = ({setOpenModal, appointment}: Props) => {
           <AntDesign name="close" size={20} color={'#000'} />
         </TouchableOpacity>
         <Text className="font-bold  p-3 text-md text-black">Điểm danh</Text>
-        <TouchableOpacity className="p-3 " onPress={() => {}}>
+        <TouchableOpacity
+          className="p-3 "
+          onPress={() => {
+            handleAddAll();
+          }}>
           <Text className="text-md text-black">Chọn tất cả</Text>
         </TouchableOpacity>
       </View>

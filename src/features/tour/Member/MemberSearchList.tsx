@@ -50,8 +50,17 @@ export const MemberCheckItem = ({
 }) => {
   const [checked, setChecked] = React.useState(false);
   useEffect(() => {
+    if (usersAdd.includes(user.id!!)) {
+      setChecked(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usersAdd]);
+  useEffect(() => {
     if (checked) {
       setUsersAdd(!!usersAdd.length ? [user.id!!, ...usersAdd] : [user.id!!]);
+    } else {
+      const temp = usersAdd.filter(item => item !== user.id);
+      setUsersAdd(temp);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checked]);
