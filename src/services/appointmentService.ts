@@ -16,6 +16,8 @@ const appointmentService = {
     userIds: number[];
     time: Date;
   }) => axiosClientPrivate.post(url, appointment),
+  updateAttendance: (data: {id: number; userIds: number[]}) =>
+    axiosClientPrivate.patch(`${url}/attend`, data),
 };
 
 export default appointmentService;

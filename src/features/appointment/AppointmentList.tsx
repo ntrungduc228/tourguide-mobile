@@ -1,16 +1,17 @@
-import {View, Text, FlatList} from 'react-native';
-import React, {useState} from 'react';
-import {ScreenBackLayout} from '../../screens/components';
-import {RouteProp, useNavigation} from '@react-navigation/native';
-import {ParamListBase} from '@react-navigation/native';
-import AppointmentItem from './AppointmentItem';
-import {Button} from 'react-native-paper';
-import {ModalTrigger} from '../../components';
-import AppointmentForm from './AppointmentForm';
-import routesScreen from '../../navigations/routes';
+import {
+  ParamListBase,
+  RouteProp,
+  useNavigation,
+} from '@react-navigation/native';
 import {useQuery} from '@tanstack/react-query';
+import React, {useState} from 'react';
+import {FlatList, Text, View} from 'react-native';
+import {Button} from 'react-native-paper';
 import {useSelector} from 'react-redux';
+import routesScreen from '../../navigations/routes';
 import appointmentService from '../../services/appointmentService';
+import {IRootState} from '../../stores';
+import AppointmentItem from './AppointmentItem';
 
 type AppoimentListScreenRouteProp = RouteProp<ParamListBase, string>;
 
@@ -24,7 +25,7 @@ export const AppointmentList = ({}: AppoimentListScreenProps) => {
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
   const {data: appointmentList} = useQuery({
     queryKey: ['appointmentList', tourId],
-    queryFn: () => appointmentService.getAppointments(tourId),
+    queryFn: () => appointmentService.getAppointments(tourId!!),
     enabled: !!tourId,
     onSuccess: data => {
       // console.log('dataa', data);

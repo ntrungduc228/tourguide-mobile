@@ -1,15 +1,13 @@
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import React, {useState} from 'react';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {User} from '../../types/user';
-import {MemberCheckItem} from '../tour';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {Button} from 'react-native-paper';
-import {useSelector} from 'react-redux';
-import {IRootState} from '../../stores';
-import {useQuery} from '@tanstack/react-query';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import useToast from '../../hooks/useToast';
 import appointmentService from '../../services/appointmentService';
 import {Appointment} from '../../types/appointment';
 import {Attendance} from '../../types/attendance';
+import {MemberCheckItem} from '../tour';
 
 type Props = {
   setOpenModal: (value: boolean) => void;
@@ -17,8 +15,8 @@ type Props = {
 };
 
 export const AttendanceList = ({setOpenModal, appointment}: Props) => {
-  const handleAttendanceMembers = () => {};
-
+  const {showToast} = useToast();
+  const queryClient = useQueryClient();
   const [usersAdd, setUsersAdd] = useState<number[]>([]);
   console.log('t', appointment);
   const {data: appointmentMembers} = useQuery({
@@ -27,6 +25,7 @@ export const AttendanceList = ({setOpenModal, appointment}: Props) => {
     enabled: !!appointment?.id,
     onSuccess: data => {
       console.log('ttt', data);
+
       // console.log('dataa', data);
       //  setComments(data?.data);
     },
@@ -34,7 +33,22 @@ export const AttendanceList = ({setOpenModal, appointment}: Props) => {
       console.log('eee', err);
     },
   });
-
+  const {mutate: updateAttendance} = useMutation({
+    mutationFn: appointmentService.updateAttendance,
+    onError: (error: any) => {
+      showToast('error', 'Duyệt thất bại');
+      console.log('erorr ', JSON.stringify(error));
+    },
+    onSuccess: data => {
+      showToast('success', 'Duyệt thành công');
+      queryClient.invalidateQueries(['appointmentMembers', appointment?.id]);
+      //handleDeleteMembers();
+    },
+  });
+  const handleAttendanceMembers = () => {
+    updateAttendance({id: appointment.id!!, userIds: usersAdd});
+    setOpenModal(false);
+  };
   return (
     <View className="bg-white px-2 w-full rounded-md mx-auto">
       <View className="flex-row justify-between items-center border-b-0.5 border-[#DEDEDE]">
