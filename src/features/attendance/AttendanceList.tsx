@@ -9,6 +9,7 @@ import {IRootState} from '../../stores';
 import {useQuery} from '@tanstack/react-query';
 import appointmentService from '../../services/appointmentService';
 import {Appointment} from '../../types/appointment';
+import {Attendance} from '../../types/attendance';
 
 type Props = {
   setOpenModal: (value: boolean) => void;
@@ -25,6 +26,7 @@ export const AttendanceList = ({setOpenModal, appointment}: Props) => {
     queryFn: () => appointmentService.getMembers(appointment.id!!),
     enabled: !!appointment?.id,
     onSuccess: data => {
+      console.log('ttt', data);
       // console.log('dataa', data);
       //  setComments(data?.data);
     },
@@ -32,6 +34,7 @@ export const AttendanceList = ({setOpenModal, appointment}: Props) => {
       console.log('eee', err);
     },
   });
+
   return (
     <View className="bg-white px-2 w-full rounded-md mx-auto">
       <View className="flex-row justify-between items-center border-b-0.5 border-[#DEDEDE]">
@@ -45,11 +48,11 @@ export const AttendanceList = ({setOpenModal, appointment}: Props) => {
       </View>
       <View className="max-h-[200] bg-slate-100 ">
         <ScrollView>
-          {!!appointmentMembers?.data?.length ? (
-            appointmentMembers?.data?.map((user: User) => (
+          {!!appointmentMembers?.data.length ? (
+            appointmentMembers?.data?.map((attendances: Attendance) => (
               <MemberCheckItem
-                key={user.id}
-                user={user}
+                key={attendances.id}
+                user={attendances.user!!}
                 setUsersAdd={setUsersAdd}
                 usersAdd={usersAdd}
               />
