@@ -3,8 +3,8 @@ import {axiosClientPrivate} from '../configs/axios';
 const url = '/appointments';
 
 const appointmentService = {
-  getAppointments: (postId: number) => {
-    const link = `${url}?post=${postId}`;
+  getAppointments: (id: number) => {
+    const link = `${url}/${id}`;
     return axiosClientPrivate.get(link);
   },
   getPostByTour: (id: number) => axiosClientPrivate.get(`${url}?tour=${id}`),

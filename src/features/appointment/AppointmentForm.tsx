@@ -39,13 +39,12 @@ export const AppointmentForm = (props: Props) => {
     address: appointment?.content || '',
     time: appointment?.time || new Date(),
   };
-  console.log('id', tourId);
   const {mutate: createAppointment} = useMutation({
     mutationFn: appointmentService.createAppointment,
     onSuccess: () => {
       showToast('success', 'Thêm thành công');
+      queryClient.invalidateQueries(['appointmentList', tourId]);
       navigation.goBack();
-      //  queryClient.invalidateQueries(['userTour', tourId]);
     },
     onError: (error: any) => {
       showToast('error', 'Thêm thất bại');

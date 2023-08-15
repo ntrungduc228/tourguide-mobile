@@ -8,6 +8,9 @@ import {Button} from 'react-native-paper';
 import {ModalTrigger} from '../../components';
 import AppointmentForm from './AppointmentForm';
 import routesScreen from '../../navigations/routes';
+import {useQuery} from '@tanstack/react-query';
+import {useSelector} from 'react-redux';
+import appointmentService from '../../services/appointmentService';
 
 type AppoimentListScreenRouteProp = RouteProp<ParamListBase, string>;
 
@@ -15,63 +18,23 @@ type AppoimentListScreenProps = {
   route: AppoimentListScreenRouteProp;
 };
 
-const appointments = {
-  data: [
-    {
-      id: 1,
-      time: new Date(),
-      content: 'tao diem hen',
-      address: 'Hoc vien cong nghe buu chinh vien thong',
-    },
-    {
-      id: 2,
-      time: new Date(),
-      content: 'tao diem hen',
-      address: 'Hoc vien cong nghe buu chinh vien thong',
-    },
-    {
-      id: 3,
-      time: new Date(),
-      content: 'tao diem hen',
-      address: 'Hoc vien cong nghe buu chinh vien thong',
-    },
-    {
-      id: 4,
-      time: new Date(),
-      content: 'tao diem hen',
-      address: 'Hoc vien cong nghe buu chinh vien thong',
-    },
-    {
-      id: 14,
-      time: new Date(),
-      content: 'tao diem hen',
-      address: 'Hoc vien cong nghe buu chinh vien thong',
-    },
-    {
-      id: 25,
-      time: new Date(),
-      content: 'tao diem hen',
-      address: 'Hoc vien cong nghe buu chinh vien thong',
-    },
-    {
-      id: 36,
-      time: new Date(),
-      content: 'tao diem hen',
-      address: 'Hoc vien cong nghe buu chinh vien thong',
-    },
-    {
-      id: 46,
-      time: new Date(),
-      content: 'tao diem hen',
-      address: 'Hoc vien cong nghe buu chinh vien thong',
-    },
-  ],
-};
-
 export const AppointmentList = ({}: AppoimentListScreenProps) => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const navigation = useNavigation<Nav>();
-
+  const tourId = useSelector((state: IRootState) => state.tour.tourId);
+  const {data: appointmentList} = useQuery({
+    queryKey: ['appointmentList', tourId],
+    queryFn: () => appointmentService.getAppointments(tourId),
+    enabled: !!tourId,
+    onSuccess: data => {
+      // console.log('dataa', data);
+      //  setComments(data?.data);
+    },
+    onError(err) {
+      console.log('eee', err);
+    },
+  });
+  console.log('list', appointmentList?.data);
   return (
     <View className="bg-emerald-100 h-full">
       <View>
@@ -84,12 +47,12 @@ export const AppointmentList = ({}: AppoimentListScreenProps) => {
       </View>
       <View className="py-3 flex-1">
         <FlatList
-          data={appointments?.data}
+          data={appointmentList?.data}
           renderItem={({item}) => <AppointmentItem appointment={item} />}
-          keyExtractor={item => `${item.id}`}
+          keyExtractor={(item, index) => `${index}`}
           ListEmptyComponent={
             <View className="flex-1 items-center justify-center">
-              <Text className="text-gray-500">Chua co bai dang</Text>
+              <Text className="text-gray-500">Chưa có điểm hẹn</Text>
             </View>
           }
         />
