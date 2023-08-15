@@ -51,6 +51,7 @@ export const AppointmentForm = (props: Props) => {
     // enableReinitialize: true,
     onSubmit: onSubmit,
   });
+
   return (
     <ScrollView>
       <View className="bg-white h-full">
