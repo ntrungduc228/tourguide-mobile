@@ -31,6 +31,8 @@ import {
 import Toast from 'react-native-toast-message';
 
 import authService from './src/services/authService';
+import axios from 'axios';
+import {axiosClient} from './src/configs/axios';
 
 const queryClient = new QueryClient();
 
@@ -41,6 +43,14 @@ function AppScreen(): JSX.Element {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    const checkCallAPI = async () => {
+      const data = await axiosClient.get(
+        `https://jsonplaceholder.typicode.com/posts/1`,
+      );
+      // console.log('data check all ', data?.id);
+    };
+    checkCallAPI();
+
     checkIsLogin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isLogin]);
@@ -74,7 +84,10 @@ function AppScreen(): JSX.Element {
     queryFn: authService.getAuthInfo,
     enabled: isLogin,
     onSuccess: data => {
-      // console.log('user info data', data);
+      console.log(
+        'user info:',
+        data?.data?.fullName + ' role is ' + data?.data?.role,
+      );
       dispatch(updateUserInfo(data.data));
     },
     onError: (error: any) => {},
@@ -86,7 +99,7 @@ function AppScreen(): JSX.Element {
       {/* <MainStackNavigator /> */}
       {/* <AuthStackNavigator /> */}
       {isLogin ? <MainStackNavigator /> : <AuthStackNavigator />}
-      {isLogin && <SocketClient />}
+      {/* {isLogin && <SocketClient />} */}
       <Toast position="top" topOffset={50} onPress={() => Toast.hide()} />
     </NavigationContainer>
     // </SafeAreaView>

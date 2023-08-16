@@ -1,25 +1,46 @@
-import {View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity, Keyboard} from 'react-native';
 import {TextInput} from 'react-native-paper';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import commentService from '../../../services/commentService';
 import {Comment} from '../../../types/comment';
 
 type CommentInputProps = {
-  comments: Comment[];
-  setComments: (comments: Comment[]) => void;
+  // comments: Comment[];
+  // setComments: (comments: Comment[]) => void;
   setCommentParent: (comments: Comment | null) => void;
   commentParent: Comment | null;
+  postId: number;
+
+  // handleCreate: () => void;
 };
 
 export const CommentInput = ({
-  comments,
-  setComments,
-  commentParent,
+  // comments,
   setCommentParent,
-}: CommentInputProps) => {
+  commentParent,
+  postId,
+}: // setComments,
+// handleCreate,
+CommentInputProps) => {
   const [textValue, setTextValue] = useState('');
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus(true);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+  const queryClient = useQueryClient();
 
   const {mutate: createComment} = useMutation({
     mutationFn: commentService.createComment,
@@ -27,25 +48,32 @@ export const CommentInput = ({
       console.log('erorr ', JSON.stringify(error));
     },
     onSuccess: data => {
-      setComments([data?.data, ...comments]);
+      queryClient.invalidateQueries(['comments', 11]);
+      // setComments([data?.data, ...comments]);
       //handleDeleteMembers();
     },
   });
   const handleCreateComment = () => {
-    if (!!textValue) {
+    if (textValue && postId !== -1) {
       //dữ liệu giả
-      if (!!commentParent) {
+      if (commentParent) {
         createComment({
           content: textValue,
-          postId: 1,
-          parentId: commentParent.id,
+          postId: postId,
+          parentId: commentParent?.id,
         });
       } else {
-        createComment({content: textValue, postId: 1});
+        createComment({content: textValue, postId: postId});
       }
       setTextValue('');
       setCommentParent(null);
     }
+
+    // createComment({
+    //   content: 'comment id 46',
+    //   postId: 11,
+    //   parentId: 2,
+    // });
   };
   return (
     <View className="p-0 mb-1 border-t-0.5">

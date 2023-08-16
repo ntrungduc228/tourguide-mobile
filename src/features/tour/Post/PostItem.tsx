@@ -9,18 +9,14 @@ import {useMutation, useQueryClient} from '@tanstack/react-query';
 import postService from '../../../services/postService';
 import {useSelector} from 'react-redux';
 import {IRootState} from '../../../stores';
+import {CommentList} from '../Comment';
 
 type PostItemProps = {
   post: Post;
-  openComment: boolean;
-  setOpenComment: (value: boolean) => void;
+  setPostIdComment: (value: number) => void;
 };
 
-export const PostItem = ({
-  post,
-  openComment,
-  setOpenComment,
-}: PostItemProps) => {
+export const PostItem = ({post, setPostIdComment}: PostItemProps) => {
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
   const [visible, setVisible] = useState<boolean>(false);
   const queryClient = useQueryClient();
@@ -76,7 +72,7 @@ export const PostItem = ({
         </Text>
       </View>
       <View className="flex flex-row items-center px-[12] ">
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             likePost({id: post.id!!, likes: 1});
           }}>
@@ -93,10 +89,10 @@ export const PostItem = ({
             // className="border-8 border-black"
           />
         </TouchableOpacity>
-        <Text className="ml-1 text-black">{post.likes}</Text>
+        <Text className="ml-1 text-black">{post.likes}</Text> */}
         <TouchableOpacity
           className="ml-5"
-          onPress={() => setOpenComment(!openComment)}>
+          onPress={() => setPostIdComment(post?.id || -1)}>
           <Ionic name="chatbubble-outline" size={27} />
         </TouchableOpacity>
         <Text className="ml-1 text-black">12</Text>

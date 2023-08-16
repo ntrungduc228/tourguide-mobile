@@ -35,7 +35,7 @@ export const AppointmentList = ({}: AppoimentListScreenProps) => {
       console.log('eee', err);
     },
   });
-  console.log('list', appointmentList?.data);
+  // console.log('list', appointmentList?.data);
   return (
     <View className="bg-emerald-100 h-full">
       <View>

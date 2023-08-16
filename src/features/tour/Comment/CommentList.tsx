@@ -10,137 +10,84 @@ import {useQuery} from '@tanstack/react-query';
 import commentService from '../../../services/commentService';
 
 type CommentListProps = {
-  setOpenComment: (value: boolean) => void;
+  setPostIdComment: (value: number) => void;
+  postIdComment: number;
 };
 
-export const CommentList = ({setOpenComment}: CommentListProps) => {
-  const commentsT: Comment[] = [
-    {
-      id: 1,
-      postId: 1,
-      content: 'comment 1',
-      isDelete: false,
-      parentId: null,
-    },
-    {
-      id: 2,
-      content: 'comment 2',
-      isDelete: false,
-      postId: 1,
-      parentId: 1,
-    },
-    {
-      id: 3,
-      content: 'comment 3',
-      isDelete: false,
-      postId: 1,
-      parentId: 1,
-    },
-    {
-      id: 4,
-      content: 'comment 4',
-      isDelete: false,
-      postId: 1,
-      parentId: 2,
-    },
-    {
-      id: 5,
-      postId: 1,
-      content: 'comment 1',
-      isDelete: false,
-      parentId: null,
-    },
-    {
-      id: 6,
-      content: 'comment 2',
-      isDelete: false,
-      postId: 1,
-      parentId: 5,
-    },
-    {
-      id: 7,
-      content: 'comment 3',
-      isDelete: false,
-      postId: 1,
-      parentId: 5,
-    },
-    {
-      id: 8,
-      content: 'comment 4',
-      isDelete: false,
-      postId: 1,
-      parentId: 6,
-    },
-    {
-      id: 9,
-      content: 'comment 4',
-      isDelete: false,
-      postId: 1,
-      parentId: null,
-    },
-    {
-      id: 10,
-      content: 'comment 4',
-      isDelete: false,
-      postId: 1,
-      parentId: null,
-    },
-    {
-      id: 11,
-      content: 'comment 4',
-      isDelete: false,
-      postId: 1,
-      parentId: null,
-    },
-    {
-      id: 12,
-      content: 'comment 4',
-      isDelete: false,
-      postId: 1,
-      parentId: null,
-    },
-    {
-      id: 13,
-      content: 'comment 41231',
-      isDelete: false,
-      postId: 1,
-      parentId: 2,
-    },
-  ];
+// const commentsT: Comment[] = [
+//   {
+//     id: 1,
+//     postId: 1,
+//     content: 'comment 1',
+//     isDelete: false,
+//     parentId: null,
+//   },
+//   {
+//     id: 2,
+//     content: 'comment 2',
+//     isDelete: false,
+//     postId: 1,
+//     parentId: 1,
+//   },
+//   {
+//     id: 3,
+//     content: 'comment 3',
+//     isDelete: false,
+//     postId: 1,
+//     parentId: 1,
+//   },
+//   {
+//     id: 4,
+//     content: 'comment 4',
+//     isDelete: false,
+//     postId: 1,
+//     parentId: 2,
+//   },
+//   // {
+//   //   id: 46,
+//   //   content: 'comment id 46',
+//   //   isDelete: false,
+//   //   postId: 1,
+//   //   parentId: 2,
+//   // },
+// ];
 
-  const [comments, setComments] = useState<Comment[]>([]);
-  //const commentList = generateComment(comments);
+export const CommentList = ({
+  postIdComment,
+  setPostIdComment,
+}: CommentListProps) => {
   const [commentParent, setCommentParent] = useState<Comment | null>(null);
-  const commentList = useMemo(() => {
-    return generateComment(comments);
-  }, [comments]);
 
-  //dữ liệu giả
   const {data: commentL} = useQuery({
-    queryKey: ['comments', 1],
-    queryFn: () => commentService.getComments(1),
-    //enabled: !!tourId,
+    queryKey: ['comments', postIdComment],
+    queryFn: () => commentService.getComments(postIdComment),
+    enabled: postIdComment !== -1,
     onSuccess: data => {
-      console.log('dataa', data);
-      setComments(data?.data);
+      // console.log('dataa', data);
     },
     onError(err) {
       console.log('eee', err);
     },
   });
+
+  const comments = useMemo(
+    () => generateComment(commentL?.data),
+    [commentL?.data],
+  );
+
   return (
-    <CommentLayout setOpenComment={setOpenComment}>
+    <CommentLayout setPostIdComment={setPostIdComment}>
       <View className="h-full">
         <FlatList
-          data={commentList}
+          data={comments}
           renderItem={({item}) => (
             <>
               <CommentItem
                 key={item.id}
                 comment={item}
-                comments={comments}
-                setComments={setComments}
                 setCommentParent={setCommentParent}
+                // comments={comments}
+                // setComments={setComments}
               />
               {/* {item?.children?.length &&
               item.children?.map((child: Comment) => (
@@ -187,8 +134,10 @@ export const CommentList = ({setOpenComment}: CommentListProps) => {
         )}
 
         <CommentInput
-          comments={comments}
-          setComments={setComments}
+          // handleCreate={handleCreate}
+          // comments={comments}
+          // setComments={setComments}
+          postId={postIdComment}
           commentParent={commentParent}
           setCommentParent={setCommentParent}
         />

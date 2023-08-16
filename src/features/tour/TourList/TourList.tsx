@@ -12,6 +12,19 @@ import {IRootState} from '../../../stores';
 
 type TourListProps = {};
 
+// const tours: {data: Tour[]} = {
+//   data: [
+//     {
+//       id: 1,
+//       name: 'Tou moi',
+//       description:
+//         'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
+//       destinations: [],
+//       isProgress: false,
+//     },
+//   ],
+// };
+
 // const tours: Tour[] = [
 //   {
 //     id: 1,
@@ -113,7 +126,7 @@ export const TourList = ({}: TourListProps) => {
   });
 
   useEffect(() => {
-    console.log('use r', user);
+    // console.log('use r', user);
     const topic = `/topic/tours/${user?.id}/update`;
     if (socket) {
       socket.subscribe(topic, (payload: any) => {

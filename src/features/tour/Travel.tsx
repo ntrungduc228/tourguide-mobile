@@ -49,7 +49,7 @@ export const Travel = ({route}: TravelProps) => {
   // console.log('tourId travel ', tourId);
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('v t', tourId);
+    // console.log('v t', tourId);
     dispatch(setTourId(tourId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tourId]);

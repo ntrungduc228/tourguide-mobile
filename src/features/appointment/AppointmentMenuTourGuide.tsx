@@ -18,7 +18,7 @@ export const AppointmentMenuTourGuide = ({
   appointment,
 }: Props) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  console.log('aa', appointment);
+  // console.log('aa', appointment);
   return (
     <View
       // eslint-disable-next-line react-native/no-inline-styles

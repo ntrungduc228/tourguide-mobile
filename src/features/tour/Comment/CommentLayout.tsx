@@ -11,7 +11,7 @@ import {WINDOW_HEIGHT} from '../../../utils';
 import CommentInput from './CommentInput';
 
 type CommentLayoutProps = PropsWithChildren<{
-  setOpenComment: (value: boolean) => void;
+  setPostIdComment: (value: number) => void;
 }>;
 
 const BOTTOM_SHEET_MAX_HEIGHT = WINDOW_HEIGHT * 0.73;
@@ -25,7 +25,7 @@ const MAX_UPWARD_TRANSLATE_Y = FIRST_SHEET_HEIGHT - BOTTOM_SHEET_MAX_HEIGHT;
 const MAX_DOWNWARD_TRANSLATE_Y = FIRST_SHEET_HEIGHT - BOTTOM_SHEET_MIN_HEIGHT;
 
 export const CommentLayout = ({
-  setOpenComment,
+  setPostIdComment,
   children,
 }: CommentLayoutProps) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
@@ -44,7 +44,7 @@ export const CommentLayout = ({
         if (lastGestureDy.current < MAX_UPWARD_TRANSLATE_Y) {
           lastGestureDy.current = MAX_UPWARD_TRANSLATE_Y;
         } else if (lastGestureDy.current > MAX_DOWNWARD_TRANSLATE_Y) {
-          setOpenComment(false);
+          setPostIdComment(-1);
           lastGestureDy.current = MAX_DOWNWARD_TRANSLATE_Y;
         }
       },
@@ -65,7 +65,7 @@ export const CommentLayout = ({
 
   useEffect(() => {
     return () => {
-      setOpenComment(false);
+      // setOpenComment(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

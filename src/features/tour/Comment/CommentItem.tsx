@@ -6,15 +6,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 type CommentItemProps = {
   comment: Comment;
-  comments: Comment[];
-  setComments: (comments: Comment[]) => void;
-  setCommentParent: (comment: Comment) => void;
+  // comments: Comment[];
+  // setComments: (comments: Comment[]) => void;
+  setCommentParent: (comment: Comment | null) => void;
 };
 
 export const CommentItem = ({
   comment,
-  comments,
-  setComments,
+  // setComments,
   setCommentParent,
 }: CommentItemProps) => {
   const [openChild, setOpenChild] = useState<boolean>(false);
@@ -24,8 +23,8 @@ export const CommentItem = ({
         openChild={openChild}
         setOpenChild={setOpenChild}
         comment={comment}
-        comments={comments}
-        setComments={setComments}
+        // comments={comments}
+        // setComments={setComments}
         setCommentParent={setCommentParent}
       />
       {openChild &&
@@ -34,8 +33,8 @@ export const CommentItem = ({
           <View className="ml-10" key={child.id}>
             <CommentItem
               comment={child}
-              comments={comments}
-              setComments={setComments}
+              // comments={comments}
+              // setComments={setComments}
               setCommentParent={setCommentParent}
             />
           </View>
@@ -50,16 +49,16 @@ export const CommentContent = ({
   comment,
   openChild,
   setOpenChild,
-  comments,
-  setComments,
   setCommentParent,
-}: {
+}: // comments,
+// setComments,
+{
   comment: Comment;
   openChild: boolean;
   setOpenChild: (value: boolean) => void;
-  comments: Comment[];
-  setComments: (comments: Comment[]) => void;
-  setCommentParent: (comment: Comment) => void;
+  // comments: Comment[];
+  // setComments: (comments: Comment[]) => void;
+  setCommentParent: (comment: Comment | null) => void;
 }) => {
   return (
     <View className="flex flex-row my-1">

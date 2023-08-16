@@ -45,17 +45,14 @@ export const PostList = ({route}: PostListProps) => {
   });
 
   const [openComment, setOpenComment] = useState<boolean>(false);
+  const [postIdComment, setPostIdComment] = useState<number>(-1);
   const [openModal, setOpenModal] = useState<boolean>(false);
   return (
     <View className="bg-white flex-1 h-full">
       <FlatList
         data={posts?.data}
         renderItem={({item}) => (
-          <PostItem
-            setOpenComment={setOpenComment}
-            openComment={openComment}
-            post={item}
-          />
+          <PostItem setPostIdComment={setPostIdComment} post={item} />
         )}
         keyExtractor={item => `${item.id}`}
         ListEmptyComponent={
@@ -64,7 +61,12 @@ export const PostList = ({route}: PostListProps) => {
           </View>
         }
       />
-      {openComment && <CommentList setOpenComment={setOpenComment} />}
+      {postIdComment !== -1 && (
+        <CommentList
+          postIdComment={postIdComment}
+          setPostIdComment={setPostIdComment}
+        />
+      )}
       <ModalTrigger
         visible={openModal}
         setVisible={setOpenModal}
