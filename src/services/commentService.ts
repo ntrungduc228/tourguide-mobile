@@ -14,6 +14,8 @@ const commentService = {
     content: string;
     parentId?: number;
   }) => axiosClientPrivate.post(url, comment),
+  updateComment: (comment: {id: number; content: string}) =>
+    axiosClientPrivate.patch(url, comment),
 };
 
 export default commentService;

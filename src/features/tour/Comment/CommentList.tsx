@@ -57,7 +57,7 @@ export const CommentList = ({
   setPostIdComment,
 }: CommentListProps) => {
   const [commentParent, setCommentParent] = useState<Comment | null>(null);
-
+  const [textEdit, setTextEdit] = useState<string>('');
   const {data: commentL} = useQuery({
     queryKey: ['comments', postIdComment],
     queryFn: () => commentService.getComments(postIdComment),
@@ -86,8 +86,6 @@ export const CommentList = ({
                 key={item.id}
                 comment={item}
                 setCommentParent={setCommentParent}
-                // comments={comments}
-                // setComments={setComments}
               />
               {/* {item?.children?.length &&
               item.children?.map((child: Comment) => (

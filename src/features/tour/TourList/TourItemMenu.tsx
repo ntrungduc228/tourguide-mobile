@@ -43,7 +43,7 @@ export const TourItemMenu = ({visible, setVisible, tour}: Props) => {
     },
   });
   const handleClick = () => {
-    if (!!tour.isProgress) {
+    if (tour.isProgress) {
       endTour(tour.id!!);
     } else {
       beginTour(tour.id!!);

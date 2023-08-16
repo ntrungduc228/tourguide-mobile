@@ -3,17 +3,19 @@ import React, {useState} from 'react';
 import {Avatar} from '../../../components';
 import {Comment} from '../../../types/comment';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import CommentMenu from './CommentMenu';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
 
 type CommentItemProps = {
   comment: Comment;
-  // comments: Comment[];
-  // setComments: (comments: Comment[]) => void;
+
   setCommentParent: (comment: Comment | null) => void;
 };
 
 export const CommentItem = ({
   comment,
-  // setComments,
+
   setCommentParent,
 }: CommentItemProps) => {
   const [openChild, setOpenChild] = useState<boolean>(false);
@@ -23,20 +25,13 @@ export const CommentItem = ({
         openChild={openChild}
         setOpenChild={setOpenChild}
         comment={comment}
-        // comments={comments}
-        // setComments={setComments}
         setCommentParent={setCommentParent}
       />
       {openChild &&
         comment?.children?.length &&
         comment.children?.map((child: Comment) => (
           <View className="ml-10" key={child.id}>
-            <CommentItem
-              comment={child}
-              // comments={comments}
-              // setComments={setComments}
-              setCommentParent={setCommentParent}
-            />
+            <CommentItem comment={child} setCommentParent={setCommentParent} />
           </View>
         ))}
     </ScrollView>
@@ -50,29 +45,42 @@ export const CommentContent = ({
   openChild,
   setOpenChild,
   setCommentParent,
-}: // comments,
-// setComments,
+}: // setComments,
 {
   comment: Comment;
   openChild: boolean;
   setOpenChild: (value: boolean) => void;
-  // comments: Comment[];
-  // setComments: (comments: Comment[]) => void;
   setCommentParent: (comment: Comment | null) => void;
 }) => {
+  const [visible, setVisible] = useState<boolean>(false);
+  const user = useSelector((state: IRootState) => state.user?.data?.info);
   return (
     <View className="flex flex-row my-1">
       <View>
         <Avatar
-          src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+          src={
+            comment?.user?.avatar ||
+            'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png'
+          }
           className="h-[30] w-[30]"
         />
       </View>
       <View className="ml-2 flex-1">
         <Text className="break-all font-bold text-black">
-          Nguyuen trung duc
+          {comment?.user?.fullName}
         </Text>
-        <Text className="break-all">{comment?.content}</Text>
+        <View className="flex-1 flex-row flex justify-between">
+          <Text className="break-all">{comment?.content}</Text>
+          {user?.id && user?.id === comment?.user?.id && (
+            <View className="mr-3">
+              <CommentMenu
+                comment={comment}
+                visible={visible}
+                setVisible={setVisible}
+              />
+            </View>
+          )}
+        </View>
         <View className="flex flex-row items-center">
           <TouchableOpacity
             className="mt-1.5"

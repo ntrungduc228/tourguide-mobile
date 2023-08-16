@@ -4,14 +4,25 @@ import {Comment} from '../../types/comment';
 const initialState: {
   list: Comment[];
   commentsByParentId: {[replyId: number]: Comment[]};
+  comment: Comment | null;
+  isEdit: boolean;
 } = {
   list: [],
   commentsByParentId: {},
+  comment: null,
+  isEdit: false,
 };
 const commentSlice = createSlice({
   name: 'comment',
   initialState,
   reducers: {
+    setComment: (state, action) => {
+      state.comment = action.payload.comment;
+      state.isEdit = action.payload.isEdit;
+    },
+    setIsEditComment: (state, action) => {
+      state.isEdit = action.payload;
+    },
     setComments: (state, action) => {
       state.list = action.payload;
       state.commentsByParentId = commentsByParentId(action.payload);
@@ -35,8 +46,14 @@ const commentSlice = createSlice({
   },
 });
 
-export const {setComments, addComment, removeComment, updateComment} =
-  commentSlice.actions;
+export const {
+  setComments,
+  setComment,
+  addComment,
+  removeComment,
+  updateComment,
+  setIsEditComment,
+} = commentSlice.actions;
 
 const commentReducer = commentSlice.reducer;
 export default commentReducer;
