@@ -57,6 +57,7 @@ export const CommentList = ({
   setPostIdComment,
 }: CommentListProps) => {
   const [commentParent, setCommentParent] = useState<Comment | null>(null);
+  const [commentEdit, setCommentEdit] = useState<Comment | null>(null);
   const [textEdit, setTextEdit] = useState<string>('');
   const {data: commentL} = useQuery({
     queryKey: ['comments', postIdComment],
@@ -86,6 +87,7 @@ export const CommentList = ({
                 key={item.id}
                 comment={item}
                 setCommentParent={setCommentParent}
+                setCommentEdit={setCommentEdit}
               />
               {/* {item?.children?.length &&
               item.children?.map((child: Comment) => (
@@ -135,6 +137,8 @@ export const CommentList = ({
           // handleCreate={handleCreate}
           // comments={comments}
           // setComments={setComments}
+          comment={commentEdit}
+          setComment={setCommentEdit}
           postId={postIdComment}
           commentParent={commentParent}
           setCommentParent={setCommentParent}

@@ -9,13 +9,13 @@ import {IRootState} from '../../../stores';
 
 type CommentItemProps = {
   comment: Comment;
-
+  setCommentEdit: (comment: Comment | null) => void;
   setCommentParent: (comment: Comment | null) => void;
 };
 
 export const CommentItem = ({
   comment,
-
+  setCommentEdit,
   setCommentParent,
 }: CommentItemProps) => {
   const [openChild, setOpenChild] = useState<boolean>(false);
@@ -25,13 +25,18 @@ export const CommentItem = ({
         openChild={openChild}
         setOpenChild={setOpenChild}
         comment={comment}
+        setCommentEdit={setCommentEdit}
         setCommentParent={setCommentParent}
       />
       {openChild &&
         comment?.children?.length &&
         comment.children?.map((child: Comment) => (
           <View className="ml-10" key={child.id}>
-            <CommentItem comment={child} setCommentParent={setCommentParent} />
+            <CommentItem
+              setCommentEdit={setCommentEdit}
+              comment={child}
+              setCommentParent={setCommentParent}
+            />
           </View>
         ))}
     </ScrollView>
@@ -45,12 +50,14 @@ export const CommentContent = ({
   openChild,
   setOpenChild,
   setCommentParent,
+  setCommentEdit,
 }: // setComments,
 {
   comment: Comment;
   openChild: boolean;
   setOpenChild: (value: boolean) => void;
   setCommentParent: (comment: Comment | null) => void;
+  setCommentEdit: (comment: Comment | null) => void;
 }) => {
   const [visible, setVisible] = useState<boolean>(false);
   const user = useSelector((state: IRootState) => state.user?.data?.info);
@@ -77,6 +84,8 @@ export const CommentContent = ({
                 comment={comment}
                 visible={visible}
                 setVisible={setVisible}
+                setCommentEdit={setCommentEdit}
+                setCommentParent={setCommentParent}
               />
             </View>
           )}
@@ -86,6 +95,7 @@ export const CommentContent = ({
             className="mt-1.5"
             onPress={() => {
               setCommentParent(comment);
+              setCommentEdit(null);
             }}>
             <Text className=" text-slate-500">Trả lời</Text>
           </TouchableOpacity>
