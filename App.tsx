@@ -34,6 +34,7 @@ import authService from './src/services/authService';
 import axios from 'axios';
 import {axiosClient} from './src/configs/axios';
 import {NotificationReceive} from './src/features/notification';
+import {tokenIsExpired} from './src/utils/verifyJwt';
 
 const queryClient = new QueryClient();
 
@@ -70,10 +71,10 @@ function AppScreen(): JSX.Element {
       return;
     }
 
-    // if (await tokenIsExpired(userInfo?.accessToken)) {
-    //   dispatch(logout());
-    //   return;
-    // }
+    if (await tokenIsExpired(userInfo?.accessToken)) {
+      dispatch(logout());
+      return;
+    }
 
     if (!accessToken) {
       dispatch(setAccessToken({accessToken: userInfo?.accessToken}));

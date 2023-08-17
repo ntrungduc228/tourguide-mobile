@@ -1,24 +1,12 @@
-import {Text, View, Image} from 'react-native';
+import {Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import * as ImagePicker from 'react-native-image-picker';
 import {Button} from 'react-native-paper';
 import storage from '@react-native-firebase/storage';
 import {uploadImage} from '../utils/uploadImage';
-interface Action {
-  title: string;
-  type: 'capture' | 'library';
-  options: ImagePicker.CameraOptions | ImagePicker.ImageLibraryOptions;
-}
-
-const options: Action = {
-  title: 'Select Image',
-  type: 'library',
-  options: {
-    selectionLimit: 0,
-    mediaType: 'photo',
-    includeBase64: false,
-  },
-};
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {logoutFunc} from '../utils/logoutFunc';
 
 type Props = {};
 
@@ -27,38 +15,16 @@ export const ProfileScreen = ({}: Props) => {
     'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
   );
 
-  const handlePickImage = async () => {
-    const res: ImagePicker.ImagePickerResponse =
-      await ImagePicker.launchImageLibrary(options.options);
-    if (res.didCancel) {
-      return;
-    }
-
-    const uri: string | undefined = res?.assets
-      ? res?.assets[0].uri
-      : 'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg';
-
-    setUriAvatar(uri || '');
-
-    // const url = await uploadImage(res.assets[0].uri);
-    // console.log('url ', url);
-
-    console.log('my res', res);
-  };
-
   return (
-    <View className="h-full aligns-center justify-center">
-      <Text className="font-bold text-2xl">Profile</Text>
-      <AvatarUpload uriAvatar={uriAvatar} handlePickImage={handlePickImage} />
-      <Button
-        onPress={() => {
-          console.log('uriAvatar', uriAvatar);
-          if (uriAvatar) {
-            uploadImage(uriAvatar);
-          }
-        }}>
-        Upload
-      </Button>
+    <View className="h-full bg-white">
+      <View className="my-3 flex-row items-center justify-between px-4">
+        <Text className="font-bold text-xl text-black">Trang cá nhân</Text>
+        <TouchableOpacity onPress={() => logoutFunc()}>
+          <Text className="text-red-600">Đăng xuất</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View></View>
     </View>
   );
 };

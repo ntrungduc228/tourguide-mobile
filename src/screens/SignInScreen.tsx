@@ -13,11 +13,11 @@ export const SignInScreen = ({}: SignInProps) => {
     <View className="h-full items-center p-5 ">
       <SignIn />
       <View className="flex-row  mt-4">
-        <Text>Chua co tai khoan</Text>
+        <Text>Chưa có tài khoản</Text>
         <TouchableOpacity
           className="ml-2 "
           onPress={() => navigation.navigate(routesScreen.SignUp)}>
-          <Text className="font-bold">Dang ky</Text>
+          <Text className="font-bold">Đăng ký</Text>
         </TouchableOpacity>
       </View>
     </View>
