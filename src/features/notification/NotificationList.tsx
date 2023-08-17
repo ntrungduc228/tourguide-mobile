@@ -5,7 +5,7 @@ import {Notification} from '../../types/notification';
 import {User} from '../../types/user';
 import {useSelector} from 'react-redux';
 import {IRootState} from '../../stores';
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import notificationService from '../../services/notificationService';
 
 type NotiListProps = {};
@@ -102,16 +102,29 @@ export const NotificationList = ({}: NotiListProps) => {
   const user = useSelector((state: IRootState) => state.user.data.info);
   const socket = useSelector((state: IRootState) => state.socket.data);
 
+  const queryClient = useQueryClient();
+
   const {data: notifications} = useQuery({
     queryKey: ['notifications', user?.id],
     queryFn: () => notificationService.getNotificationsByUserId(),
   });
 
+  const {mutate: readAllNotificationMutation} = useMutation({
+    mutationFn: notificationService.readAllNotification,
+  });
+
   useEffect(() => {
-    const topic = `/topic/messagess123`;
+    if (user?.id) {
+      readAllNotificationMutation();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
+
+  useEffect(() => {
+    const topic = `/topic/noti/${user?.id}/update`;
     if (socket) {
       socket.subscribe(topic, (payload: any) => {
-        // console.log('recei data', payload);
+        queryClient.invalidateQueries(['notifications', user?.id]);
       });
     }
     return () => {
@@ -119,7 +132,8 @@ export const NotificationList = ({}: NotiListProps) => {
         socket.unsubscribe(topic);
       }
     };
-  }, [socket]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, user?.id]);
 
   return (
     <View className="">
