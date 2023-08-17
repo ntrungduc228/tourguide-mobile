@@ -10,16 +10,36 @@ export enum NotificationType {
 }
 
 export const notificationMessage = (type: NotificationType, data: any) => {
-  let notification: any = {};
+  let message: string = '';
   switch (type) {
     case NotificationType.BEGIN_TOUR: {
-      notification.message = `Tour ${data?.data?.name} đã bắt đầu, chúc bạn có trải nghiệm vui vẻ`;
+      message = `Tour ${data?.data?.name} đã bắt đầu, chúc bạn có trải nghiệm vui vẻ`;
       break;
     }
     case NotificationType.END_TOUR: {
-      notification.message = `Tour ${data?.data?.name} đã kết thúc, hẹn gặp lại`;
+      message = `Tour ${data?.data?.name} đã kết thúc, hẹn gặp lại`;
+      break;
+    }
+    case NotificationType.COMMENT: {
+      message = `đã bình luận bài viết của bạn`;
+      break;
+    }
+    case NotificationType.REPLY_COMMENT: {
+      message = `đã phản hồi bình luận của bạn`;
+      break;
+    }
+    case NotificationType.ADD_ROOM: {
+      message = `Tour ${data?.data?.name} đã kết thúc, hẹn gặp lại`;
+      break;
+    }
+    case NotificationType.APPROVE_ROOM: {
+      message = `đã vào phòng`;
+      break;
+    }
+    case NotificationType.NEW_APPOINTMENT: {
+      message = `đã tạo cuộc hẹn mới`;
       break;
     }
   }
-  return notification;
+  return message;
 };

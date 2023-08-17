@@ -41,7 +41,7 @@ export const NotificationReceive = ({}: Props) => {
           PushNotification.localNotification({
             channelId: `${user?.id}-push`,
             title: 'Thông báo mới',
-            message: notiMessage.message,
+            message: notiMessage,
             // bigText: notiMessage.message,
           });
         }
