@@ -14,50 +14,12 @@ type CommentListProps = {
   postIdComment: number;
 };
 
-// const commentsT: Comment[] = [
-//   {
-//     id: 1,
-//     postId: 1,
-//     content: 'comment 1',
-//     isDelete: false,
-//     parentId: null,
-//   },
-//   {
-//     id: 2,
-//     content: 'comment 2',
-//     isDelete: false,
-//     postId: 1,
-//     parentId: 1,
-//   },
-//   {
-//     id: 3,
-//     content: 'comment 3',
-//     isDelete: false,
-//     postId: 1,
-//     parentId: 1,
-//   },
-//   {
-//     id: 4,
-//     content: 'comment 4',
-//     isDelete: false,
-//     postId: 1,
-//     parentId: 2,
-//   },
-//   // {
-//   //   id: 46,
-//   //   content: 'comment id 46',
-//   //   isDelete: false,
-//   //   postId: 1,
-//   //   parentId: 2,
-//   // },
-// ];
-
 export const CommentList = ({
   postIdComment,
   setPostIdComment,
 }: CommentListProps) => {
   const [commentParent, setCommentParent] = useState<Comment | null>(null);
-  const [textEdit, setTextEdit] = useState<string>('');
+  const [commentEdit, setCommentEdit] = useState<Comment | null>(null);
   const {data: commentL} = useQuery({
     queryKey: ['comments', postIdComment],
     queryFn: () => commentService.getComments(postIdComment),
@@ -86,6 +48,7 @@ export const CommentList = ({
                 key={item.id}
                 comment={item}
                 setCommentParent={setCommentParent}
+                setCommentEdit={setCommentEdit}
               />
               {/* {item?.children?.length &&
               item.children?.map((child: Comment) => (
@@ -135,6 +98,8 @@ export const CommentList = ({
           // handleCreate={handleCreate}
           // comments={comments}
           // setComments={setComments}
+          comment={commentEdit}
+          setComment={setCommentEdit}
           postId={postIdComment}
           commentParent={commentParent}
           setCommentParent={setCommentParent}

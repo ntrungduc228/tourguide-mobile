@@ -7,19 +7,40 @@ import useToast from '../../../hooks/useToast';
 import {useDispatch} from 'react-redux';
 import {Comment} from '../../../types/comment';
 import {setComment} from '../../../stores/slices/commentSlice';
+import commentService from '../../../services/commentService';
 
 type Props = {
   visible: boolean;
   setVisible: (value: boolean) => void;
   comment: Comment;
+  setCommentEdit: (comment: Comment | null) => void;
+  setCommentParent: (comment: Comment | null) => void;
 };
 
-export const CommentMenu = ({visible, setVisible, comment}: Props) => {
-  const dispatch = useDispatch();
-  const queryClient = useQueryClient();
+export const CommentMenu = ({
+  visible,
+  setVisible,
+  comment,
+  setCommentEdit,
+  setCommentParent,
+}: Props) => {
   const closeMenu = () => setVisible(false);
+  const queryClient = useQueryClient();
   const {showToast} = useToast();
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const {mutate: deleteComment} = useMutation({
+    mutationFn: commentService.deleteComment,
+    onError: (error: any) => {
+      console.log('erorr ', JSON.stringify(error));
+      showToast('error', 'Xóa thất bại');
+    },
+    onSuccess: data => {
+      queryClient.invalidateQueries(['comments', comment.postId]);
+      showToast('success', 'Xóa thành công');
+      // setComments([data?.data, ...comments]);
+      //handleDeleteMembers();
+    },
+  });
+
   return (
     <View
       // eslint-disable-next-line react-native/no-inline-styles
@@ -43,7 +64,10 @@ export const CommentMenu = ({visible, setVisible, comment}: Props) => {
         <Menu.Item
           onPress={() => {
             setVisible(false);
-            dispatch(setComment({comment, isEdit: true}));
+            //dispatch(setComment({comment, isEdit: true}));
+            setCommentEdit(comment);
+            setCommentParent(null);
+            console.log('click');
             //updatePost(post.id!!);
           }}
           title="Chỉnh sửa"
@@ -51,8 +75,7 @@ export const CommentMenu = ({visible, setVisible, comment}: Props) => {
         <Menu.Item
           onPress={() => {
             setVisible(false);
-            // deletePost(post.id!!);
-            //  handleClick();
+            deleteComment(comment?.id!!);
           }}
           title="Xóa"
         />
