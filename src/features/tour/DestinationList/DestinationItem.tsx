@@ -28,11 +28,11 @@ export const DestinationItem = ({destination}: DestinationitemProps) => {
             {/* <TouchableOpacity onPress={() => setVisible(true)}>
               <SimpleLineIcons name="options-vertical" size={20} />
             </TouchableOpacity> */}
-            <MenuDestinationItem
+            {/* <MenuDestinationItem
               visible={visible}
               setVisible={setVisible}
               destination={destination}
-            />
+            /> */}
           </View>
         </View>
 

@@ -1,6 +1,6 @@
 import {ParamListBase, RouteProp} from '@react-navigation/native';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FlatList, Text, View, RefreshControl} from 'react-native';
 import {ModalTrigger} from '../../../components';
 import {
@@ -11,6 +11,8 @@ import {CommentList} from '../Comment';
 import PostCreate from './PostCreate';
 import PostFab from './PostFab';
 import PostItem from './PostItem';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
 type PostListRouteProp = RouteProp<ParamListBase, string>;
 
 type PostListProps = {
@@ -19,7 +21,7 @@ type PostListProps = {
 
 export const PostList = ({route}: PostListProps) => {
   const {tourId} = route.params as any;
-
+  const socket = useSelector((state: IRootState) => state.socket.data);
   const queryClient = useQueryClient();
 
   const {
@@ -47,6 +49,21 @@ export const PostList = ({route}: PostListProps) => {
       //handleDeleteMembers();
     },
   });
+
+  useEffect(() => {
+    const topic = `/topic/post/${tourId}/new`;
+    if (socket) {
+      socket.subscribe(topic, (payload: any) => {
+        queryClient.invalidateQueries(['posts', tourId]);
+      });
+    }
+    return () => {
+      if (socket) {
+        socket.unsubscribe(topic);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, tourId]);
 
   const [openComment, setOpenComment] = useState<boolean>(false);
   const [postIdComment, setPostIdComment] = useState<number>(-1);

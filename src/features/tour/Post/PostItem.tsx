@@ -102,7 +102,7 @@ export const PostItem = ({post, setPostIdComment}: PostItemProps) => {
           onPress={() => setPostIdComment(post?.id || -1)}>
           <Ionic name="chatbubble-outline" size={27} />
         </TouchableOpacity>
-        <Text className="ml-1 text-black">12</Text>
+        {/* <Text className="ml-1 text-black">12</Text> */}
       </View>
     </View>
   );

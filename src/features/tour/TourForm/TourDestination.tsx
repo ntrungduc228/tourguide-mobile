@@ -40,6 +40,8 @@ export const TourDestination = ({}: TourDestinationProps) => {
     mutationFn: tourService.updateTour,
     onSuccess: data => {
       showToast('success', 'Cập nhật tour thành công');
+      navigation.navigate(routesScreen.TourList);
+
       // navigation.navigate(routesScreen.TourList);
       console.log('data return', data);
     },

@@ -1,10 +1,10 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import React, {useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {Menu} from 'react-native-paper';
+import {TouchableOpacity, View, Text} from 'react-native';
+import {Menu, Dialog, Button} from 'react-native-paper';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useSelector} from 'react-redux';
-import {ModalTrigger} from '../../../components';
+import {DialogConfirm, ModalTrigger} from '../../../components';
 import useToast from '../../../hooks/useToast';
 import postService from '../../../services/postService';
 import {IRootState} from '../../../stores';
@@ -23,6 +23,7 @@ export const PostItemMenu = ({visible, setVisible, post}: Props) => {
   const {showToast} = useToast();
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   const {mutate: updatePost} = useMutation({
     mutationFn: postService.updatePost,
@@ -88,12 +89,38 @@ export const PostItemMenu = ({visible, setVisible, post}: Props) => {
         <Menu.Item
           onPress={() => {
             setVisible(false);
-            deletePost(post.id!!);
+            setOpenDialog(true);
+            // deletePost(post.id!!);
             //  handleClick();
           }}
           title="Xóa"
         />
       </Menu>
+      <DialogConfirm visible={openDialog} setVisible={setOpenDialog}>
+        <View className="bg-white rounded-md p-3">
+          {/* <Dialog.Title>Alert</Dialog.Title> */}
+          <Dialog.Content>
+            <Text className="mt-4">Bạn có chắc chắn muốn xóa?</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button
+              className="bg-red-500 px-2 "
+              onPress={() => {
+                deletePost(post.id!!);
+                setOpenDialog(false);
+              }}>
+              <Text className="text-white">Xác nhận</Text>
+            </Button>
+            <Button
+              className="bg-yellow-500 px-3 ml-3"
+              onPress={() => {
+                setOpenDialog(false);
+              }}>
+              <Text className="text-white">Hủy</Text>
+            </Button>
+          </Dialog.Actions>
+        </View>
+      </DialogConfirm>
       <ModalTrigger
         visible={openModal}
         setVisible={setOpenModal}

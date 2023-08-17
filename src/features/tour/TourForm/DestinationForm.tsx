@@ -142,6 +142,7 @@ export const DestinationForm = ({
               value={date}
               mode={mode}
               onChange={onChangeDate}
+              minimumDate={new Date()}
             />
           )}
         </View>

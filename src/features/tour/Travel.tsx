@@ -21,7 +21,7 @@ import {setTour, setTourId} from '../../stores/slices/tourSlice';
 import {AppointmentList} from '../appointment';
 // import PushNotification from 'react-native-push-notification';
 import {IRootState} from '../../stores';
-import {useQuery} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import tourService from '../../services/tourService';
 
 const Tab = createMaterialTopTabNavigator();
@@ -46,12 +46,15 @@ export const useTravel = () => {
 export const Travel = ({route}: TravelProps) => {
   const {tourId} = getParamsNav(route);
   const user = useSelector((state: IRootState) => state.user.data.info);
-  console.log('tourId travel ', tourId, user);
+  const socket = useSelector((state: IRootState) => state.socket.data);
+  // console.log('tourId travel ', tourId, user);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setTourId(tourId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tourId]);
+
+  const queryClient = useQueryClient();
 
   useQuery({
     queryKey: ['travel', tourId],
@@ -62,6 +65,21 @@ export const Travel = ({route}: TravelProps) => {
       dispatch(setTour(data?.data));
     },
   });
+
+  useEffect(() => {
+    const topic = `/topic/tour/${user?.id}/update`;
+    if (socket) {
+      socket.subscribe(topic, (payload: any) => {
+        queryClient.invalidateQueries(['travel', tourId]);
+      });
+    }
+    return () => {
+      if (socket) {
+        socket.unsubscribe(topic);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, user?.id]);
 
   return (
     // <TravelContext.Provider value={{tourId, tour, setTour}}>

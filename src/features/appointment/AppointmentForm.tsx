@@ -15,6 +15,7 @@ import appointmentService from '../../services/appointmentService';
 import {IRootState} from '../../stores';
 import {formatDateTime} from '../../utils/formatDate';
 import AppointmentMember from './AppointmentMember';
+import routesScreen from '../../navigations/routes';
 
 type Props = {};
 
@@ -87,7 +88,9 @@ export const AppointmentForm = (props: Props) => {
     <ScrollView>
       <View className="bg-white h-full">
         <View className="flex-row justify-between items-center border-b-0.5 border-[#DEDEDE]">
-          <TouchableOpacity className="ml-2" onPress={() => {}}>
+          <TouchableOpacity
+            className="ml-2"
+            onPress={() => navigation.goBack()}>
             <AntDesign name="close" size={20} color={'#000'} />
           </TouchableOpacity>
           <Text className="font-bold  p-3 text-md text-black">Điểm hẹn</Text>
@@ -136,6 +139,7 @@ export const AppointmentForm = (props: Props) => {
                 testID="dateTimePicker"
                 value={date}
                 mode={mode}
+                minimumDate={new Date()}
                 onChange={onChangeDate}
               />
             )}
