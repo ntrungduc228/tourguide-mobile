@@ -26,6 +26,7 @@ const tourService = {
     axiosClientPrivate.patch(`${url}/${id}/members/approve`, data),
   getListMembersRequest: (id: number) =>
     axiosClientPrivate.get(`${url}/${id}/members/request`),
+  getTourProgess: () => axiosClientPrivate.get(`${url}/progress`),
 };
 
 export default tourService;
