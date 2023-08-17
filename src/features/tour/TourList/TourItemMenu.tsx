@@ -49,7 +49,7 @@ export const TourItemMenu = ({visible, setVisible, tour}: Props) => {
       beginTour(tour.id!!);
     }
   };
-  console.log('í', tour.isProgress);
+  // console.log('í', tour.isProgress);
 
   return (
     <View

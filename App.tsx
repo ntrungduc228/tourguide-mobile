@@ -33,6 +33,7 @@ import Toast from 'react-native-toast-message';
 import authService from './src/services/authService';
 import axios from 'axios';
 import {axiosClient} from './src/configs/axios';
+import {NotificationReceive} from './src/features/notification';
 
 const queryClient = new QueryClient();
 
@@ -99,7 +100,9 @@ function AppScreen(): JSX.Element {
       {/* <MainStackNavigator /> */}
       {/* <AuthStackNavigator /> */}
       {isLogin ? <MainStackNavigator /> : <AuthStackNavigator />}
-      {/* {isLogin && <SocketClient />} */}
+      {isLogin && <SocketClient />}
+      {isLogin && <NotificationReceive />}
+      {/* {isLogin && <StompClient />} */}
       <Toast position="top" topOffset={50} onPress={() => Toast.hide()} />
     </NavigationContainer>
     // </SafeAreaView>
