@@ -16,6 +16,7 @@ const commentService = {
   }) => axiosClientPrivate.post(url, comment),
   updateComment: (comment: {id: number; content: string}) =>
     axiosClientPrivate.patch(url, comment),
+  deleteComment: (id: number) => axiosClientPrivate.delete(`${url}/${id}`),
 };
 
 export default commentService;

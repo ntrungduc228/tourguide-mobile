@@ -7,6 +7,7 @@ import useToast from '../../../hooks/useToast';
 import {useDispatch} from 'react-redux';
 import {Comment} from '../../../types/comment';
 import {setComment} from '../../../stores/slices/commentSlice';
+import commentService from '../../../services/commentService';
 
 type Props = {
   visible: boolean;
@@ -24,6 +25,21 @@ export const CommentMenu = ({
   setCommentParent,
 }: Props) => {
   const closeMenu = () => setVisible(false);
+  const queryClient = useQueryClient();
+  const {showToast} = useToast();
+  const {mutate: deleteComment} = useMutation({
+    mutationFn: commentService.deleteComment,
+    onError: (error: any) => {
+      console.log('erorr ', JSON.stringify(error));
+      showToast('error', 'Xóa thất bại');
+    },
+    onSuccess: data => {
+      queryClient.invalidateQueries(['comments', comment.postId]);
+      showToast('success', 'Xóa thành công');
+      // setComments([data?.data, ...comments]);
+      //handleDeleteMembers();
+    },
+  });
 
   return (
     <View
@@ -59,8 +75,7 @@ export const CommentMenu = ({
         <Menu.Item
           onPress={() => {
             setVisible(false);
-            // deletePost(post.id!!);
-            //  handleClick();
+            deleteComment(comment?.id!!);
           }}
           title="Xóa"
         />
