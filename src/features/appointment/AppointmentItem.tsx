@@ -9,6 +9,8 @@ import {formatDateTime} from '../../utils/formatDate';
 import {verifyTourist} from '../../utils/verifyRole';
 import AppointmentMenuTourGuide from './AppointmentMenuTourGuide';
 import AppointmentMenuTourist from './AppointmentMenuTourist';
+import {useNavigation} from '@react-navigation/native';
+import routesScreen from '../../navigations/routes';
 
 type AppoimentItemScreenProps = {
   appointment: Appointment;
@@ -17,6 +19,8 @@ type AppoimentItemScreenProps = {
 export const AppointmentItem = ({appointment}: AppoimentItemScreenProps) => {
   const user = useSelector((state: IRootState) => state.user.data.info);
   const [visibleOptions, setVisibleOptions] = useState<boolean>(false);
+
+  const navigation = useNavigation<Nav>();
 
   let menu: JSX.Element = <></>;
 
@@ -50,7 +54,9 @@ export const AppointmentItem = ({appointment}: AppoimentItemScreenProps) => {
         </View>
       </View>
       <View className="flex-row">
-        <TouchableOpacity className="mr-5">
+        <TouchableOpacity
+          className="mr-5"
+          onPress={() => navigation.navigate(routesScreen.MapDirection)}>
           <FontAwesome5 name="map-marker-alt" size={24} color={'#000'} />
         </TouchableOpacity>
         <TouchableOpacity>

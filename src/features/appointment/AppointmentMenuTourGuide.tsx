@@ -5,6 +5,9 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {AttendanceList} from '../attendance';
 import {ModalTrigger} from '../../components';
 import {Appointment} from '../../types/appointment';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../stores';
+import {ROLE} from '../../types/user';
 
 type Props = {
   visible: boolean;
@@ -18,7 +21,7 @@ export const AppointmentMenuTourGuide = ({
   appointment,
 }: Props) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  // console.log('aa', appointment);
+  const user = useSelector((state: IRootState) => state.user.data.info);
   return (
     <View
       // eslint-disable-next-line react-native/no-inline-styles
@@ -45,6 +48,14 @@ export const AppointmentMenuTourGuide = ({
           }}
           title="Điểm danh"
         />
+        {appointment?.userId === user?.id && (
+          <Menu.Item
+            onPress={() => {
+              setVisible(false);
+            }}
+            title="Sửa thông tin"
+          />
+        )}
       </Menu>
       <ModalTrigger visible={openModal} setVisible={setOpenModal}>
         <AttendanceList appointment={appointment} setOpenModal={setOpenModal} />

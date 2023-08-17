@@ -17,6 +17,7 @@ const routesScreen = {
   TourDetail: 'TourDetail',
   TourView: 'TourView',
   TourEdit: 'TourEdit',
+  MapDirection: 'MapDirection',
 };
 
 export default routesScreen;

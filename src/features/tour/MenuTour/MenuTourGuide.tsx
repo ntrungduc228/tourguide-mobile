@@ -54,14 +54,6 @@ export const MenuTourGuide = ({
           title="Thông tin tour"
         />
 
-        <Menu.Item
-          onPress={() => {
-            setVisible(false);
-            setOpenDialog(true);
-          }}
-          title="Đổi trạng thái"
-        />
-
         {/* <Divider /> */}
       </Menu>
       <View>
