@@ -18,91 +18,91 @@ const user: User = {
   phone: '555-555-5555',
 };
 
-const notifications: Notification[] = [
-  {
-    id: 1,
-    content: 'da thich binh luan cuar ban',
-    createrId: 8,
-    member: [],
-    creater: user,
-  },
-  {
-    id: 2,
-    content: 'da thich binh luan cuar ban',
-    createrId: 8,
-    member: [],
-    creater: user,
-  },
-  {
-    id: 3,
-    content: 'da thich binh luan cuar ban',
-    createrId: 8,
-    member: [],
-    creater: user,
-  },
-  {
-    id: 4,
-    content: 'da thich binh luan cuar ban',
-    createrId: 8,
-    member: [],
-    creater: user,
-  },
-  {
-    id: 5,
-    content: 'da thich binh luan cuar ban',
-    createrId: 8,
-    member: [],
-    creater: user,
-  },
-  {
-    id: 6,
-    content: 'da thich binh luan cuar ban',
-    createrId: 8,
-    member: [],
-    creater: user,
-  },
-  {
-    id: 7,
-    content: 'da thich binh luan cuar ban',
-    createrId: 8,
-    member: [],
-    creater: user,
-  },
-  {
-    id: 8,
-    content: 'da thich binh luan cuar ban',
-    createrId: 8,
-    member: [],
-    creater: user,
-  },
-  {
-    id: 9,
-    content: 'da thich binh luan cuar ban',
-    createrId: 8,
-    member: [],
-    creater: user,
-  },
-  {
-    id: 74,
-    content: 'da thich binh luan cuar ban',
-    createrId: 8,
-    member: [],
-    creater: user,
-  },
-  {
-    id: 86,
-    content: 'da thich binh luan cuar ban',
-    createrId: 8,
-    member: [],
-    creater: user,
-  },
-];
+// const notifications: Notification[] = [
+//   {
+//     id: 1,
+//     content: 'da thich binh luan cuar ban',
+//     createrId: 8,
+//     member: [],
+//     creater: user,
+//   },
+//   {
+//     id: 2,
+//     content: 'da thich binh luan cuar ban',
+//     createrId: 8,
+//     member: [],
+//     creater: user,
+//   },
+//   {
+//     id: 3,
+//     content: 'da thich binh luan cuar ban',
+//     createrId: 8,
+//     member: [],
+//     creater: user,
+//   },
+//   {
+//     id: 4,
+//     content: 'da thich binh luan cuar ban',
+//     createrId: 8,
+//     member: [],
+//     creater: user,
+//   },
+//   {
+//     id: 5,
+//     content: 'da thich binh luan cuar ban',
+//     createrId: 8,
+//     member: [],
+//     creater: user,
+//   },
+//   {
+//     id: 6,
+//     content: 'da thich binh luan cuar ban',
+//     createrId: 8,
+//     member: [],
+//     creater: user,
+//   },
+//   {
+//     id: 7,
+//     content: 'da thich binh luan cuar ban',
+//     createrId: 8,
+//     member: [],
+//     creater: user,
+//   },
+//   {
+//     id: 8,
+//     content: 'da thich binh luan cuar ban',
+//     createrId: 8,
+//     member: [],
+//     creater: user,
+//   },
+//   {
+//     id: 9,
+//     content: 'da thich binh luan cuar ban',
+//     createrId: 8,
+//     member: [],
+//     creater: user,
+//   },
+//   {
+//     id: 74,
+//     content: 'da thich binh luan cuar ban',
+//     createrId: 8,
+//     member: [],
+//     creater: user,
+//   },
+//   {
+//     id: 86,
+//     content: 'da thich binh luan cuar ban',
+//     createrId: 8,
+//     member: [],
+//     creater: user,
+//   },
+// ];
 
 export const NotificationList = ({}: NotiListProps) => {
   const user = useSelector((state: IRootState) => state.user.data.info);
   const socket = useSelector((state: IRootState) => state.socket.data);
 
-  const {data} = useQuery({
+  const {data: notifications} = useQuery({
     queryKey: ['notifications', user?.id],
     queryFn: () => notificationService.getNotificationsByUserId(),
   });
@@ -124,7 +124,7 @@ export const NotificationList = ({}: NotiListProps) => {
   return (
     <View className="">
       <FlatList
-        data={notifications}
+        data={notifications?.data}
         renderItem={({item}) => <NotificationItem notification={item} />}
         keyExtractor={item => `${item.id}`}
         ListEmptyComponent={

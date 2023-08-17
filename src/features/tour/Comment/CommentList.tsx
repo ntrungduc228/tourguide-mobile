@@ -1,13 +1,21 @@
-import React, {useState, useMemo} from 'react';
-import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState, useMemo, useEffect} from 'react';
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  RefreshControl,
+} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {Comment} from '../../../types/comment';
 import {generateComment} from '../../../utils/generateComments';
 import CommentInput from './CommentInput';
 import CommentItem from './CommentItem';
 import CommentLayout from './CommentLayout';
-import {useQuery} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import commentService from '../../../services/commentService';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
 
 type CommentListProps = {
   setPostIdComment: (value: number) => void;
@@ -18,9 +26,15 @@ export const CommentList = ({
   postIdComment,
   setPostIdComment,
 }: CommentListProps) => {
+  const socket = useSelector((state: IRootState) => state.socket.data);
   const [commentParent, setCommentParent] = useState<Comment | null>(null);
   const [commentEdit, setCommentEdit] = useState<Comment | null>(null);
-  const {data: commentL} = useQuery({
+  const queryClient = useQueryClient();
+  const {
+    data: commentL,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ['comments', postIdComment],
     queryFn: () => commentService.getComments(postIdComment),
     enabled: postIdComment !== -1,
@@ -31,6 +45,21 @@ export const CommentList = ({
       console.log('eee', err);
     },
   });
+
+  useEffect(() => {
+    const topic = `/topic/post/${postIdComment}/comment`;
+    if (socket) {
+      socket.subscribe(topic, (payload: any) => {
+        queryClient.invalidateQueries(['comments', postIdComment]);
+      });
+    }
+    return () => {
+      if (socket) {
+        socket.unsubscribe(topic);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, postIdComment]);
 
   const comments = useMemo(
     () => generateComment(commentL?.data),
@@ -63,6 +92,9 @@ export const CommentList = ({
             <View className="flex-1 items-center justify-center">
               <Text className="text-gray-500">Không có bình luận</Text>
             </View>
+          }
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={refetch} />
           }
         />
         {/* <View>

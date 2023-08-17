@@ -22,9 +22,10 @@ export const AppointmentItem = ({appointment}: AppoimentItemScreenProps) => {
 
   if (user && verifyTourist(user?.role)) {
     menu = (
-      <AppointmentMenuTourist
+      <AppointmentMenuTourGuide
         setVisible={setVisibleOptions}
         visible={visibleOptions}
+        appointment={appointment}
       />
     );
   } else {

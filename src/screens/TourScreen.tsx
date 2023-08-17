@@ -1,13 +1,18 @@
 import {Text, View, SafeAreaView} from 'react-native';
+import {ParamListBase, RouteProp} from '@react-navigation/native';
 import React from 'react';
 import {Travel} from '../features/tour';
+type TourRouteProp = RouteProp<ParamListBase, string>;
 
-type Props = {};
+type Props = {
+  route: TourRouteProp;
 
-export const TourScreen = ({}: Props) => {
+};
+
+export const TourScreen = ({route}: Props) => {
   return (
     // <SafeAreaView>
-    <Travel />
+    <Travel route={route}/>
     // </SafeAreaView>
   );
 };

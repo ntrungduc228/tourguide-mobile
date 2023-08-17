@@ -1,8 +1,8 @@
-import {View, SafeAreaView, Text, FlatList} from 'react-native';
-import React, {useState} from 'react';
+import {View, SafeAreaView, Text, FlatList, RefreshControl} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {User} from '../../../types/user';
 import Member from './Member';
-import {useQuery} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import tourService from '../../../services/tourService';
 import {useSelector} from 'react-redux';
 import {IRootState} from '../../../stores';
@@ -18,8 +18,13 @@ export const MemberList = ({}: Props) => {
   const [members, setMembers] = useState<User[]>([]);
   const [openAddMember, setOpenAddMember] = useState<boolean>(false);
   const [openApproveMember, setOpenApproveMember] = useState<boolean>(false);
+  const socket = useSelector((state: IRootState) => state.socket.data);
+  const user = useSelector((state: IRootState) => state.user.data.info);
+
+  const queryClient = useQueryClient();
+
   //dữ liệu giả
-  useQuery({
+  const {isLoading, refetch} = useQuery({
     queryKey: ['userTour', tourId],
     queryFn: () => tourService.getMembersTour(tourId!),
     enabled: !!tourId,
@@ -28,6 +33,24 @@ export const MemberList = ({}: Props) => {
     },
     // enabled: !!valueInput,
   });
+
+  useEffect(() => {
+    const topic = `/topic/room/${user?.id}/approve`;
+    if (socket) {
+      socket.subscribe(topic, (payload: any) => {
+        const data = payload ? JSON.parse(payload.body) : {};
+        // console.log('receive notif: ', data);
+        queryClient.invalidateQueries(['userTour', tourId]);
+      });
+    }
+    return () => {
+      if (socket) {
+        socket.unsubscribe(topic);
+      }
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, tourId]);
 
   return (
     <SafeAreaView className="bg-slate-100 h-full">
@@ -45,7 +68,7 @@ export const MemberList = ({}: Props) => {
           <Text className="text-white">Duyệt thành viên</Text>
         </Button>
       </View>
-      <View className="flex-1">
+      <View className="flex-1 mr-2">
         <FlatList
           data={members}
           renderItem={({item}) => (
@@ -56,6 +79,9 @@ export const MemberList = ({}: Props) => {
             <View className="flex-1 items-center justify-center">
               <Text className="text-gray-500">Chưa có thành viên</Text>
             </View>
+          }
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={refetch} />
           }
         />
       </View>

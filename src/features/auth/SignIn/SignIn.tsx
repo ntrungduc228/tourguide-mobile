@@ -7,6 +7,7 @@ import {axiosClient} from '../../../configs/axios';
 import {useDispatch} from 'react-redux';
 import authService from '../../../services/authService';
 import {setAccessToken} from '../../../stores/slices/userSlice';
+import useToast from '../../../hooks/useToast';
 
 type SignInProps = {};
 
@@ -18,11 +19,12 @@ interface SignInFormValues {
 export const SignIn = ({}: SignInProps) => {
   const dispatch = useDispatch();
   const initialValues: SignInFormValues = {email: '', password: ''};
+  const {showToast} = useToast();
 
   const onSubmit = async (values: any) => {
     // console.log(values);
-    // signInMutation(values);
-    signInMutation({email: 'hdv@gmail.com', password: '123123'});
+    signInMutation(values);
+    // signInMutation({email: 'hdv@gmail.com', password: '123123'});
   };
 
   const formik = useFormik({
@@ -39,6 +41,7 @@ export const SignIn = ({}: SignInProps) => {
       }
     },
     onError: (error: any) => {
+      showToast('error', error?.message);
       console.log('erorr ', JSON.stringify(error));
     },
   });
@@ -57,7 +60,7 @@ export const SignIn = ({}: SignInProps) => {
       </View>
       <View className="w-full mt-5">
         <TextInput
-          placeholder="Mat khau"
+          placeholder="Mật khẩu"
           secureTextEntry={true}
           className="rounded-md px-3 shadow bg-white w-full"
           onChangeText={formik.handleChange('password')}
@@ -70,7 +73,7 @@ export const SignIn = ({}: SignInProps) => {
       </View> */}
       <View className="mt-3 ">
         <TouchableOpacity>
-          <Text>Quen mat khau</Text>
+          <Text>Quên mật khẩu</Text>
         </TouchableOpacity>
       </View>
       <View>

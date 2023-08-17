@@ -24,8 +24,11 @@ const options: Action = {
   },
 };
 const ProfileEdit = () => {
+  const profile = useSelector((state: IRootState) => state?.user?.data?.info);
   const [uriAvatar, setUriAvatar] = useState(
-    'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
+    profile?.avatar
+      ? profile.avatar
+      : 'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
   );
 
   const handlePickImage = async () => {
@@ -62,7 +65,7 @@ const ProfileEdit = () => {
       //handleDeleteMembers();
     },
   });
-  const profile = useSelector((state: IRootState) => state?.user?.data?.info);
+
   return (
     <View>
       <AvatarUpload uriAvatar={uriAvatar} handlePickImage={handlePickImage} />

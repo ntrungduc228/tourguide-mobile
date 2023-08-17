@@ -43,7 +43,7 @@ export const TourGuideHome = ({}: TourGuideProps) => {
             icon={<FontAwesome size={30} color={'#000'} name="calendar" />}
           />
           <HomeItem
-            onPress={() => navigation.navigate(routesScreen.Tour)}
+            onPress={() => navigation.navigate(routesScreen.TourList)}
             title="Viết bài"
             icon={<Entypo size={30} color={'#000'} name="pencil" />}
           />

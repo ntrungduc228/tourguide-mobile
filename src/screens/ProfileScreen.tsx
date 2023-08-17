@@ -1,59 +1,22 @@
-import {Text, View, Image} from 'react-native';
-import React, {useState} from 'react';
-import * as ImagePicker from 'react-native-image-picker';
-import {Button} from 'react-native-paper';
-import storage from '@react-native-firebase/storage';
-import {uploadImage} from '../utils/uploadImage';
-import {useSelector} from 'react-redux';
-import {IRootState} from '../stores';
 import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Button} from 'react-native-paper';
+import {useSelector} from 'react-redux';
 import routesScreen from '../navigations/routes';
-interface Action {
-  title: string;
-  type: 'capture' | 'library';
-  options: ImagePicker.CameraOptions | ImagePicker.ImageLibraryOptions;
-}
+import {IRootState} from '../stores';
+import {logoutFunc} from '../utils/logoutFunc';
 
-const options: Action = {
-  title: 'Select Image',
-  type: 'library',
-  options: {
-    selectionLimit: 0,
-    mediaType: 'photo',
-    includeBase64: false,
-  },
-};
-
-type Props = {};
-
-export const ProfileScreen = ({}: Props) => {
+export const ProfileScreen = () => {
+  const profile = useSelector((state: IRootState) => state?.user?.data?.info);
   const [uriAvatar, setUriAvatar] = useState(
-    'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
+    profile?.avatar
+      ? profile.avatar
+      : 'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg',
   );
 
-  const handlePickImage = async () => {
-    const res: ImagePicker.ImagePickerResponse =
-      await ImagePicker.launchImageLibrary(options.options);
-    if (res.didCancel) {
-      return;
-    }
-
-    const uri: string | undefined = res?.assets
-      ? res?.assets[0].uri
-      : 'https://photo-cms-tpo.epicdn.me/w890/Uploaded/2023/pcgycivo/2014_02_18/4_QFWJ.jpg';
-
-    setUriAvatar(uri || '');
-
-    // const url = await uploadImage(res.assets[0].uri);
-    // console.log('url ', url);
-
-    console.log('my res', res);
-  };
-
   return (
-    <View className="h-full pt-4 px-2">
-      <Text className="font-bold text-2xl mb-5">Profile</Text>
-      <AvatarUpload uriAvatar={uriAvatar} handlePickImage={handlePickImage} />
+    <View className="h-full ">
       {/* <Button
         onPress={() => {
           console.log('uriAvatar', uriAvatar);
@@ -63,6 +26,21 @@ export const ProfileScreen = ({}: Props) => {
         }}>
         Upload
       </Button> */}
+
+      <View className="h-full w-full bg-white">
+        <View className="my-3 flex-row items-center justify-between px-4">
+          <Text className="font-bold text-xl text-black">Trang cá nhân</Text>
+          <TouchableOpacity onPress={() => logoutFunc()}>
+            <Text className="text-red-600">Đăng xuất</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <AvatarUpload
+            uriAvatar={uriAvatar}
+            //  handlePickImage={handlePickImage}
+          />
+        </View>
+      </View>
     </View>
   );
 };
@@ -70,16 +48,16 @@ export const ProfileScreen = ({}: Props) => {
 export default ProfileScreen;
 
 const AvatarUpload = ({
-  handlePickImage,
+  // handlePickImage,
   uriAvatar,
 }: {
   uriAvatar: string;
-  handlePickImage: () => void;
+  //  handlePickImage: () => void;
 }) => {
   const profile = useSelector((state: IRootState) => state?.user?.data?.info);
   const navigation = useNavigation();
   return (
-    <View className="px-4 py-2 ">
+    <View className="py-2 px-4 w-full bg-white">
       <View className="flex flex-row items-center">
         <View>
           <Image

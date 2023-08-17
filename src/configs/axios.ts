@@ -7,7 +7,7 @@ import {tokenIsExpired} from '../utils/verifyJwt';
 
 const baseURL = Config.REACT_APP_SERVER_URL;
 
-// console.log('config ', Config.REACT_APP_SERVER_URL);
+console.log('config ', Config.REACT_APP_SERVER_URL);
 export const axiosClientPrivate = axios.create({
   baseURL,
   headers: {

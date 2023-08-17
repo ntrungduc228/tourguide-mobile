@@ -18,6 +18,7 @@ type PostItemProps = {
 
 export const PostItem = ({post, setPostIdComment}: PostItemProps) => {
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
+  const user = useSelector((state: IRootState) => state.user.data.info);
   const [visible, setVisible] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const [isLike, setIsLike] = useState(false);
@@ -33,24 +34,30 @@ export const PostItem = ({post, setPostIdComment}: PostItemProps) => {
       //handleDeleteMembers();
     },
   });
-  // useEffect(() => {
-  //   post.
-  // }, [post]);
 
   return (
     <View className="border-b-0.5 py-2 border-gray-300 bg-white">
       <View className="p-[15] flex flex-row items-center ">
         <Avatar
-          src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+          src={
+            post?.user?.avatar ||
+            'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png'
+          }
           className="w-[30] h-[30]"
         />
         <View className="ml-2 flex-1">
           <Text className="font-bold text-[15] text-black break-all">
-            Nguyen Trung duc
+            {post?.user?.fullName}
           </Text>
         </View>
         <View>
-          <PostItemMenu visible={visible} setVisible={setVisible} post={post} />
+          {post.user?.id === user?.id && (
+            <PostItemMenu
+              visible={visible}
+              setVisible={setVisible}
+              post={post}
+            />
+          )}
         </View>
       </View>
 

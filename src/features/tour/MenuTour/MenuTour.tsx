@@ -28,13 +28,11 @@ export const MenuTour = ({visible, setVisible}: MenuTourProps) => {
   const [openAddMember, setOpenAddMember] = useState<boolean>(false);
   if (user && verifyTourist(user?.role)) {
     return (
-      <View className="h-full bg-slate-200 p-3">
-        <MenuTourist
-          visible={visible}
-          closeMenu={closeMenu}
-          setVisible={setVisible}
-        />
-      </View>
+      <MenuTourist
+        visible={visible}
+        closeMenu={closeMenu}
+        setVisible={setVisible}
+      />
     );
   }
 
