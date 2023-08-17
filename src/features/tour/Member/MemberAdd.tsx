@@ -69,6 +69,7 @@ export const MemberAdd = ({setOpenModal}: MemberAddProps) => {
           cursorColor="#000"
           autoFocus={true}
           value={valueInput}
+          placeholder="Nhập sdt..."
           onChangeText={text => setValueInput(text)}
         />
       </View>

@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TextInput, Button} from 'react-native-paper';
 import {User} from '../../../types/user';
@@ -18,6 +18,7 @@ type MemberApproveProps = {
 export const MemberApprove = ({setOpenModal}: MemberApproveProps) => {
   const [usersAdd, setUsersAdd] = useState<number[]>([]);
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
+  const socket = useSelector((state: IRootState) => state.socket.data);
   const queryClient = useQueryClient();
   const {showToast} = useToast();
   const {mutate: ApproveMember} = useMutation({
@@ -42,6 +43,22 @@ export const MemberApprove = ({setOpenModal}: MemberApproveProps) => {
     },
     // enabled: !!valueInput,
   });
+
+  // useEffect(() => {
+  //   const topic = `/topic/tour/${tourId}/members/join`;
+  //   if (socket) {
+  //     socket.subscribe(topic, (payload: any) => {
+  //       // const data = payload ? JSON.parse(payload.body) : {};
+  //       queryClient.invalidateQueries(['memberRequest', tourId]);
+  //     });
+  //   }
+  //   return () => {
+  //     if (socket) {
+  //       socket.unsubscribe(topic);
+  //     }
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [socket, tourId]);
 
   const handleApproveMember = () => {
     //dữ liệu giả
@@ -104,10 +121,12 @@ export const MemberApprove = ({setOpenModal}: MemberApproveProps) => {
       <View className="my-4 justify-end flex-row">
         <Button
           mode="contained"
-          disabled={!userRequests?.data.length}
+          disabled={!userRequests?.data.length || !usersAdd.length}
           style={{borderRadius: 10}}
           className={`w-[170] h-10 ${
-            !userRequests?.data.length ? `bg-slate-400` : `bg-blue-400`
+            !userRequests?.data.length || !usersAdd.length
+              ? `bg-slate-400`
+              : `bg-blue-400`
           }`}
           onPress={handleApproveMember}>
           Xác nhận

@@ -56,7 +56,7 @@ CommentInputProps) => {
       console.log('erorr ', JSON.stringify(error));
     },
     onSuccess: data => {
-      queryClient.invalidateQueries(['comments', postId]);
+      // queryClient.invalidateQueries(['comments', postId]);
       // setComments([data?.data, ...comments]);
       //handleDeleteMembers();
     },
@@ -68,12 +68,13 @@ CommentInputProps) => {
       console.log('erorr ', JSON.stringify(error));
     },
     onSuccess: data => {
-      queryClient.invalidateQueries(['comments', postId]);
+      // queryClient.invalidateQueries(['comments', postId]);
       // setComments([data?.data, ...comments]);
       //handleDeleteMembers();
     },
   });
   const handleCreateComment = () => {
+    Keyboard.dismiss();
     if (textValue && postId !== -1) {
       //dữ liệu giả
       if (commentParent) {

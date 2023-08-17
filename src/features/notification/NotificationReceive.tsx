@@ -4,6 +4,9 @@ import {useSelector} from 'react-redux';
 import {IRootState} from '../../stores';
 import PushNotification from 'react-native-push-notification';
 import {notificationMessage} from '../../utils/notificationMessage';
+import {useQuery} from '@tanstack/react-query';
+import notificationService from '../../services/notificationService';
+import {Notification} from '../../types/notification';
 
 type Props = {};
 
@@ -23,6 +26,30 @@ export const NotificationReceive = ({}: Props) => {
     );
   };
 
+  useQuery({
+    queryKey: ['notifications', user?.id],
+    queryFn: notificationService.getNotificationsByUserId,
+    enabled: !!user?.id,
+    onSuccess: data => {
+      if (data?.data) {
+        let count: number = 0;
+        data?.data.forEach((item: Notification) => {
+          if (!item?.isRead) {
+            count++;
+          }
+        });
+        if (count) {
+          PushNotification.localNotification({
+            channelId: `${user?.id}-push`,
+            title: 'Thông báo mới',
+            message: `${user?.fullName} ơi, bạn có ${count} thông báo mới`,
+            // bigText: notiMessage.message,
+          });
+        }
+      }
+    },
+  });
+
   useEffect(() => {
     if (user) {
       createChannels(user?.id || -1);
@@ -31,7 +58,7 @@ export const NotificationReceive = ({}: Props) => {
 
   useEffect(() => {
     const topic = `/topic/noti/${user?.id}/new`;
-    console.log('topic ', topic);
+    // console.log('topic ', topic);
     if (socket) {
       socket.subscribe(topic, (payload: any) => {
         const data = payload ? JSON.parse(payload.body) : {};

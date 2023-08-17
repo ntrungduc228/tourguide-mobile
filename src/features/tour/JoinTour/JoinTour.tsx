@@ -17,7 +17,7 @@ export const JoinTour = ({setVisible}: JoinTourProps) => {
     mutationFn: tourService.joinRoom,
     onError: (error: any) => {
       console.log('erorr ', JSON.stringify(error));
-      showToast('error', 'Yêu cầu thất bại');
+      showToast('error', error?.message);
 
       setVisible(false);
     },

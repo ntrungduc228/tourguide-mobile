@@ -1,7 +1,14 @@
-import {View, Text, FlatList, SafeAreaView} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useEffect} from 'react';
 import {ScreenBackLayout} from '../../../screens/components';
 import TourListItem from './TourListItem';
+import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {Tour} from '../../../types/tour';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {useSelector} from 'react-redux';
@@ -9,107 +16,14 @@ import tourService from '../../../services/tourService';
 import {RefreshControl} from 'react-native-gesture-handler';
 import {Spinner} from '../../../components/Spinner';
 import {IRootState} from '../../../stores';
+import {useNavigation} from '@react-navigation/native';
+import routesScreen from '../../../navigations/routes';
 
 type TourListProps = {};
 
-// const tours: {data: Tour[]} = {
-//   data: [
-//     {
-//       id: 1,
-//       name: 'Tou moi',
-//       description:
-//         'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
-//       destinations: [],
-//       isProgress: false,
-//     },
-//   ],
-// };
-
-// const tours: Tour[] = [
-//   {
-//     id: 1,
-//     name: 'Tou moi',
-//     description:
-//       'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
-//     destinations: [],
-//     isProgress: false,
-//   },
-//   {
-//     id: 234,
-//     name: 'Tou moi',
-//     description:
-//       'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
-//     destinations: [],
-//     isProgress: false,
-//   },
-//   {
-//     id: 1345,
-//     name: 'Tou moi',
-//     description:
-//       'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
-//     destinations: [],
-//     isProgress: false,
-//   },
-//   {
-//     id: 165,
-//     name: 'Tou moi',
-//     description:
-//       'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
-//     destinations: [],
-//     isProgress: false,
-//   },
-//   {
-//     id: 156,
-//     name: 'Tou moi',
-//     description:
-//       'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
-//     destinations: [],
-//     isProgress: false,
-//   },
-//   {
-//     id: 14556,
-//     name: 'Tou moi',
-//     description:
-//       'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
-//     destinations: [],
-//     isProgress: false,
-//   },
-//   {
-//     id: 145,
-//     name: 'Tou moi',
-//     description:
-//       'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
-//     destinations: [],
-//     isProgress: false,
-//   },
-//   {
-//     id: 651,
-//     name: 'Tou moi',
-//     description:
-//       'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
-//     destinations: [],
-//     isProgress: false,
-//   },
-//   {
-//     id: 6551,
-//     name: 'Tou moi',
-//     description:
-//       'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
-//     destinations: [],
-//     isProgress: false,
-//   },
-//   {
-//     id: 1453,
-//     name: 'Tou moi123',
-//     description:
-//       'fdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsdfdsfsd',
-//     destinations: [],
-//     isProgress: false,
-//   },
-// ];
-
 export const TourList = ({}: TourListProps) => {
   const queryClient = useQueryClient();
+  const navigation = useNavigation<Nav>();
   const socket = useSelector((state: IRootState) => state.socket.data);
   const user = useSelector((state: IRootState) => state.user.data.info);
 
@@ -145,7 +59,15 @@ export const TourList = ({}: TourListProps) => {
   return (
     <SafeAreaView>
       <ScreenBackLayout>
-        <ScreenBackLayout.Header title="Tour của tôi" />
+        {/* <ScreenBackLayout.Header title="Tour của tôi" /> */}
+        <View className="flex-row items-center">
+          <TouchableOpacity
+            className="mx-5"
+            onPress={() => navigation.navigate(routesScreen.Home)}>
+            <IconFontAwesome5 name="arrow-left" size={20} />
+          </TouchableOpacity>
+          <Text className="font-medium text-xl text-black">Tour của tôi</Text>
+        </View>
         <ScreenBackLayout.Body>
           {/* {isLoading && <Spinner />} */}
           <FlatList

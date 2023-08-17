@@ -26,7 +26,7 @@ export const TourItemMenu = ({visible, setVisible, tour}: Props) => {
       queryClient.invalidateQueries(['toursOwn']);
     },
     onError: (error: any) => {
-      showToast('error', 'Bắt đầu tour thất bại');
+      showToast('error', error?.message);
 
       console.log('erorr ', JSON.stringify(error));
     },

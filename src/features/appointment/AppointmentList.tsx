@@ -3,8 +3,8 @@ import {
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
-import {useQuery} from '@tanstack/react-query';
-import React, {useState} from 'react';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
+import React, {useEffect, useState} from 'react';
 import {FlatList, Text, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import {useSelector} from 'react-redux';
@@ -20,6 +20,9 @@ type AppoimentListScreenProps = {
 };
 
 export const AppointmentList = ({}: AppoimentListScreenProps) => {
+  const queryClient = useQueryClient();
+  const socket = useSelector((state: IRootState) => state.socket.data);
+  const user = useSelector((state: IRootState) => state.user.data.info);
   const [openForm, setOpenForm] = useState<boolean>(false);
   const navigation = useNavigation<Nav>();
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
@@ -35,9 +38,25 @@ export const AppointmentList = ({}: AppoimentListScreenProps) => {
       console.log('eee', err);
     },
   });
+
+  useEffect(() => {
+    const topic = `/topic/appointment/${user?.id}/new`;
+    if (socket) {
+      socket.subscribe(topic, (payload: any) => {
+        queryClient.invalidateQueries(['appointmentList', tourId]);
+      });
+    }
+    return () => {
+      if (socket) {
+        socket.unsubscribe(topic);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, user]);
+
   // console.log('list', appointmentList?.data);
   return (
-    <View className="bg-emerald-100 h-full">
+    <View className="bg-cyan-100 h-full">
       <View>
         <Button
           mode="elevated"

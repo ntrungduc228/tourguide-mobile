@@ -114,7 +114,7 @@ export const DestinationForm = ({
       </View>
       <View className="p-2 pb-10 gap-3">
         <View>
-          <Text className="text-gray font-medium text-md">Tên tour</Text>
+          <Text className="text-gray font-medium text-md">Lịch trình</Text>
           <TextInput
             className="bg-slate-200 shadow rounded-md mt-2 "
             onChangeText={formik.handleChange('name')}

@@ -4,6 +4,9 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import routesScreen from '../../../navigations/routes';
 import {Tour} from '../../../types/tour';
 import TourItemMenu from './TourItemMenu';
+import {useSelector} from 'react-redux';
+import {IRootState} from '../../../stores';
+import {ROLE} from '../../../types/user';
 
 type TourListITemProps = {
   tour: Tour;
@@ -12,6 +15,7 @@ type TourListITemProps = {
 export const TourListItem = ({tour}: TourListITemProps) => {
   const navigation = useNavigation<Nav>();
   const [visible, setVisible] = useState<boolean>(false);
+  const user = useSelector((state: IRootState) => state.user.data.info);
 
   return (
     <View className="flex-row items-center bg-cyan-500 p-3 mx-2 my-2  rounded-md">
@@ -31,7 +35,9 @@ export const TourListItem = ({tour}: TourListITemProps) => {
         </View>
       </TouchableOpacity>
       <View>
-        <TourItemMenu visible={visible} setVisible={setVisible} tour={tour} />
+        {user?.role == ROLE.TOURIST_GUIDE && (
+          <TourItemMenu visible={visible} setVisible={setVisible} tour={tour} />
+        )}
       </View>
     </View>
   );

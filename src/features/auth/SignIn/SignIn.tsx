@@ -7,6 +7,7 @@ import {axiosClient} from '../../../configs/axios';
 import {useDispatch} from 'react-redux';
 import authService from '../../../services/authService';
 import {setAccessToken} from '../../../stores/slices/userSlice';
+import useToast from '../../../hooks/useToast';
 
 type SignInProps = {};
 
@@ -18,6 +19,7 @@ interface SignInFormValues {
 export const SignIn = ({}: SignInProps) => {
   const dispatch = useDispatch();
   const initialValues: SignInFormValues = {email: '', password: ''};
+  const {showToast} = useToast();
 
   const onSubmit = async (values: any) => {
     // console.log(values);
@@ -39,6 +41,7 @@ export const SignIn = ({}: SignInProps) => {
       }
     },
     onError: (error: any) => {
+      showToast('error', error?.message);
       console.log('erorr ', JSON.stringify(error));
     },
   });

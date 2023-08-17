@@ -17,10 +17,12 @@ import React, {
   useState,
 } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {setTourId} from '../../stores/slices/tourSlice';
+import {setTour, setTourId} from '../../stores/slices/tourSlice';
 import {AppointmentList} from '../appointment';
 // import PushNotification from 'react-native-push-notification';
 import {IRootState} from '../../stores';
+import {useQuery} from '@tanstack/react-query';
+import tourService from '../../services/tourService';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -43,33 +45,23 @@ export const useTravel = () => {
 
 export const Travel = ({route}: TravelProps) => {
   const {tourId} = getParamsNav(route);
-
   const user = useSelector((state: IRootState) => state.user.data.info);
-  // const [tour, setTour] = useState<Tour | null>(null);
-  // console.log('tourId travel ', tourId);
+  console.log('tourId travel ', tourId, user);
   const dispatch = useDispatch();
   useEffect(() => {
-    // console.log('v t', tourId);
     dispatch(setTourId(tourId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tourId]);
 
-  // useEffect(() => {
-  //   // createChannels();
-  //   return () => {};
-  // }, []);
-
-  // const createChannels = () => {
-  //   PushNotification.createChannel(
-  //     {
-  //       channelId: `pushNoti/tours/${user?.id}/update`,
-  //       channelName: 'TESTT',
-  //     },
-  //     created => {
-  //       console.log(`createChannel returned '${created}'`);
-  //     },
-  //   );
-  // };
+  useQuery({
+    queryKey: ['travel', tourId],
+    queryFn: () => tourService.getTourById(tourId),
+    enabled: !!tourId,
+    onSuccess: data => {
+      // console.log('data tour', data?.data);
+      dispatch(setTour(data?.data));
+    },
+  });
 
   return (
     // <TravelContext.Provider value={{tourId, tour, setTour}}>

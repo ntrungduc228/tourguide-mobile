@@ -1,7 +1,7 @@
 import {ParamListBase, RouteProp} from '@react-navigation/native';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import React, {useState} from 'react';
-import {FlatList, Text, View} from 'react-native';
+import {FlatList, Text, View, RefreshControl} from 'react-native';
 import {ModalTrigger} from '../../../components';
 import {
   default as postApi,
@@ -22,7 +22,11 @@ export const PostList = ({route}: PostListProps) => {
 
   const queryClient = useQueryClient();
 
-  const {data: posts} = useQuery({
+  const {
+    data: posts,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ['posts', tourId],
     queryFn: () => postApi.getPostByTour(tourId),
     enabled: !!tourId,
@@ -59,6 +63,9 @@ export const PostList = ({route}: PostListProps) => {
           <View className="flex-1 items-center justify-center">
             <Text className="text-gray-500">Chưa có bài đăng</Text>
           </View>
+        }
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={refetch} />
         }
       />
       {postIdComment !== -1 && (

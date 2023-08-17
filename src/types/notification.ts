@@ -8,6 +8,7 @@ export type Notification = {
   creator?: User;
   receiver?: User;
   member: NotificationMember[];
+  isRead: boolean;
 } & Base;
 
 export type NotificationMember = {
