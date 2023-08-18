@@ -89,3 +89,25 @@ export const MemberCheckItem = ({
     </View>
   );
 };
+
+export const MemberItemChecked = ({user}: {user: User}) => {
+  return (
+    <View>
+      <View className="flex-row w-full items-center">
+        <Checkbox color="#808080" status={'checked'} onPress={() => {}} />
+        <View className="p-2 flex-1 bg-slate-100 flex-row justify-between shadow-lg border-1">
+          <View className="flex-row gap-x-3 w-full items-center">
+            <Avatar
+              src={user.avatar}
+              className="h-[40px] ml-1 w-[40px] rounded-full"
+            />
+            <View className="flex-1">
+              <Text className="font-bold break-all">{user.fullName}</Text>
+              <Text className="text-sm">SDT: {user.phone}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+};
