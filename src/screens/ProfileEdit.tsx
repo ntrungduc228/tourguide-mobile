@@ -8,6 +8,8 @@ import {useMutation, useQueryClient} from '@tanstack/react-query';
 import userService from '../services/userService';
 import useToast from '../hooks/useToast';
 import {updateUserInfo} from '../stores/slices/userSlice';
+import {useFormik} from 'formik';
+import {useNavigation} from '@react-navigation/native';
 interface Action {
   title: string;
   type: 'capture' | 'library';
@@ -23,8 +25,17 @@ const options: Action = {
     includeBase64: false,
   },
 };
+
+interface ProfileEditFormValues {
+  fullName: string;
+  phone: string;
+  address: string;
+}
+
 const ProfileEdit = () => {
+  const navigation = useNavigation<Nav>();
   const profile = useSelector((state: IRootState) => state?.user?.data?.info);
+  console.log('re', profile);
   const [uriAvatar, setUriAvatar] = useState(
     profile?.avatar
       ? profile.avatar
@@ -52,6 +63,7 @@ const ProfileEdit = () => {
   const {showToast} = useToast();
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
+
   const {mutate: updateProfile} = useMutation({
     mutationFn: userService.updateProfile,
     onError: (error: any) => {
@@ -60,10 +72,33 @@ const ProfileEdit = () => {
     },
     onSuccess: data => {
       showToast('success', 'Cập nhật thành công');
+      navigation.goBack();
+      console.log('da', data.data);
       dispatch(updateUserInfo(data.data));
       //queryClient.invalidateQueries(['appointmentMembers', appointment?.id]);
       //handleDeleteMembers();
     },
+  });
+
+  const initialValues: ProfileEditFormValues = {
+    fullName: profile?.fullName || '',
+    phone: profile?.phone || '',
+    address: profile?.address || '',
+  };
+
+  const onSubmit = (values: any) => {
+    console.log('lcicck');
+    updateProfile({
+      fullName: values.fullName,
+      address: values.address,
+      phone: values.phone,
+      avatar: uriAvatar,
+    });
+  };
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    onSubmit: onSubmit,
   });
 
   return (
@@ -76,6 +111,9 @@ const ProfileEdit = () => {
           className="bg-white border-b-1 h-[60]"
           mode="flat"
           label="Họ tên"
+          onChangeText={formik.handleChange('fullName')}
+          onBlur={formik.handleBlur('fullName')}
+          value={formik.values.fullName}
           // value={userInfo.username}
           activeUnderlineColor="#000"
           //   {...register('username', {
@@ -90,14 +128,17 @@ const ProfileEdit = () => {
           mode="flat"
           label="Email"
           editable={false}
-          value="Khanhvi@"
           activeUnderlineColor="#000"
+          value={profile?.email}
           // onChangeText={e => setUserInfo(prev => ({...prev, bio: e}))}
         />
         <TextInput
           className="bg-white border-b-1 h-[60] mt-5"
           mode="flat"
           label="Địa chỉ"
+          onChangeText={formik.handleChange('address')}
+          onBlur={formik.handleBlur('address')}
+          value={formik.values.address}
           // value={userInfo.bio}
           activeUnderlineColor="#000"
           // onChangeText={e => setUserInfo(prev => ({...prev, bio: e}))}
@@ -106,6 +147,9 @@ const ProfileEdit = () => {
           className="bg-white border-b-1 h-[60] mt-5"
           mode="flat"
           label="SĐT"
+          onChangeText={formik.handleChange('phone')}
+          onBlur={formik.handleBlur('phone')}
+          value={formik.values.phone}
           // value={userInfo.bio}
           activeUnderlineColor="#000"
           // onChangeText={e => setUserInfo(prev => ({...prev, bio: e}))}
@@ -115,8 +159,7 @@ const ProfileEdit = () => {
         mode="text"
         className="rounded-full w-24 mt-10 mx-auto text-white bg-green-500"
         textColor="#fff"
-        //onPress={() => }
-      >
+        onPress={() => formik.handleSubmit()}>
         Lưu
       </Button>
     </View>

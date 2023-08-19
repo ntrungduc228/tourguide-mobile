@@ -17,6 +17,7 @@ import {
   AppointmentItem,
   AppointmentList,
 } from '../features/appointment';
+import ProfileEdit from '../screens/ProfileEdit';
 
 const MainStack = createStackNavigator();
 
@@ -103,6 +104,13 @@ export function MainStackNavigator() {
       <MainStack.Screen
         name={routesScreen.AppointmentForm}
         component={AppointmentForm}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.ProfileEdit}
+        component={ProfileEdit}
         options={{
           headerShown: false,
         }}
