@@ -14,6 +14,7 @@ const appointmentService = {
     address: string;
     content: string;
     userIds: number[];
+    inviteAll: boolean;
     time: Date;
   }) => axiosClientPrivate.post(url, appointment),
   updateAttendance: (data: {id: number; userIds: number[]}) =>

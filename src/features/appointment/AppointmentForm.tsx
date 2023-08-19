@@ -7,7 +7,7 @@ import {useFormik} from 'formik';
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {Button, TextInput} from 'react-native-paper';
+import {Button, TextInput, Checkbox} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
 import useToast from '../../hooks/useToast';
@@ -33,6 +33,7 @@ export const AppointmentForm = (props: Props) => {
   const [mode, setMode] = React.useState<'date' | 'time'>('date');
   const [openDate, setOpenDate] = React.useState(false);
   const tourId = useSelector((state: IRootState) => state.tour.tourId);
+  const [isInviteAll, setIsInviteAll] = React.useState<boolean>(false);
   const {showToast} = useToast();
   const navigation = useNavigation<Nav>();
   const queryClient = useQueryClient();
@@ -63,6 +64,7 @@ export const AppointmentForm = (props: Props) => {
       address,
       content,
       userIds: usersIds,
+      inviteAll: isInviteAll,
       time,
     });
   };
@@ -143,8 +145,8 @@ export const AppointmentForm = (props: Props) => {
                 testID="dateTimePicker"
                 value={date}
                 mode={mode}
-                // timeZoneOffsetInMinutes={60 * 7}
-                minimumDate={new Date(Date.now() + 7 * 60 * 60 * 1000)}
+                timeZoneOffsetInMinutes={60 * 7}
+                // minimumDate={new Date(Date.now() + 7 * 60 * 60 * 1000)}
                 onChange={onChangeDate}
               />
             )}
@@ -162,6 +164,15 @@ export const AppointmentForm = (props: Props) => {
             </Button>
             <Text>{formik.values.time.toLocaleTimeString('vn')}</Text>
           </View>
+        </View>
+        <View className="flex-row items-center">
+          <Checkbox
+            status={isInviteAll ? 'checked' : 'unchecked'}
+            onPress={() => {
+              setIsInviteAll(!isInviteAll);
+            }}
+          />
+          <Text>Mời tất cả</Text>
         </View>
         <View>
           <AppointmentMember setUsersAdd={setUsersIds} usersAdd={usersIds} />
