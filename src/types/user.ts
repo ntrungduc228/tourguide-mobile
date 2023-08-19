@@ -21,3 +21,8 @@ export type AuthDTO = {
   phone: string;
   address: string;
 };
+
+export type PasswordDTO = {
+  password: string;
+  newPassword?: string;
+};

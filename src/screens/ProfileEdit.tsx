@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Image, View} from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
 import * as ImagePicker from 'react-native-image-picker';
@@ -63,6 +63,13 @@ const ProfileEdit = () => {
   const {showToast} = useToast();
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
+  // useEffect(() => {
+  //   formik.setFieldValue('fullName', profile?.fullName || ''),
+  //     formik.setFieldValue('phone', profile?.phone || ''),
+  //     formik.setFieldValue('address', profile?.address || ''),
+  //     formik.setFieldValue('email', profile?.email || '');
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [profile]);
 
   const {mutate: updateProfile} = useMutation({
     mutationFn: userService.updateProfile,

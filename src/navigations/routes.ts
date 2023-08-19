@@ -19,6 +19,7 @@ const routesScreen = {
   TourEdit: 'TourEdit',
   ProfileEdit: 'ProfileEdit',
   MapDirection: 'MapDirection',
+  ChangePassword: 'ChangePassword',
 };
 
 export default routesScreen;
