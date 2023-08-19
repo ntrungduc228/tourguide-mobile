@@ -55,8 +55,9 @@ export const AppointmentForm = (props: Props) => {
   });
 
   const onSubmit = (values: any) => {
-    console.log(values);
+    console.log('values appointment ', values, usersIds);
     const {address, content, time} = values;
+
     createAppointment({
       tourId: tourId!!,
       address,
@@ -75,7 +76,10 @@ export const AppointmentForm = (props: Props) => {
     const curDate = selectedDate || date;
     console.log(formatDateTime(new Date(curDate)));
     // setDate(curDate);
-    formik.setFieldValue('time', curDate);
+    formik.setFieldValue(
+      'time',
+      new Date(curDate.getTime() + 7 * 60 * 60 * 1000),
+    );
   };
 
   const formik = useFormik({
@@ -139,7 +143,8 @@ export const AppointmentForm = (props: Props) => {
                 testID="dateTimePicker"
                 value={date}
                 mode={mode}
-                minimumDate={new Date()}
+                // timeZoneOffsetInMinutes={60 * 7}
+                minimumDate={new Date(Date.now() + 7 * 60 * 60 * 1000)}
                 onChange={onChangeDate}
               />
             )}
