@@ -48,14 +48,14 @@ export const AppointmentMenuTourGuide = ({
           }}
           title="Điểm danh"
         />
-        {appointment?.userId === user?.id && (
+        {/* {appointment?.userId === user?.id && (
           <Menu.Item
             onPress={() => {
               setVisible(false);
             }}
             title="Sửa thông tin"
           />
-        )}
+        )} */}
       </Menu>
       <ModalTrigger visible={openModal} setVisible={setOpenModal}>
         <AttendanceList appointment={appointment} setOpenModal={setOpenModal} />

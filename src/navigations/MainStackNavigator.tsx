@@ -18,6 +18,7 @@ import {
   AppointmentList,
 } from '../features/appointment';
 import ProfileEdit from '../screens/ProfileEdit';
+import {MapDirection} from '../features/map';
 
 const MainStack = createStackNavigator();
 
@@ -104,6 +105,13 @@ export function MainStackNavigator() {
       <MainStack.Screen
         name={routesScreen.AppointmentForm}
         component={AppointmentForm}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.MapDirection}
+        component={MapDirection}
         options={{
           headerShown: false,
         }}

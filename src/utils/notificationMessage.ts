@@ -7,17 +7,21 @@ export enum NotificationType {
   ADD_ROOM = 'ADD_ROOM',
   APPROVE_ROOM = 'APPROVE_ROOM',
   NEW_APPOINTMENT = 'NEW_APPOINTMENT',
+  UPDATE_TOUR = 'UPDATE_TOUR',
+  UPDATE_APPOINTMENT = 'UPDATE_APPOINTMENT',
+  DESTINATION_COMING = 'DESTINATION_COMING',
+  APPOINTMENT_COMING = 'APPOINTMENT_COMING',
 }
 
 export const notificationMessage = (type: NotificationType, data: any) => {
   let message: string = '';
   switch (type) {
     case NotificationType.BEGIN_TOUR: {
-      message = `Tour ${data?.data?.name} đã bắt đầu, chúc bạn có trải nghiệm vui vẻ`;
+      message = `Tour đã bắt đầu, chúc bạn có trải nghiệm vui vẻ`;
       break;
     }
     case NotificationType.END_TOUR: {
-      message = `Tour ${data?.data?.name} đã kết thúc, hẹn gặp lại`;
+      message = `Tour đã kết thúc, hẹn gặp lại`;
       break;
     }
     case NotificationType.COMMENT: {
@@ -29,7 +33,7 @@ export const notificationMessage = (type: NotificationType, data: any) => {
       break;
     }
     case NotificationType.ADD_ROOM: {
-      message = `Tour ${data?.data?.name} đã kết thúc, hẹn gặp lại`;
+      message = `Bạn đã được thêm vào phòng`;
       break;
     }
     case NotificationType.APPROVE_ROOM: {
@@ -38,6 +42,14 @@ export const notificationMessage = (type: NotificationType, data: any) => {
     }
     case NotificationType.NEW_APPOINTMENT: {
       message = `đã tạo cuộc hẹn mới`;
+      break;
+    }
+    case NotificationType.DESTINATION_COMING: {
+      message = data?.data;
+      break;
+    }
+    case NotificationType.APPOINTMENT_COMING: {
+      message = data?.data;
       break;
     }
   }

@@ -1,20 +1,45 @@
 import React, {useState} from 'react';
 import MapView, {Marker, PROVIDER_GOOGLE, Polyline} from 'react-native-maps';
-import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MapViewDirections from 'react-native-maps-directions';
+import Geolocation from 'react-native-geolocation-service';
 
 export const MapDirection = () => {
+  async function requestPermissions() {
+    if (Platform.OS === 'android') {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      Geolocation.getCurrentPosition(
+        data => console.log('datlocationa', data),
+        error => {
+          // See error code charts below.
+          console.log(error.code, error.message);
+        },
+      );
+    }
+  }
+
+  requestPermissions();
   const [coordinates] = useState([
     {
-      latitude: 48.8587741,
-      longitude: 2.2069771,
+      latitude: 10.8470966,
+      longitude: 106.7871364,
     },
     {
-      latitude: 48.8323785,
-      longitude: 2.3361663,
+      latitude: 10.9054565,
+      longitude: 106.7567876,
     },
   ]);
+
   return (
     <View style={styles.container}>
       <MapView
@@ -26,13 +51,13 @@ export const MapDirection = () => {
           latitudeDelta: 0.0622,
           longitudeDelta: 0.0121,
         }}>
-        <MapViewDirections
+        {/* <MapViewDirections
           origin={coordinates[0]}
           destination={coordinates[1]}
           apikey={'AIzaSyDmbbh44kGMgCjJXBoteXRytGrG7F9FnwM'} // insert your API Key here
           strokeWidth={4}
           strokeColor="#111111"
-        />
+        /> */}
         <Marker coordinate={coordinates[0]} />
         <Marker coordinate={coordinates[1]} />
         {/* <Polyline

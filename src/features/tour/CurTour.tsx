@@ -1,5 +1,5 @@
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {DestinationList, MemberList, MenuOption, PostList} from './index';
 import {RouteProp} from '@react-navigation/native';
 import {ParamListBase} from '@react-navigation/native';
@@ -8,7 +8,7 @@ import {getParamsNav} from '../../utils/getParamsNavigation';
 import {SingleResponse} from '../../types/api';
 import {Post} from '../../types/post';
 import {Tour} from '../../types/tour';
-type TravelRouteProp = RouteProp<ParamListBase, string>;
+type CurTourRouteProp = RouteProp<ParamListBase, string>;
 import React, {
   PropsWithChildren,
   createContext,
@@ -26,41 +26,39 @@ import tourService from '../../services/tourService';
 
 const Tab = createMaterialTopTabNavigator();
 
-type TravelProps = PropsWithChildren<{route: TravelRouteProp}>;
+type CurTourProps = PropsWithChildren<{route: CurTourRouteProp}>;
 
-export type TravelContextType = {
+export type CurTourContextType = {
   tour: Tour | null;
   setTour: (tour: Tour | null) => void;
   tourId: number | null;
   // setTourId: (tourId: number | null) => void;
 };
 
-export const TravelContext = createContext<TravelContextType>(
-  {} as TravelContextType,
+export const CurTourContext = createContext<CurTourContextType>(
+  {} as CurTourContextType,
 );
 
-export const useTravel = () => {
-  return useContext(TravelContext);
+export const useCurTour = () => {
+  return useContext(CurTourContext);
 };
 
-export const Travel = ({route}: TravelProps) => {
-  const {tourId} = getParamsNav(route);
+export const CurTour = ({route}: CurTourProps) => {
+  //   const {tourId} = getParamsNav(route);
   const user = useSelector((state: IRootState) => state.user.data.info);
   const socket = useSelector((state: IRootState) => state.socket.data);
-  // console.log('tourId travel ', tourId, user);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setTourId(tourId));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tourId]);
+  //   useEffect(() => {
+  //     dispatch(setTourId(tourId));
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   }, [tourId]);
 
   const queryClient = useQueryClient();
 
-  useQuery({
-    queryKey: ['travel', tourId],
-    queryFn: () => tourService.getTourById(tourId),
-    enabled: !!tourId,
-    onSuccess: data => {
+  const {data: curTourData} = useQuery({
+    queryKey: ['CurTour'],
+    queryFn: tourService.getTourProgess,
+    onSuccess: (data: any) => {
       // console.log('data tour', data?.data);
       dispatch(setTour(data?.data));
     },
@@ -70,7 +68,7 @@ export const Travel = ({route}: TravelProps) => {
     const topic = `/topic/tours/${user?.id}/update`;
     if (socket) {
       socket.subscribe(topic, (payload: any) => {
-        queryClient.invalidateQueries(['travel', tourId]);
+        queryClient.invalidateQueries(['CurTour']);
       });
     }
     return () => {
@@ -81,8 +79,18 @@ export const Travel = ({route}: TravelProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, user?.id]);
 
+  console.log('curTour ', curTourData?.data);
+
+  if (!curTourData?.data) {
+    return (
+      <View className="h-full items-center justify-center">
+        <Text>Chưa có tour</Text>
+      </View>
+    );
+  }
+
   return (
-    // <TravelContext.Provider value={{tourId, tour, setTour}}>
+    // <CurTourContext.Provider value={{tourId, tour, setTour}}>
     <>
       <View>
         <MenuOption />
@@ -100,7 +108,7 @@ export const Travel = ({route}: TravelProps) => {
         <Tab.Screen
           name="Post"
           component={PostList}
-          initialParams={{tourId: tourId}}
+          initialParams={{tourId: curTourData?.data?.id}}
           options={{
             title: 'Bài đăng',
           }}
@@ -121,11 +129,11 @@ export const Travel = ({route}: TravelProps) => {
         />
       </Tab.Navigator>
     </>
-    // </TravelContext.Provider>
+    // </CurTourContext.Provider>
   );
 };
 
-export default Travel;
+export default CurTour;
 
 const Styles = StyleSheet.create({
   tabBarLabel: {

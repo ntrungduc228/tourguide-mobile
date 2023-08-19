@@ -20,6 +20,7 @@ const tourSlice = createSlice({
   reducers: {
     setTour: (state, action): void => {
       state.tour = action.payload;
+      state.tourId = action.payload?.id;
     },
     setTourId: (state, action): void => {
       state.tourId = action.payload;

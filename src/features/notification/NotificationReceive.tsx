@@ -29,6 +29,7 @@ export const NotificationReceive = ({}: Props) => {
   useQuery({
     queryKey: ['notifications', user?.id],
     queryFn: notificationService.getNotificationsByUserId,
+    staleTime: Infinity,
     enabled: !!user?.id,
     onSuccess: data => {
       if (data?.data) {

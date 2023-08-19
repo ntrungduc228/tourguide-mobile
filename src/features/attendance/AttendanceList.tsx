@@ -7,7 +7,7 @@ import useToast from '../../hooks/useToast';
 import appointmentService from '../../services/appointmentService';
 import {Appointment} from '../../types/appointment';
 import {Attendance} from '../../types/attendance';
-import {MemberCheckItem} from '../tour';
+import {MemberCheckItem, MemberItemChecked} from '../tour';
 
 type Props = {
   setOpenModal: (value: boolean) => void;
@@ -77,14 +77,25 @@ export const AttendanceList = ({setOpenModal, appointment}: Props) => {
       <View className="max-h-[200] bg-slate-100 ">
         <ScrollView>
           {!!appointmentMembers?.data.length ? (
-            appointmentMembers?.data?.map((attendances: Attendance) => (
-              <MemberCheckItem
-                key={attendances.id}
-                user={attendances.user!!}
-                setUsersAdd={setUsersAdd}
-                usersAdd={usersAdd}
-              />
-            ))
+            appointmentMembers?.data?.map((attendances: Attendance) => {
+              if (attendances.isAttend) {
+                return (
+                  <MemberItemChecked
+                    key={attendances.id}
+                    user={attendances.user!!}
+                  />
+                );
+              }
+
+              return (
+                <MemberCheckItem
+                  key={attendances.id}
+                  user={attendances.user!!}
+                  setUsersAdd={setUsersAdd}
+                  usersAdd={usersAdd}
+                />
+              );
+            })
           ) : (
             <View className="flex-1 items-center justify-center">
               <Text className="text-gray-500">Chưa có thành viên</Text>
