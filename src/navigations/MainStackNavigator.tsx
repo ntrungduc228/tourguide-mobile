@@ -17,7 +17,9 @@ import {
   AppointmentItem,
   AppointmentList,
 } from '../features/appointment';
+import ProfileEdit from '../screens/ProfileEdit';
 import {MapDirection} from '../features/map';
+import ChangePassword from '../screens/ChangePassword';
 
 const MainStack = createStackNavigator();
 
@@ -111,6 +113,20 @@ export function MainStackNavigator() {
       <MainStack.Screen
         name={routesScreen.MapDirection}
         component={MapDirection}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.ProfileEdit}
+        component={ProfileEdit}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name={routesScreen.ChangePassword}
+        component={ChangePassword}
         options={{
           headerShown: false,
         }}

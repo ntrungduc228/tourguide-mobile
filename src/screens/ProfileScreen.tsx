@@ -81,7 +81,16 @@ const AvatarUpload = ({
           mode="outlined"
           onPress={() => navigation.navigate(routesScreen.ProfileEdit)}
           textColor="#fff">
-          Edit your profile
+          Chỉnh sửa thông tin
+        </Button>
+      </View>
+      <View className="mt-6">
+        <Button
+          className="rounded-full mx-0 text-white bg-black"
+          mode="outlined"
+          onPress={() => navigation.navigate(routesScreen.ChangePassword)}
+          textColor="#fff">
+          Đổi mật khẩu
         </Button>
       </View>
     </View>
