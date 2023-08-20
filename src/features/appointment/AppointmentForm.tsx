@@ -78,10 +78,8 @@ export const AppointmentForm = (props: Props) => {
     const curDate = selectedDate || date;
     console.log(formatDateTime(new Date(curDate)));
     // setDate(curDate);
-    formik.setFieldValue(
-      'time',
-      new Date(curDate.getTime() + 7 * 60 * 60 * 1000),
-    );
+    curDate.setHours(curDate.getHours() + 7);
+    formik.setFieldValue('time', curDate);
   };
 
   const formik = useFormik({

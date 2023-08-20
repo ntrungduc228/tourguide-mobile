@@ -86,6 +86,7 @@ export const DestinationForm = ({
     const curDate = selectedDate || date;
     console.log(formatDateTime(new Date(curDate)));
     setDate(curDate);
+    curDate.setHours(curDate.getHours() + 7);
     formik.setFieldValue('departureTime', curDate);
   };
 
